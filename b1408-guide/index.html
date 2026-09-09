@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B1408 Practical Project — Module Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-dark: #16324a;
+    --navy: #1f4e79;
+    --navy-mid: #3a6b96;
+    --tint: #eaf1f7;
+    --paper: #fbfaf6;
+    --ink: #24303a;
+    --slate: #5b6a75;
+    --amber: #b9722c;
+    --line: #d7e1e8;
+    --rule: 1px solid var(--line);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+
+  header.masthead {
+    background: var(--navy-dark);
+    color: #fff;
+    padding: 56px 24px 44px;
+    margin-bottom: 56px;
+  }
+
+  .masthead-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .masthead-inner .kicker {
+    color: #a9c3d8;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    margin: 0 0 10px;
+  }
+
+  .masthead-inner h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+    line-height: 1.12;
+    margin: 0 0 14px;
+  }
+
+  .masthead-inner p.lede {
+    font-size: 1.05rem;
+    color: #dbe6ef;
+    max-width: 56ch;
+    margin: 0;
+  }
+
+  h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: var(--navy-dark);
+    margin: 0 0 18px;
+  }
+
+  section { margin-bottom: 60px; }
+
+  section > p { max-width: 66ch; }
+
+  .lead-list {
+    padding-left: 0;
+    list-style: none;
+    margin: 20px 0 0;
+  }
+  .lead-list li {
+    padding: 14px 0;
+    border-top: var(--rule);
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    gap: 18px;
+  }
+  .lead-list li:last-child { border-bottom: var(--rule); }
+  .lead-list .role { font-weight: 600; color: var(--navy); }
+  .lead-list .who { color: var(--slate); }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    margin-top: 8px;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--line);
+  }
+  .tl-item {
+    position: relative;
+    padding-left: 48px;
+    padding-bottom: 34px;
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--tint);
+    border: 2px solid var(--navy-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tl-item.milestone .tl-dot {
+    background: var(--navy);
+    border-color: var(--navy);
+  }
+  .tl-item.milestone .tl-dot svg { stroke: #fff; }
+  .tl-dot svg { width: 15px; height: 15px; stroke: var(--navy); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .tl-date {
+    font-size: 0.82rem;
+    letter-spacing: 0.01em;
+    color: var(--amber);
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .tl-item.milestone .tl-date { color: var(--navy); }
+  .tl-title {
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .tl-desc {
+    color: var(--slate);
+    font-size: 0.95rem;
+    max-width: 54ch;
+  }
+  .tl-span {
+    position: relative;
+    padding-left: 48px;
+    padding-bottom: 34px;
+  }
+  .tl-span .tl-bar {
+    position: absolute;
+    left: 15px;
+    top: 16px;
+    bottom: 16px;
+    width: 2px;
+    background: repeating-linear-gradient(to bottom, var(--navy-mid) 0 5px, transparent 5px 10px);
+  }
+  .tl-span .tl-title { color: var(--navy-mid); font-style: italic; font-weight: 500; }
+
+  /* Process steps */
+  .steps {
+    display: grid;
+    gap: 0;
+    margin-top: 8px;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    padding: 18px 0;
+    border-top: var(--rule);
+  }
+  .steps .step:last-child { border-bottom: var(--rule); }
+  .step .num {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--navy-mid);
+  }
+  .step h3 {
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+  .step p { margin: 0; color: var(--slate); font-size: 0.95rem; }
+
+  /* Assessment table */
+  table.assess {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.95rem;
+  }
+  table.assess th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--navy-dark);
+    border-bottom: 2px solid var(--navy-mid);
+    padding: 10px 12px 10px 0;
+  }
+  table.assess td {
+    padding: 12px 12px 12px 0;
+    border-bottom: var(--rule);
+    vertical-align: top;
+  }
+  table.assess td.weight {
+    color: var(--amber);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .callout {
+    background: var(--tint);
+    border-left: 3px solid var(--navy);
+    padding: 16px 20px;
+    margin-top: 22px;
+    font-size: 0.95rem;
+    color: var(--navy-dark);
+  }
+  .callout strong { color: var(--navy-dark); }
+
+  footer {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+    color: var(--slate);
+    font-size: 0.88rem;
+    border-top: var(--rule);
+    padding-top: 20px;
+  }
+
+  footer a { color: var(--navy); }
+
+  @media (max-width: 520px) {
+    .lead-list li { grid-template-columns: 1fr; gap: 2px; }
+    header.masthead { padding: 44px 20px 36px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="kicker">BSc Sport &amp; Physical Activity — Year Four</p>
+    <h1>B1408 Practical Project</h1>
+    <p class="lede">A year-long, self-directed placement project: identify a real need with an organisation, design and deliver an intervention, then evaluate what happened.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <h2>At a glance</h2>
+    <p>You choose a placement provider — usually somewhere you already have a connection — identify a genuine need of theirs, then design, implement and evaluate an intervention to meet it. The work culminates in a written report and a digital presentation.</p>
+    <ul class="lead-list">
+      <li><span class="role">Module leader</span><span class="who">Dr Allan Hewitt — allan.hewitt@strath.ac.uk</span></li>
+      <li><span class="role">Report</span><span class="who">3,000 words, worth 60% of the module grade</span></li>
+      <li><span class="role">Presentation</span><span class="who">15 minutes, digital, worth 25% of the module grade</span></li>
+      <li><span class="role">Placement evaluation</span><span class="who">Completed by your supervisor, worth 15% of the module grade</span></li>
+    </ul>
+    <div class="callout">
+      <strong>Compulsory, ungraded steps:</strong> your project proposal must be approved before you start, and a mid-placement review must be completed. Missing either results in 0% for the whole module, regardless of your other marks.
+    </div>
+  </section>
+
+  <section>
+    <h2>Timeline 2026–27</h2>
+    <div class="timeline">
+
+      <div class="tl-item milestone">
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div>
+        <div class="tl-date">Tue 29 September 2026, 13:00–14:00</div>
+        <div class="tl-title">First class meeting</div>
+        <div class="tl-desc">Livingstone Tower 715. Module introduction and expectations.</div>
+      </div>
+
+      <div class="tl-span"><div class="tl-bar"></div></div>
+
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <div class="tl-date">Deadline · Fri 27 November 2026</div>
+        <div class="tl-title">Project proposal approved</div>
+        <div class="tl-desc">Submit your proposal online, specifying location, client group and planned activities. You cannot start the project until it is approved.</div>
+      </div>
+
+      <div class="tl-span"><div class="tl-bar"></div></div>
+
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><path d="M8 4v4M16 4v4M4 10h16M5 6h14a1 1 0 011 1v12a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1z"/></svg></div>
+        <div class="tl-date">Ongoing, once approved</div>
+        <div class="tl-title">Delivery window</div>
+        <div class="tl-desc">Design, implement and evaluate your project. This runs across weeks 5–11 of Semester 1 and/or weeks 1–11 of Semester 2. A mid-placement review with your supervisor must happen somewhere in this window.</div>
+      </div>
+
+      <div class="tl-span"><div class="tl-bar"></div></div>
+
+      <div class="tl-item milestone">
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div>
+        <div class="tl-date">Mon 22 February 2027, 13:00–14:00</div>
+        <div class="tl-title">Second class meeting</div>
+        <div class="tl-desc">Livingstone Tower 310. Check-in on progress.</div>
+      </div>
+
+      <div class="tl-span"><div class="tl-bar"></div></div>
+
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <div class="tl-date">Deadline · Fri 2 April 2027</div>
+        <div class="tl-title">Project completed</div>
+        <div class="tl-desc">All fieldwork, delivery and evaluation activity should be finished by this date.</div>
+      </div>
+
+      <div class="tl-span"><div class="tl-bar"></div></div>
+
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <div class="tl-date">Deadline · Thu 15 April 2027, 17:00</div>
+        <div class="tl-title">Digital presentation uploaded</div>
+        <div class="tl-desc">Submitted to Myplace.</div>
+      </div>
+
+      <div class="tl-span"><div class="tl-bar"></div></div>
+
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <div class="tl-date">Deadline · Mon 26 April 2027, 17:00</div>
+        <div class="tl-title">Project report submitted</div>
+        <div class="tl-desc">Submitted to Myplace, via Turnitin.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>The process, step by step</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <div>
+          <h3>Choose a placement provider</h3>
+          <p>An organisation with a recognisable management structure, active in physical activity or sports development, able to assign you a project supervisor.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <div>
+          <h3>Identify a genuine need</h3>
+          <p>Find a specific challenge or objective facing the provider or its client group, and show evidence it's real and aligned with the provider's own aims.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <div>
+          <h3>Design the intervention</h3>
+          <p>Plan an original activity or programme that responds to the need — not simply delivering something the provider already runs.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <div>
+          <h3>Get the proposal approved</h3>
+          <p>Submit online by 27 November 2026. You must have written confirmation before starting any delivery.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">5</div>
+        <div>
+          <h3>Deliver and hold a mid-placement review</h3>
+          <p>Implement the project, staying in regular contact with your module leader, and complete a formal review meeting with your supervisor.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">6</div>
+        <div>
+          <h3>Evaluate, present and report</h3>
+          <p>Assess the outcome using proper evidence, then submit the presentation and written report by their respective deadlines.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Assessment breakdown</h2>
+    <table class="assess">
+      <tr><th>Component</th><th>Weight</th></tr>
+      <tr><td>Project report (3,000 words, four sections: aims, design, implementation, evaluation)</td><td class="weight">60%</td></tr>
+      <tr><td>Digital presentation (15 minutes, voice-over or video)</td><td class="weight">25%</td></tr>
+      <tr><td>Placement provider's evaluation of your performance</td><td class="weight">15%</td></tr>
+    </table>
+    <p style="margin-top:16px; color:var(--slate); font-size:0.95rem;">Each is marked against five equally weighted criteria on the University's Type B scale. Full rubrics are in the module handbook.</p>
+  </section>
+
+  <section>
+    <h2>Where to go for more</h2>
+    <p>This page is a quick-reference summary. The full <strong>B1408 Handbook 2026–27</strong> has the complete rubrics, marking descriptors, recommended reading and formatting requirements — check it before you write anything for submission.</p>
+  </section>
+
+</div>
+
+<footer>
+  B1408 Practical Project · University of Strathclyde · Module Handbook last updated 9 September 2026
+</footer>
+
+</body>
+</html>
