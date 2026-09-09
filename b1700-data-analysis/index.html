@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B1700 Data Analysis: Weeks 1 to 6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-dark:#16324a;
+  --navy:#1f4e79;
+  --navy-mid:#3a6b96;
+  --tint:#eaf1f7;
+  --paper:#fbfaf6;
+  --ink:#24303a;
+  --slate:#5b6a75;
+  --amber:#b9722c;
+  --line:#d7e1e8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.masthead{
+  background:var(--navy-dark);
+  color:#fff;
+  padding:56px 24px 46px;
+}
+.masthead-inner,.wrap,.footer-inner{
+  max-width:920px;
+  margin:0 auto;
+}
+.kicker{
+  margin:0 0 10px;
+  color:#a9c3d8;
+  font-size:.9rem;
+  letter-spacing:.02em;
+}
+h1,h2{
+  font-family:'Source Serif 4',Georgia,serif;
+}
+h1{
+  font-size:clamp(2rem,4.5vw,2.9rem);
+  line-height:1.12;
+  margin:0 0 14px;
+}
+.lede{
+  max-width:65ch;
+  margin:0;
+  color:#dbe6ef;
+  font-size:1.05rem;
+}
+.wrap{padding:44px 24px 88px}
+.intro{
+  max-width:72ch;
+  color:var(--slate);
+  margin:0 0 28px;
+}
+.journey{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  margin:0 0 60px;
+}
+.stage{
+  padding:18px 10px 16px;
+  text-align:center;
+  position:relative;
+}
+.stage:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  right:-1px;
+  top:18px;
+  bottom:18px;
+  width:1px;
+  background:var(--line);
+}
+.stage .week{
+  display:block;
+  font-size:.74rem;
+  color:var(--amber);
+  font-weight:600;
+  margin-bottom:5px;
+}
+.stage strong{
+  color:var(--navy-dark);
+  font-size:.84rem;
+  letter-spacing:.025em;
+}
+.week-block{
+  display:grid;
+  grid-template-columns:100px minmax(0,1fr);
+  gap:30px;
+  padding:0 0 48px;
+  margin:0 0 48px;
+  border-bottom:1px solid var(--line);
+}
+.week-no{
+  font-family:'Source Serif 4',Georgia,serif;
+  color:var(--navy-mid);
+  font-size:3rem;
+  line-height:1;
+  font-weight:600;
+}
+.week-label{
+  margin-top:8px;
+  color:var(--amber);
+  font-size:.78rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.week-content h2{
+  margin:0 0 8px;
+  color:var(--navy-dark);
+  font-size:1.6rem;
+}
+.question{
+  margin:0 0 18px;
+  font-family:'Source Serif 4',Georgia,serif;
+  font-size:1.12rem;
+  color:var(--navy);
+}
+.columns{
+  display:grid;
+  grid-template-columns:minmax(0,1.5fr) minmax(220px,.8fr);
+  gap:26px;
+  align-items:start;
+}
+.learn h3,.rbox h3{
+  margin:0 0 8px;
+  font-size:.9rem;
+  color:var(--navy-dark);
+}
+.learn p{
+  margin:0 0 14px;
+  color:var(--slate);
+}
+.key{
+  background:var(--tint);
+  border-left:3px solid var(--navy);
+  padding:14px 16px;
+  color:var(--navy-dark);
+  font-size:.95rem;
+}
+.rbox{
+  border:1px solid var(--line);
+  padding:15px 16px;
+  background:#fff;
+}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.88rem;
+  color:var(--navy-dark);
+}
+.rlist{
+  margin:0;
+  line-height:1.75;
+}
+.final{
+  background:var(--navy-dark);
+  color:#fff;
+  padding:28px 30px;
+  margin-top:10px;
+}
+.final h2{
+  color:#fff;
+  margin:0 0 10px;
+}
+.final p{
+  color:#dbe6ef;
+  margin:0;
+  max-width:72ch;
+}
+footer{
+  border-top:1px solid var(--line);
+  padding:20px 24px 34px;
+  color:var(--slate);
+  font-size:.86rem;
+}
+@media(max-width:760px){
+  .journey{grid-template-columns:repeat(2,1fr)}
+  .stage{border-bottom:1px solid var(--line)}
+  .stage:not(:last-child)::after{display:none}
+  .week-block{grid-template-columns:1fr;gap:12px}
+  .week-no{font-size:2.2rem}
+  .columns{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="kicker">B1700 Introduction to Sport Data Analytics</p>
+    <h1>Data Analysis: Weeks 1 to 6</h1>
+    <p class="lede">A six-week journey from understanding what data mean to producing and communicating defensible evidence in R.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="intro">
+    The first six weeks build one analytical workflow. Each week adds a new layer, but the central principle remains the same: R can perform operations, while the analyst remains responsible for meaning, judgement and interpretation.
+  </p>
+
+  <div class="journey" aria-label="Six-week analytical journey">
+    <div class="stage"><span class="week">Week 1</span><strong>UNDERSTAND</strong></div>
+    <div class="stage"><span class="week">Week 2</span><strong>TRUST</strong></div>
+    <div class="stage"><span class="week">Week 3</span><strong>TRANSFORM</strong></div>
+    <div class="stage"><span class="week">Week 4</span><strong>CLEAN</strong></div>
+    <div class="stage"><span class="week">Week 5</span><strong>CONNECT</strong></div>
+    <div class="stage"><span class="week">Week 6</span><strong>DESCRIBE &amp; COMMUNICATE</strong></div>
+  </div>
+
+  <section class="week-block">
+    <div>
+      <div class="week-no">01</div>
+      <div class="week-label">Understand</div>
+    </div>
+    <div class="week-content">
+      <h2>Understanding Data and R</h2>
+      <p class="question">What does our data mean, and how is R representing it?</p>
+      <div class="columns">
+        <div class="learn">
+          <h3>You learn to</h3>
+          <p>Identify what one row represents, distinguish identifiers, categories, quantities and logical variables, inspect R types, and judge whether an operation makes analytical sense.</p>
+          <div class="key"><strong>Key idea:</strong> technically valid code is not necessarily analytically meaningful.</div>
+        </div>
+        <div class="rbox">
+          <h3>Core R</h3>
+          <p class="rlist"><code>head()</code><br><code>glimpse()</code><br><code>class()</code><br><code>mean()</code><br><code>table()</code></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="week-block">
+    <div>
+      <div class="week-no">02</div>
+      <div class="week-label">Trust</div>
+    </div>
+    <div class="week-content">
+      <h2>Importing Data and Establishing Trust</h2>
+      <p class="question">Did the data enter R correctly, and should we trust what came in?</p>
+      <div class="columns">
+        <div class="learn">
+          <h3>You learn to</h3>
+          <p>Import and inspect data, check dimensions and types, identify missing or implausible values, verify identifier coverage, and distinguish what has been established from what remains uncertain.</p>
+          <div class="key"><strong>Key idea:</strong> trust is established, not assumed.</div>
+        </div>
+        <div class="rbox">
+          <h3>Core R</h3>
+          <p class="rlist"><code>read_csv()</code><br><code>nrow()</code><br><code>ncol()</code><br><code>names()</code><br><code>is.na()</code><br><code>%in%</code></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="week-block">
+    <div>
+      <div class="week-no">03</div>
+      <div class="week-label">Transform</div>
+    </div>
+    <div class="week-content">
+      <h2>Asking Questions and Transforming Data</h2>
+      <p class="question">What are we trying to find out, and what must happen to the data to answer it?</p>
+      <div class="columns">
+        <div class="learn">
+          <h3>You learn to</h3>
+          <p>Translate a plain-language analytical question into a sequence of operations, decide which observations matter, derive new measures, group data and create summaries that match the question.</p>
+          <div class="key"><strong>Core workflow:</strong> question → filter → derive → group → summarise → interpret.</div>
+        </div>
+        <div class="rbox">
+          <h3>Core R</h3>
+          <p class="rlist"><code>|&gt;</code><br><code>filter()</code><br><code>mutate()</code><br><code>group_by()</code><br><code>summarise()</code><br><code>n()</code></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="week-block">
+    <div>
+      <div class="week-no">04</div>
+      <div class="week-label">Clean</div>
+    </div>
+    <div class="week-content">
+      <h2>Diagnosing and Cleaning Data</h2>
+      <p class="question">What is genuinely wrong, and what change is defensible?</p>
+      <div class="columns">
+        <div class="learn">
+          <h3>You learn to</h3>
+          <p>Diagnose missingness, implausible values, duplicates and inconsistent categories, make defensible cleaning decisions, reshape data where necessary, and verify what changed afterwards.</p>
+          <div class="key"><strong>Core workflow:</strong> diagnose → decide → clean → verify.</div>
+        </div>
+        <div class="rbox">
+          <h3>Core R</h3>
+          <p class="rlist"><code>is.na()</code><br><code>if_else()</code><br><code>distinct()</code><br><code>str_trim()</code><br><code>case_when()</code><br><code>pivot_longer()</code></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="week-block">
+    <div>
+      <div class="week-no">05</div>
+      <div class="week-label">Connect</div>
+    </div>
+    <div class="week-content">
+      <h2>Connecting Data Sources</h2>
+      <p class="question">What if the evidence we need is spread across different tables?</p>
+      <div class="columns">
+        <div class="learn">
+          <h3>You learn to</h3>
+          <p>Identify table grain and keys, decide what observations must be preserved, join data deliberately, diagnose unmatched records and verify that the resulting table still represents what you think it represents.</p>
+          <div class="key"><strong>Key idea:</strong> a join is part of the analytical argument, not just a technical merge.</div>
+        </div>
+        <div class="rbox">
+          <h3>Core R</h3>
+          <p class="rlist"><code>left_join()</code><br><code>anti_join()</code><br><code>inner_join()</code><br><code>nrow()</code><br><code>is.na()</code></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="week-block">
+    <div>
+      <div class="week-no">06</div>
+      <div class="week-label">Describe &amp; Communicate</div>
+    </div>
+    <div class="week-content">
+      <h2>Describing and Communicating Evidence</h2>
+      <p class="question">What does the evidence show, and how should we represent it?</p>
+      <div class="columns">
+        <div class="learn">
+          <h3>You learn to</h3>
+          <p>Choose numerical summaries and plots that match the question, describe centre and spread, compare groups, recognise associations and communicate evidence without overstating what the data support.</p>
+          <div class="key"><strong>Key idea:</strong> every statistic compresses, and every plot directs attention.</div>
+        </div>
+        <div class="rbox">
+          <h3>Core R</h3>
+          <p class="rlist"><code>mean()</code><br><code>median()</code><br><code>sd()</code><br><code>IQR()</code><br><code>ggplot()</code><br><code>geom_histogram()</code><br><code>geom_boxplot()</code><br><code>geom_point()</code></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <h2>The six-week lesson</h2>
+    <p>
+      R can import, transform, clean, join, calculate and plot. It cannot decide what a variable means, whether evidence is trustworthy, which question matters, whether a cleaning decision is defensible, whether a join preserves the intended grain, or what conclusion is justified.
+    </p>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">B1700 Introduction to Sport Data Analytics · Weeks 1 to 6 overview</div>
+</footer>
+
+</body>
+</html>
