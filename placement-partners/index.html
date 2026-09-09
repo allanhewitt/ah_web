@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Student Placement Partners</title>
+<style>
+    :root {
+      --bg:#f4f6f8; --surface:#fff; --ink:#17202a; --muted:#667085;
+      --line:#dfe4ea; --accent:#203864; --shadow:0 8px 24px rgba(23,32,42,.06);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+    .hero{background:linear-gradient(135deg,#172c4f,#2c4c7a);color:#fff;padding:56px 24px 46px}
+    .hero-inner,.main{width:min(1120px,calc(100% - 32px));margin:0 auto}
+    .eyebrow{margin:0 0 10px;text-transform:uppercase;letter-spacing:.13em;font-size:.76rem;font-weight:700;opacity:.78}
+    h1{margin:0;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;letter-spacing:-.035em}
+    .intro{max-width:760px;margin:16px 0 0;font-size:1.05rem;opacity:.88}
+    .main{padding:28px 0 56px}
+    .toolbar{position:sticky;top:0;z-index:10;background:rgba(244,246,248,.94);backdrop-filter:blur(10px);padding:12px 0 18px;margin-bottom:10px}
+    .search-wrap{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 16px;box-shadow:var(--shadow)}
+    #search{width:100%;border:0;outline:0;background:transparent;padding:15px 0;font:inherit;font-size:1rem;color:var(--ink)}
+    .summary{display:flex;justify-content:space-between;gap:12px;margin:10px 2px 18px;color:var(--muted);font-size:.92rem}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .partner-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+    .partner-card h2{margin:0 0 15px;font-size:1.05rem;line-height:1.3;color:var(--accent)}
+    .contacts{display:grid;gap:13px}
+    .contact + .contact{padding-top:13px;border-top:1px solid var(--line)}
+    .contact-name{font-weight:650;margin-bottom:2px}
+    .email{color:#49617f;text-decoration:none;overflow-wrap:anywhere;font-size:.94rem}
+    .email:hover{text-decoration:underline}
+    .empty{display:none;background:var(--surface);border:1px dashed var(--line);border-radius:16px;padding:36px;text-align:center;color:var(--muted)}
+    footer{width:min(1120px,calc(100% - 32px));margin:0 auto;padding:0 0 36px;color:var(--muted);font-size:.82rem}
+    @media(max-width:720px){.hero{padding-top:42px}.grid{grid-template-columns:1fr}.summary{flex-direction:column}}
+  </style>
+</head>
+<body>
+<header class="hero"><div class="hero-inner">
+<p class="eyebrow">Placement directory</p>
+<h1>Student Placement Partners</h1>
+<p class="intro">Organisations who have hosted, or agreed to host, our students in recent years</p>
+</div></header>
+<main class="main">
+<div class="toolbar"><div class="search-wrap">
+<span aria-hidden="true">⌕</span>
+<input aria-label="Search placement partners" id="search" placeholder="Search by organisation, contact or email…" type="search"/>
+</div></div>
+<div class="summary">
+<span id="resultCount">78 organisations</span>
+<span>100 key contacts</span>
+</div>
+<section class="grid" id="partnerGrid"><article class="partner-card" data-search="active schools argyll and bute jane gillies jane.gillies@liveargyll.co.uk">
+<h2>Active Schools Argyll and Bute</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Jane Gillies</div>
+<a class="email" href="mailto:jane.gillies@liveargyll.co.uk">jane.gillies@liveargyll.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="active schools east renfrewshire chris rose rosec@ea.e-renfrew.sch.uk">
+<h2>Active Schools East Renfrewshire</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Chris Rose</div>
+<a class="email" href="mailto:Rosec@ea.e-renfrew.sch.uk">Rosec@ea.e-renfrew.sch.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="active schools edinburgh elliot smith esmith477@dundeeschools.scot">
+<h2>Active Schools Edinburgh</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Elliot Smith</div>
+<a class="email" href="mailto:esmith477@dundeeschools.scot">esmith477@dundeeschools.scot</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="active schools glasgow claire clark gw11clarkclaire@glow.ea.glasgow.sch.uk emma mcintyre gw15mcintyreemma2@glow.ea.glasgow.sch.uk joseph brannan gw11brannanjoe@glow.ea.glasgow.sch.uk mark o'mara gw11omaramark3@glow.ea.glasgow.sch.uk">
+<h2>Active Schools Glasgow</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Claire Clark</div>
+<a class="email" href="mailto:gw11clarkclaire@glow.ea.glasgow.sch.uk">gw11clarkclaire@glow.ea.glasgow.sch.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Emma McIntyre</div>
+<a class="email" href="mailto:gw15mcintyreemma2@glow.ea.glasgow.sch.uk">gw15mcintyreemma2@glow.ea.glasgow.sch.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Joseph Brannan</div>
+<a class="email" href="mailto:gw11brannanjoe@glow.ea.glasgow.sch.uk">gw11brannanjoe@glow.ea.glasgow.sch.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Mark O'Mara</div>
+<a class="email" href="mailto:gw11omaramark3@glow.ea.glasgow.sch.uk">gw11omaramark3@glow.ea.glasgow.sch.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="active schools glasgow (north east) neal fowler gw11fowlerneal@glow.ea.glasgow.sch.uk">
+<h2>Active Schools Glasgow (North East)</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Neal Fowler</div>
+<a class="email" href="mailto:gw11fowlerneal@glow.ea.glasgow.sch.uk">gw11fowlerneal@glow.ea.glasgow.sch.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="active schools inverclyde claire munn claire.munn@inverclyde.gov.uk">
+<h2>Active Schools Inverclyde</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Claire Munn</div>
+<a class="email" href="mailto:claire.munn@inverclyde.gov.uk">claire.munn@inverclyde.gov.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="active schools north lanarkshire jordann cunningham cunninghamjor@northlan.gov.uk">
+<h2>Active Schools North Lanarkshire</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Jordann Cunningham</div>
+<a class="email" href="mailto:cunninghamjor@northlan.gov.uk">cunninghamjor@northlan.gov.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="active schools south ayrshire amiee alexander amiee.alexander3@south-ayrshire.gov.uk emma parker emzc6@msn.com">
+<h2>Active Schools South Ayrshire</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Amiee Alexander</div>
+<a class="email" href="mailto:Amiee.Alexander3@south-ayrshire.gov.uk">Amiee.Alexander3@south-ayrshire.gov.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Emma Parker</div>
+<a class="email" href="mailto:emzc6@msn.com">emzc6@msn.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="active schools south lanarkshire calum taylor calum.taylor@southlanarkshireleisure.co.uk derek howitt derek.howitt@southlanarkshireleisure.co.uk emma strachan emma.strachan@southlanarkshireleisure.co.uk paul graham paul.graham@southlanarkshireleisure.co.uk">
+<h2>Active Schools South Lanarkshire</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Calum Taylor</div>
+<a class="email" href="mailto:calum.taylor@southlanarkshireleisure.co.uk">calum.taylor@southlanarkshireleisure.co.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Derek Howitt</div>
+<a class="email" href="mailto:derek.howitt@southlanarkshireleisure.co.uk">derek.howitt@southlanarkshireleisure.co.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Emma Strachan</div>
+<a class="email" href="mailto:emma.strachan@southlanarkshireleisure.co.uk">emma.strachan@southlanarkshireleisure.co.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Paul Graham</div>
+<a class="email" href="mailto:paul.graham@southlanarkshireleisure.co.uk">paul.graham@southlanarkshireleisure.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="active schools stirling neil thomson thomsonn@activestirling.org.uk">
+<h2>Active Schools Stirling</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Neil Thomson</div>
+<a class="email" href="mailto:thomsonn@activestirling.org.uk">thomsonn@activestirling.org.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="active schools west dunbartonshire craig thompson craig.thompson@west-dunbarton.gov.uk">
+<h2>Active Schools West Dunbartonshire</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Craig Thompson</div>
+<a class="email" href="mailto:craig.thompson@west-dunbarton.gov.uk">craig.thompson@west-dunbarton.gov.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="aileen gilles school of dance aileen cameron gillen aileengillen@hotmail.co.uk">
+<h2>Aileen Gilles School of Dance</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Aileen Cameron Gillen</div>
+<a class="email" href="mailto:aileengillen@hotmail.co.uk">aileengillen@hotmail.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="airdrieonians fc scott russell sr@airdrieonians.co.uk">
+<h2>Airdrieonians FC</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Scott Russell</div>
+<a class="email" href="mailto:sr@airdrieonians.co.uk">sr@airdrieonians.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="all stars netball club anna beattie allstarjuniornetballers@gmail.com">
+<h2>All Stars Netball Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Anna Beattie</div>
+<a class="email" href="mailto:allstarjuniornetballers@gmail.com">allstarjuniornetballers@gmail.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="blairvadach outdoor education services andrew stanford andystanford76@hotmail.com neil wightwick nwightwick@blairvadach.org.uk">
+<h2>Blairvadach Outdoor Education Services</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Andrew Stanford</div>
+<a class="email" href="mailto:andystanford76@hotmail.com">andystanford76@hotmail.com</a>
+</div>
+<div class="contact">
+<div class="contact-name">Neil Wightwick</div>
+<a class="email" href="mailto:nwightwick@blairvadach.org.uk">nwightwick@blairvadach.org.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="celtic fc conor mccabe cmccabe@celticfc.co.uk david hartley dhartley@celticfc.co.uk">
+<h2>Celtic FC</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Conor McCabe</div>
+<a class="email" href="mailto:cmccabe@celticfc.co.uk">cmccabe@celticfc.co.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">David Hartley</div>
+<a class="email" href="mailto:dhartley@celticfc.co.uk">dhartley@celticfc.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="city of glasgow swim team danielle brayson d.brayson@swimglasgow.co.uk jamie mckinley j.mckinley@swimglasgow.co.uk">
+<h2>City of Glasgow Swim Team</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Danielle Brayson</div>
+<a class="email" href="mailto:d.brayson@swimglasgow.co.uk">d.brayson@swimglasgow.co.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Jamie McKinley</div>
+<a class="email" href="mailto:J.mckinley@swimglasgow.co.uk">J.mckinley@swimglasgow.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="colville park golf and country club sam cairns cprosam2@aol.com">
+<h2>Colville Park Golf and Country Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Sam Cairns</div>
+<a class="email" href="mailto:cprosam2@aol.com">cprosam2@aol.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="dean thistle football club allan rogerson allan.rogerson@prisons.gov.scot">
+<h2>Dean Thistle Football Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Allan Rogerson</div>
+<a class="email" href="mailto:allan.rogerson@prisons.gov.scot">allan.rogerson@prisons.gov.scot</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="dundee united fc ross goodwin rossgoodwin145@gmail.com">
+<h2>Dundee United FC</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Ross Goodwin</div>
+<a class="email" href="mailto:rossgoodwin145@gmail.com">rossgoodwin145@gmail.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="east kilbride gymnastics club kellyanne farwell kellzacro@hotmail.com">
+<h2>East Kilbride Gymnastics Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Kellyanne Farwell</div>
+<a class="email" href="mailto:Kellzacro@hotmail.com">Kellzacro@hotmail.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="eastwood high sports centre cameron crowe cameron.crowe@ercultureandleisure.org">
+<h2>Eastwood High Sports Centre</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Cameron Crowe</div>
+<a class="email" href="mailto:Cameron.Crowe@ercultureandleisure.org">Cameron.Crowe@ercultureandleisure.org</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="ekym andy blake andrewblake1992@outlook.com">
+<h2>EKYM</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Andy Blake</div>
+<a class="email" href="mailto:Andrewblake1992@outlook.com">Andrewblake1992@outlook.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="falkirk foundation ben shearer-richards ben@falkirkfoundation.org">
+<h2>Falkirk Foundation</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Ben Shearer-Richards</div>
+<a class="email" href="mailto:ben@falkirkfoundation.org">ben@falkirkfoundation.org</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="falkirk rugby club christopher lawson c_lawson@hotmail.co.uk">
+<h2>Falkirk Rugby Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Christopher Lawson</div>
+<a class="email" href="mailto:c_lawson@hotmail.co.uk">c_lawson@hotmail.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="fare kevin martin kevin.martin@fare-scotland.org">
+<h2>FARE</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Kevin Martin</div>
+<a class="email" href="mailto:Kevin.Martin@fare-scotland.org">Kevin.Martin@fare-scotland.org</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="fitshop uk craig mclean craig.mclean@fitshop.co.uk">
+<h2>Fitshop UK</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Craig McLean</div>
+<a class="email" href="mailto:craig.mclean@fitshop.co.uk">craig.mclean@fitshop.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="glasgow city fc mairead slevin mairead.slevin@athletefocused.com">
+<h2>Glasgow City FC</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Mairead Slevin</div>
+<a class="email" href="mailto:mairead.slevin@athletefocused.com">mairead.slevin@athletefocused.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="glasgow city physiotherapy scott macaulay scottmac@glasgowcityphysiotherapy.co.uk">
+<h2>Glasgow City Physiotherapy</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Scott MacAulay</div>
+<a class="email" href="mailto:scottmac@glasgowcityphysiotherapy.co.uk">scottmac@glasgowcityphysiotherapy.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="glasgow life tommy carr tommy.carr@glasgowlife.org.uk">
+<h2>Glasgow Life</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Tommy Carr</div>
+<a class="email" href="mailto:tommy.carr@glasgowlife.org.uk">tommy.carr@glasgowlife.org.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="glasgow warriors andy ryan andy.ryan@glasgowwarriors.org liam walshe liam.walshe@glasgowwarriors.org luke o'dea luke.o'dea@glasgowwarriors.org">
+<h2>Glasgow Warriors</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Andy Ryan</div>
+<a class="email" href="mailto:andy.ryan@glasgowwarriors.org">andy.ryan@glasgowwarriors.org</a>
+</div>
+<div class="contact">
+<div class="contact-name">Liam Walshe</div>
+<a class="email" href="mailto:Liam.walshe@glasgowwarriors.org">Liam.walshe@glasgowwarriors.org</a>
+</div>
+<div class="contact">
+<div class="contact-name">Luke O'Dea</div>
+<a class="email" href="mailto:luke.o'dea@glasgowwarriors.org">luke.o'dea@glasgowwarriors.org</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="golden jubilee national hospital alistair ewen alistair.ewen@gjnh.scot.nhs.uk">
+<h2>Golden Jubilee National Hospital</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Alistair Ewen</div>
+<a class="email" href="mailto:Alistair.Ewen@gjnh.scot.nhs.uk">Alistair.Ewen@gjnh.scot.nhs.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="hadouken tricking academy kris breadie admin.hta@hadoukentricking.com">
+<h2>Hadouken Tricking Academy</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Kris Breadie</div>
+<a class="email" href="mailto:admin.hta@hadoukentricking.com">admin.hta@hadoukentricking.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="hamilton gymnastics club wendy lucas wendy.lucas@hamiltongc.org.uk">
+<h2>Hamilton Gymnastics Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Wendy Lucas</div>
+<a class="email" href="mailto:wendy.lucas@hamiltongc.org.uk">wendy.lucas@hamiltongc.org.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="harestanes afc davie watt daviewatt1@gmail.com sean flanagan seanpaulflanagan@hotmail.com">
+<h2>Harestanes AFC</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Davie Watt</div>
+<a class="email" href="mailto:Daviewatt1@gmail.com">Daviewatt1@gmail.com</a>
+</div>
+<div class="contact">
+<div class="contact-name">Sean Flanagan</div>
+<a class="email" href="mailto:seanpaulflanagan@hotmail.com">seanpaulflanagan@hotmail.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="hutchesons grammar school liam brims brimsl@hutchesons.org">
+<h2>Hutchesons Grammar School</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Liam Brims</div>
+<a class="email" href="mailto:Brimsl@hutchesons.org">Brimsl@hutchesons.org</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="inspire gymnastics academy alana wright a-gymnastics@outlook.com">
+<h2>Inspire Gymnastics Academy</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Alana Wright</div>
+<a class="email" href="mailto:A-gymnastics@outlook.com">A-gymnastics@outlook.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="jfusion dance school joy morrison j.fusiondance@gmail.com">
+<h2>JFusion Dance School</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Joy Morrison</div>
+<a class="email" href="mailto:j.fusiondance@gmail.com">j.fusiondance@gmail.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="junior park run josie scott pilrigparkjuniors@parkrun.com">
+<h2>Junior Park Run</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Josie Scott</div>
+<a class="email" href="mailto:pilrigparkjuniors@parkrun.com">pilrigparkjuniors@parkrun.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="kilmarnock youth academy john cox johncox@kilmarnockfc.co.uk">
+<h2>Kilmarnock Youth Academy</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">John Cox</div>
+<a class="email" href="mailto:johncox@kilmarnockfc.co.uk">johncox@kilmarnockfc.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="largs thistle fc erin keenan erin.keenan64@gmail.com">
+<h2>Largs Thistle FC</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Erin Keenan</div>
+<a class="email" href="mailto:erin.keenan64@gmail.com">erin.keenan64@gmail.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="linlithgow rugby club dougie thompson rugbymanager@lrfc.club">
+<h2>Linlithgow Rugby Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Dougie Thompson</div>
+<a class="email" href="mailto:rugbymanager@lrfc.club">rugbymanager@lrfc.club</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="motherwell fc nick daws nick.daws@motherwellfc.co.uk">
+<h2>Motherwell FC</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Nick Daws</div>
+<a class="email" href="mailto:nick.daws@motherwellfc.co.uk">nick.daws@motherwellfc.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="mountaineering scotland ross cadie ross@mountaineering.scot">
+<h2>Mountaineering Scotland</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Ross Cadie</div>
+<a class="email" href="mailto:ross@mountaineering.scot">ross@mountaineering.scot</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="netball scotland mhairi patience ndoglasgow@netballscotland.com">
+<h2>Netball Scotland</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Mhairi Patience</div>
+<a class="email" href="mailto:NDOGlasgow@netballscotland.com">NDOGlasgow@netballscotland.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="newcastle physiotherapy chris neale chrisneale@newcastlephysioclinic.com">
+<h2>Newcastle Physiotherapy</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Chris Neale</div>
+<a class="email" href="mailto:chrisneale@newcastlephysioclinic.com">chrisneale@newcastlephysioclinic.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="nhs ayrshire and arran anne law anne.law3@aapct.scot.nhs.uk ruth warren ruth.warren@aapct.scot.nhs.uk">
+<h2>NHS Ayrshire and Arran</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Anne Law</div>
+<a class="email" href="mailto:anne.law3@aapct.scot.nhs.uk">anne.law3@aapct.scot.nhs.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Ruth Warren</div>
+<a class="email" href="mailto:Ruth.Warren@aapct.scot.nhs.uk">Ruth.Warren@aapct.scot.nhs.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="nhs lanarkshire david kennedy david.kennedy@lanarkshire.scot.nhs.uk peter mccrossan peter.mccrossan@lanarkshire.scot.nhs.uk">
+<h2>NHS Lanarkshire</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">David Kennedy</div>
+<a class="email" href="mailto:david.kennedy@lanarkshire.scot.nhs.uk">david.kennedy@lanarkshire.scot.nhs.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Peter McCrossan</div>
+<a class="email" href="mailto:Peter.McCrossan@lanarkshire.scot.nhs.uk">Peter.McCrossan@lanarkshire.scot.nhs.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="nicole smith sports psychology nicole smith nicole.s.sportphychology@hotmail.com">
+<h2>Nicole Smith Sports Psychology</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Nicole Smith</div>
+<a class="email" href="mailto:nicole.s.sportphychology@hotmail.com">nicole.s.sportphychology@hotmail.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="oneren / active schools arron dougan arron.dougan@renfrewshire.gov.uk will brown william.brown@renfrewshire.gov.uk">
+<h2>OneRen / Active Schools</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Arron Dougan</div>
+<a class="email" href="mailto:Arron.dougan@renfrewshire.gov.uk">Arron.dougan@renfrewshire.gov.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Will Brown</div>
+<a class="email" href="mailto:william.brown@renfrewshire.gov.uk">william.brown@renfrewshire.gov.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="personal trainer (kieran joussef) kieran joussef coachedbykieran@outlook.com">
+<h2>Personal Trainer (Kieran Joussef)</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Kieran Joussef</div>
+<a class="email" href="mailto:Coachedbykieran@outlook.com">Coachedbykieran@outlook.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="queen's park fc declan tobin declan.tobin@queensparkfc.co.uk">
+<h2>Queen's Park FC</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Declan Tobin</div>
+<a class="email" href="mailto:Declan.tobin@queensparkfc.co.uk">Declan.tobin@queensparkfc.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="riverbrae school fiona reid fiona.reid-riverbrae@renfrewshire.school">
+<h2>Riverbrae School</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Fiona Reid</div>
+<a class="email" href="mailto:fiona.reid-riverbrae@renfrewshire.school">fiona.reid-riverbrae@renfrewshire.school</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="rossvale football club ian grey ian.grey@rossvalefc.com">
+<h2>Rossvale Football Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Ian Grey</div>
+<a class="email" href="mailto:ian.grey@rossvalefc.com">ian.grey@rossvalefc.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="sanday junior high school kate hooper kate.hooper@glow.orkneyschools.org.uk">
+<h2>Sanday Junior High School</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Kate Hooper</div>
+<a class="email" href="mailto:kate.hooper@glow.orkneyschools.org.uk">kate.hooper@glow.orkneyschools.org.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="scott breddy performance scott breddy sbp-testing@outlook.com">
+<h2>Scott Breddy Performance</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Scott Breddy</div>
+<a class="email" href="mailto:SBP-testing@outlook.com">SBP-testing@outlook.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="scottish gymnastics suzy frame suzy.frame@scottishgymnastics.org">
+<h2>Scottish Gymnastics</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Suzy Frame</div>
+<a class="email" href="mailto:suzy.frame@scottishgymnastics.org">suzy.frame@scottishgymnastics.org</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="scottish rugby union gary strain gary.strain@sru.org.uk">
+<h2>Scottish Rugby Union</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Gary Strain</div>
+<a class="email" href="mailto:Gary.strain@sru.org.uk">Gary.strain@sru.org.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="scottish sports futures alistair neil alistair@ssf.org.uk">
+<h2>Scottish Sports Futures</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Alistair Neil</div>
+<a class="email" href="mailto:alistair@ssf.org.uk">alistair@ssf.org.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="sit ayuthaya - hamilton thai boxing stevie nisbet stevie@hamiltonthaiboxing.co.uk">
+<h2>Sit Ayuthaya - Hamilton Thai Boxing</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Stevie Nisbet</div>
+<a class="email" href="mailto:stevie@hamiltonthaiboxing.co.uk">stevie@hamiltonthaiboxing.co.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="soccer stars academy samantha molloy samanthamolloy84@outlook.com">
+<h2>Soccer Stars Academy</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Samantha Molloy</div>
+<a class="email" href="mailto:samanthamolloy84@outlook.com">samanthamolloy84@outlook.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="st mirren fc allen mcdougall allen.mcdougall@stmirren.com scott galloway scott.galloway@stmirren.com">
+<h2>St Mirren FC</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Allen McDougall</div>
+<a class="email" href="mailto:allen.mcdougall@stmirren.com">allen.mcdougall@stmirren.com</a>
+</div>
+<div class="contact">
+<div class="contact-name">Scott Galloway</div>
+<a class="email" href="mailto:scott.galloway@stmirren.com">scott.galloway@stmirren.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="strathclyde badminton club ross dick dickross139@gmail.com">
+<h2>Strathclyde Badminton Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Ross Dick</div>
+<a class="email" href="mailto:dickross139@gmail.com">dickross139@gmail.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="strathclyde handball nacer keraghen nacer.keraghen.2022@uni.strath.ac.uk zuzanna borowiak zuzanna.borowiak.2020@uni.strath.ac.uk">
+<h2>Strathclyde Handball</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Nacer Keraghen</div>
+<a class="email" href="mailto:Nacer.Keraghen.2022@uni.strath.ac.uk">Nacer.Keraghen.2022@uni.strath.ac.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Zuzanna Borowiak</div>
+<a class="email" href="mailto:zuzanna.borowiak.2020@uni.strath.ac.uk">zuzanna.borowiak.2020@uni.strath.ac.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="strathclyde sport janice buchanan j.buchanan@strath.ac.uk mario canale mario.canale@strath.ac.uk milan marinkovic milan.marinkovic@strath.ac.uk">
+<h2>Strathclyde Sport</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Janice Buchanan</div>
+<a class="email" href="mailto:j.buchanan@strath.ac.uk">j.buchanan@strath.ac.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Mario Canale</div>
+<a class="email" href="mailto:mario.canale@strath.ac.uk">mario.canale@strath.ac.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Milan Marinkovic</div>
+<a class="email" href="mailto:milan.marinkovic@strath.ac.uk">milan.marinkovic@strath.ac.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="strathclyde sports union abby irvine abby.irvine@strath.ac.uk euan knox euan.knox@strath.ac.uk">
+<h2>Strathclyde Sports Union</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Abby Irvine</div>
+<a class="email" href="mailto:abby.irvine@strath.ac.uk">abby.irvine@strath.ac.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Euan Knox</div>
+<a class="email" href="mailto:euan.knox@strath.ac.uk">euan.knox@strath.ac.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="strathendrick rugby club jason dodds jasondawes5@hotmail.com">
+<h2>Strathendrick Rugby Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Jason Dodds</div>
+<a class="email" href="mailto:jasondawes5@hotmail.com">jasondawes5@hotmail.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="the gym group jamie stuart jamie.stuart@thegymgroup.com">
+<h2>The Gym Group</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Jamie Stuart</div>
+<a class="email" href="mailto:jamie.stuart@thegymgroup.com">jamie.stuart@thegymgroup.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="the physio clinic robb loughlin robb@thephysioclinicglasgow.com">
+<h2>The Physio Clinic</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Robb Loughlin</div>
+<a class="email" href="mailto:robb@thephysioclinicglasgow.com">robb@thephysioclinicglasgow.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="the portal (ka leisure) kris black kblack2@kaleisure.com">
+<h2>The Portal (KA Leisure)</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Kris Black</div>
+<a class="email" href="mailto:kblack2@kaleisure.com">kblack2@kaleisure.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="trindlemoss day opportunities glenn lory glory@north-ayrshire.gov.uk">
+<h2>Trindlemoss Day Opportunities</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Glenn Lory</div>
+<a class="email" href="mailto:GLory@north-ayrshire.gov.uk">GLory@north-ayrshire.gov.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="troon handball club eilidh mcdonald eilidh.mcdonald@scottishhandball.com">
+<h2>Troon Handball Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Eilidh McDonald</div>
+<a class="email" href="mailto:eilidh.mcdonald@scottishhandball.com">eilidh.mcdonald@scottishhandball.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="uddingston hockey club john bessell uddingstonhc.doh@gmail.com">
+<h2>Uddingston Hockey Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">John Bessell</div>
+<a class="email" href="mailto:uddingstonhc.doh@gmail.com">uddingstonhc.doh@gmail.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="university of glasgow sport derek logan derek.logan@glasgow.ac.uk">
+<h2>University of Glasgow Sport</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Derek Logan</div>
+<a class="email" href="mailto:derek.logan@glasgow.ac.uk">derek.logan@glasgow.ac.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="university of stirling chris geddes chris.geddes@stir.ac.uk">
+<h2>University of Stirling</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Chris Geddes</div>
+<a class="email" href="mailto:Chris.geddes@stir.ac.uk">Chris.geddes@stir.ac.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="university of strathclyde julie paterson julie.paterson@strath.ac.uk sam lloyd sam.lloyd@strath.ac.uk">
+<h2>University of Strathclyde</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Julie Paterson</div>
+<a class="email" href="mailto:julie.paterson@strath.ac.uk">julie.paterson@strath.ac.uk</a>
+</div>
+<div class="contact">
+<div class="contact-name">Sam Lloyd</div>
+<a class="email" href="mailto:sam.lloyd@strath.ac.uk">sam.lloyd@strath.ac.uk</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="waterfront ice skating club kayleigh munro kayleigh.munro@inverclydeleisure.com">
+<h2>Waterfront Ice Skating Club</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Kayleigh Munro</div>
+<a class="email" href="mailto:kayleigh.munro@inverclydeleisure.com">kayleigh.munro@inverclydeleisure.com</a>
+</div>
+</div>
+</article><article class="partner-card" data-search="williamwood high school paul thomson schoolmail@williamwood.e-renfrew.sch.uk">
+<h2>Williamwood High School</h2>
+<div class="contacts">
+<div class="contact">
+<div class="contact-name">Paul Thomson</div>
+<a class="email" href="mailto:schoolmail@williamwood.e-renfrew.sch.uk">schoolmail@williamwood.e-renfrew.sch.uk</a>
+</div>
+</div>
+</article></section>
+<div class="empty" id="emptyState">No matching organisations or contacts.</div>
+</main>
+<footer>
+  Directory compiled from approved placement records, positively confirmed placement proposals,
+  and completed agency evaluations. Where duplicate contacts existed, the most recent record was retained.
+  Contact details should be checked before use.
+</footer>
+<script>
+const input=document.getElementById('search');
+const cards=[...document.querySelectorAll('.partner-card')];
+const count=document.getElementById('resultCount');
+const empty=document.getElementById('emptyState');
+function filterCards(){
+  const q=input.value.trim().toLowerCase(); let visible=0;
+  cards.forEach(card=>{const match=!q||card.dataset.search.includes(q);card.style.display=match?'':'none';if(match)visible++;});
+  count.textContent=`${visible} organisation${visible===1?'':'s'}`;
+  empty.style.display=visible?'none':'block';
+}
+input.addEventListener('input',filterCards);
+</script>
+</body>
+</html>
