@@ -150,7 +150,7 @@ async function loadPlacements(){
   const container = document.getElementById('placements');
   let data;
   try{
-    const res = await fetch('placements.json');
+    const res = await fetch('placements.json?v=20260915-1114', {cache:'no-store'});
     data = (await res.json()).placements;
   }catch(err){
     container.innerHTML = '<p class="muted">Placements could not be loaded.</p>';
@@ -190,8 +190,8 @@ async function loadPlacements(){
           <th scope="col">Squad</th>
           <th scope="col">Deliverable</th>
           <th scope="col">Next steps</th>
-          <th scope="col">Name</th>
-          <th scope="col">Contact</th>
+          <th scope="col">Contact name</th>
+          <th scope="col">Email</th>
           <th scope="col">Deadline</th>
           <th scope="col">Status</th>
         </tr>
