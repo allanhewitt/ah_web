@@ -66,11 +66,6 @@ h1{
   color:var(--navy-dark);
   margin:0;
 }
-.org-meta .contact{
-  font-size:.86rem;
-  color:var(--slate);
-}
-.org-meta .contact a{color:var(--navy)}
 
 .tablescroll{overflow-x:auto}
 table{
@@ -175,17 +170,12 @@ async function loadPlacements(){
 
   container.innerHTML = '';
   for(const [org, rows] of groups){
-    const first = rows[0];
     const section = document.createElement('div');
     section.className = 'tablewrap';
 
     const meta = document.createElement('div');
     meta.className = 'org-meta';
-    meta.innerHTML = `<h2>${org}</h2><span class="contact">${
-      first.contactEmail
-        ? `<a href="mailto:${first.contactEmail}">${first.contactName}</a>`
-        : first.contactName
-    }</span>`;
+    meta.innerHTML = `<h2>${org}</h2>`;
     section.appendChild(meta);
 
     const scroll = document.createElement('div');
@@ -217,7 +207,7 @@ async function loadPlacements(){
         <td class="squad">${p.squad ?? '-'}</td>
         <td class="deliverable">${p.deliverable ?? '<span class="muted">To be agreed with the organisation</span>'}</td>
         <td class="next-steps">${p.nextSteps ?? '-'}</td>
-        <td class="contact-email">${p.contactEmail ? `<a href="mailto:${p.contactEmail}">${p.contactEmail}</a>` : '-'}</td>
+        <td class="contact-email">${p.contact ? `<a href="mailto:${p.contact}">${p.contact}</a>` : '-'}</td>
         <td class="deadline ${deadlineText ? 'set' : 'rolling'}">${deadlineText ?? 'Rolling'}</td>
         <td><span class="badge ${p.status}">${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span></td>
       `;
