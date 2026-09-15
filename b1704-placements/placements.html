@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B1704 Placement Opportunities 2026–27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-dark:#16324a;
+  --navy:#1f4e79;
+  --navy-mid:#3a6b96;
+  --tint:#eaf1f7;
+  --paper:#fbfaf6;
+  --ink:#24303a;
+  --slate:#5b6a75;
+  --amber:#b9722c;
+  --line:#d7e1e8;
+  --green:#3f7a5c;
+  --green-tint:#e7f1ec;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.masthead{
+  background:var(--navy-dark);
+  color:#fff;
+  padding:36px 24px;
+}
+.masthead-inner,.wrap,.footer-inner{
+  max-width:1120px;
+  margin:0 auto;
+}
+.kicker{
+  margin:0 0 8px;
+  color:#a9c3d8;
+  font-size:.88rem;
+  letter-spacing:.02em;
+}
+h1{
+  font-family:'Source Serif 4',Georgia,serif;
+  font-size:clamp(1.6rem,3.2vw,2.1rem);
+  margin:0;
+}
+.wrap{padding:36px 24px 60px}
+
+.tablewrap{margin:0 0 48px}
+.org-meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:4px 14px;
+  margin:0 0 10px;
+}
+.org-meta h2{
+  font-family:'Source Serif 4',Georgia,serif;
+  font-size:1.2rem;
+  color:var(--navy-dark);
+  margin:0;
+}
+.org-meta .contact{
+  font-size:.86rem;
+  color:var(--slate);
+}
+.org-meta .contact a{color:var(--navy)}
+
+.tablescroll{overflow-x:auto}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:.9rem;
+}
+th{
+  text-align:left;
+  font-size:.74rem;
+  letter-spacing:.03em;
+  color:var(--slate);
+  font-weight:600;
+  padding:8px 12px;
+  border-bottom:2px solid var(--navy);
+  white-space:nowrap;
+}
+td{
+  padding:11px 12px;
+  border-bottom:1px solid var(--line);
+  color:var(--ink);
+  vertical-align:top;
+}
+tbody tr:hover{background:var(--tint)}
+td.focus{font-weight:600;color:var(--navy-dark);white-space:nowrap}
+td.sport{white-space:nowrap}
+td.squad{color:var(--slate);white-space:nowrap}
+td.deliverable{max-width:280px}
+td.next-steps{max-width:220px;color:var(--slate)}
+td.deadline{white-space:nowrap}
+td.deadline.rolling{color:var(--slate)}
+td.deadline.set{color:var(--amber);font-weight:600}
+.muted{color:var(--slate);font-style:italic}
+
+.badge{
+  display:inline-block;
+  padding:3px 9px;
+  font-size:.76rem;
+  font-weight:600;
+  border-radius:2px;
+  white-space:nowrap;
+}
+.badge.open{background:var(--green-tint);color:var(--green)}
+.badge.filled{background:var(--line);color:var(--slate)}
+
+footer{
+  border-top:1px solid var(--line);
+  padding:18px 24px 32px;
+  color:var(--slate);
+  font-size:.86rem;
+}
+footer a{color:var(--navy)}
+
+@media(max-width:760px){
+  th:nth-child(3), td.squad,
+  th:nth-child(4), td.deliverable{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="kicker">B1704 Professional Placement in Sport Data Analytics</p>
+    <h1>Placement opportunities, 2026–27</h1>
+  </div>
+</header>
+
+<main class="wrap" id="placements">
+  <p class="muted">Loading placements&hellip;</p>
+</main>
+
+<footer>
+  <div class="footer-inner">Further placements added as confirmed &middot; Questions: <a href="mailto:allan.hewitt@strath.ac.uk">allan.hewitt@strath.ac.uk</a></div>
+</footer>
+
+<script>
+async function loadPlacements(){
+  const container = document.getElementById('placements');
+  let data;
+  try{
+    const res = await fetch('placements.json');
+    data = (await res.json()).placements;
+  }catch(err){
+    container.innerHTML = '<p class="muted">Placements could not be loaded.</p>';
+    return;
+  }
+
+  const groups = new Map();
+  for(const p of data){
+    if(!groups.has(p.organisation)) groups.set(p.organisation, []);
+    groups.get(p.organisation).push(p);
+  }
+
+  const formatDate = iso => {
+    if(!iso) return null;
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+  };
+
+  container.innerHTML = '';
+  for(const [org, rows] of groups){
+    const first = rows[0];
+    const section = document.createElement('div');
+    section.className = 'tablewrap';
+
+    const meta = document.createElement('div');
+    meta.className = 'org-meta';
+    meta.innerHTML = `<h2>${org}</h2><span class="contact">${
+      first.contactEmail
+        ? `<a href="mailto:${first.contactEmail}">${first.contactName}</a>`
+        : first.contactName
+    }</span>`;
+    section.appendChild(meta);
+
+    const scroll = document.createElement('div');
+    scroll.className = 'tablescroll';
+    const table = document.createElement('table');
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th scope="col">Focus</th>
+          <th scope="col">Sport</th>
+          <th scope="col">Squad</th>
+          <th scope="col">Deliverable</th>
+          <th scope="col">Next steps</th>
+          <th scope="col">Deadline</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+    const tbody = table.querySelector('tbody');
+
+    for(const p of rows){
+      const deadlineText = formatDate(p.deadline);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="focus">${p.focus ?? '<span class="muted">To be discussed</span>'}</td>
+        <td class="sport">${p.sport ?? '-'}</td>
+        <td class="squad">${p.squad ?? '-'}</td>
+        <td class="deliverable">${p.deliverable ?? '<span class="muted">To be agreed with the organisation</span>'}</td>
+        <td class="next-steps">${p.nextSteps ?? '-'}</td>
+        <td class="deadline ${deadlineText ? 'set' : 'rolling'}">${deadlineText ?? 'Rolling'}</td>
+        <td><span class="badge ${p.status}">${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span></td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    scroll.appendChild(table);
+    section.appendChild(scroll);
+    container.appendChild(section);
+  }
+}
+
+loadPlacements();
+</script>
+
+</body>
+</html>
