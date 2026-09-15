@@ -100,6 +100,8 @@ td.sport{white-space:nowrap}
 td.squad{color:var(--slate);white-space:nowrap}
 td.deliverable{max-width:280px}
 td.next-steps{max-width:220px;color:var(--slate)}
+td.contact-email{white-space:nowrap}
+td.contact-email a{color:var(--navy)}
 td.deadline{white-space:nowrap}
 td.deadline.rolling{color:var(--slate)}
 td.deadline.set{color:var(--amber);font-weight:600}
@@ -197,6 +199,7 @@ async function loadPlacements(){
           <th scope="col">Squad</th>
           <th scope="col">Deliverable</th>
           <th scope="col">Next steps</th>
+          <th scope="col">Contact</th>
           <th scope="col">Deadline</th>
           <th scope="col">Status</th>
         </tr>
@@ -214,6 +217,7 @@ async function loadPlacements(){
         <td class="squad">${p.squad ?? '-'}</td>
         <td class="deliverable">${p.deliverable ?? '<span class="muted">To be agreed with the organisation</span>'}</td>
         <td class="next-steps">${p.nextSteps ?? '-'}</td>
+        <td class="contact-email">${p.contactEmail ? `<a href="mailto:${p.contactEmail}">${p.contactEmail}</a>` : '-'}</td>
         <td class="deadline ${deadlineText ? 'set' : 'rolling'}">${deadlineText ?? 'Rolling'}</td>
         <td><span class="badge ${p.status}">${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span></td>
       `;
