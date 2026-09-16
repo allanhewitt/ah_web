@@ -1,0 +1,42 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 4 Hints — Diagnosing and Cleaning Data</title><link rel="stylesheet" href="resource.css"></head><body><div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div><header class="hero"><div class="wrap"><div class="eyebrow">Week 4 · Hint Sheet</div><h1>Diagnosing and Cleaning Data</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header><main class="wrap"><section class="intro"><h2>How to use this page</h2><p>Open only the hint for the task your group is working on. Use the <strong>Still stuck?</strong> layer only if the first hint is not enough.</p></section><nav class="phase-nav"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
+<section class="phase" id="p1"><div class="phase-head"><h2>PHASE 1 — RETRIEVAL</h2></div><details><summary>Hint for Task 1.1 — Classify five data problems</summary><div class="hint-body"><p>Ask whether the issue is representation, missingness, plausibility, duplication relative to grain, or table shape. Then ask whether the evidence available is sufficient to justify a change.</p></div></details></section>
+<section class="phase" id="p2"><div class="phase-head"><h2>PHASE 2 — CONSEQUENCE PROBLEM</h2></div><details><summary>Hint for Task 2.1 — Judge an automatic replacement</summary><div class="hint-body"><p>Replacing missing values with a mean removes <code>NA</code>s but also inserts estimated/constructed evidence. Whether that is defensible depends on the purpose, missingness mechanism and downstream analysis.</p></div></details></section>
+<section class="phase" id="p3"><div class="phase-head"><h2>PHASE 3 — CORE PRACTICAL</h2><p>Use syntax support only after diagnosis.</p></div><details><summary>Hint for Task 3.1 — Diagnose missingness and implausible distance values</summary><div class="hint-body"><pre><code>sum(is.na(dirty$distance_km))
+sum(is.na(dirty$match_rating))
+min(dirty$distance_km, na.rm = TRUE)
+max(dirty$distance_km, na.rm = TRUE)</code></pre><p>A value can be present and still be invalid or implausible.</p></div></details><details><summary>Hint for Task 3.2 — Diagnose duplicates relative to grain</summary><div class="hint-body"><pre><code>sum(duplicated(dirty))
+dirty_distinct &lt;- dirty |&gt; distinct()</code></pre><p>A repeated player ID is expected across matches; an exact repeated player-match observation may represent duplicated evidence.</p></div></details><details><summary>Hint for Task 3.3 — Standardise position labels</summary><div class="hint-body"><pre><code>dirty &lt;- dirty |&gt;
+  mutate(
+    position = str_trim(position),
+    position = str_to_lower(position)
+  ) |&gt;
+  mutate(
+    position = case_when(
+      position == "fwd" ~ "forward",
+      position == "def" ~ "defender",
+      position == "mf"  ~ "midfielder",
+      TRUE ~ position
+    )
+  )</code></pre><p>Trimming/case normalisation and abbreviation mapping are two different operations.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Check <code>sort(unique(dirty$position))</code> before any change, after trimming/lowercasing, and after abbreviation mapping. This makes each intervention visible.</p></div></details></div></details><details><summary>Hint for Task 3.4 — Represent clearly impossible distances as missing</summary><div class="hint-body"><pre><code>dirty &lt;- dirty |&gt;
+  mutate(
+    distance_km = if_else(
+      distance_km &lt; 0 | distance_km &gt; 20,
+      NA_real_,
+      distance_km
+    )
+  )</code></pre><p>The 20 km threshold is a contextual teaching rule for this football-appearance dataset, not a universal constant.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>First write the rule in words. Then identify which rows satisfy it before changing anything. After recoding, rerun the range check and missing-value count.</p></div></details></div></details><details><summary>Hint for Task 3.5 — Remove only defensible exact duplicates</summary><div class="hint-body"><p><code>distinct()</code> removes exact duplicate rows. Use it only after you have established that exact duplication is inconsistent with the intended grain.</p></div></details><details><summary>Hint for Task 3.6 — Verify the cleaning intervention</summary><div class="hint-body"><pre><code>sum(is.na(dirty$distance_km))
+min(dirty$distance_km, na.rm = TRUE)
+max(dirty$distance_km, na.rm = TRUE)
+sum(duplicated(dirty))
+sort(unique(dirty$position))
+nrow(dirty)</code></pre><p>Re-run the checks that identified the problem; do not rely on the absence of an R error.</p></div></details><details><summary>Hint for Task 3.7 — Reshape the training-load table</summary><div class="hint-body"><pre><code>training_long &lt;- training_wide |&gt;
+  pivot_longer(
+    cols = starts_with("week_"),
+    names_to = "week",
+    values_to = "training_load"
+  )</code></pre><p><code>pivot_longer()</code> changes the table’s grain; state that change explicitly.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Before reshaping, one row is a player with several week columns. After reshaping, expect several rows per player—one for each player-week observation.</p></div></details></div></details></section>
+<section class="phase" id="p4"><div class="phase-head"><h2>PHASE 4 — CHECKPOINT</h2></div><details><summary>Hint for Task 4.1 — Checkpoint the cleaning workflow</summary><div class="hint-body"><p><code>na.omit()</code> drops incomplete rows; <code>replace_na()</code> inserts replacement values. They alter evidence in different ways and require analytical justification.</p></div></details></section>
+<section class="phase" id="p5"><div class="phase-head"><h2>PHASE 5 — TRANSFER</h2></div><details><summary>Hint for Task 5.1 — Build a decision table for rugby wellness</summary><div class="hint-body"><p>Repeated IDs may be legitimate depending on grain. A 95-minute appearance may reflect extra time. A value of 999 may be a sentinel or a genuine data-entry error. “Unusual” is not itself a cleaning rule.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Work issue by issue. For each one, separate four questions: what is unusual, why it matters, whether you have enough evidence to change it, and what check would confirm the intervention worked.</p></div></details></div></details></section>
+<section class="phase" id="p6"><div class="phase-head"><h2>PHASE 6 — EXTENSION</h2></div><details><summary>Hint for Task 6.1 — Write a cleaning decision log</summary><div class="hint-body"><p>Useful additional evidence could include competition rules, data dictionaries, collection-system documentation or confirmation from the data provider.</p></div></details></section>
+<section class="phase" id="p7"><div class="phase-head"><h2>PHASE 7 — DEBRIEF</h2></div><details><summary>Hint for Task 7.1 — Explain why cleaning decisions must be auditable</summary><div class="hint-body"><p>A defensible workflow allows another analyst to see what was changed, why it was changed, and whether the intervention produced the intended result.</p></div></details></section>
+<details class="troubleshoot"><summary>If your R code isn’t working</summary><div class="hint-body"><ol><li>Check that the Week 4 project and setup section have run.</li><li>Inspect the current object before changing it.</li><li>Run one cleaning operation at a time.</li><li>Check variable names and classes with <code>names()</code> and <code>glimpse()</code>.</li><li>Re-run the diagnostic that motivated the change.</li><li>If the code runs but the evidence no longer makes sense, stop and revisit the cleaning decision.</li></ol></div></details></main><footer>B1700 · Week 4 · 2026–27</footer></body></html>
