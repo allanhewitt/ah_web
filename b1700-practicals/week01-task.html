@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Understanding Data and R · B1700</title>
+<style>
+:root{
+  --blue:#124864;
+  --blue-dark:#0d354a;
+  --soft:#e8f1f5;
+  --grey:#f6f8fa;
+  --green:#e8f4ee;
+  --orange:#fdf2e2;
+  --ink:#17212b;
+  --muted:#5b6770;
+  --line:#d8e0e5;
+  --white:#ffffff;
+  --max:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#fff;
+  line-height:1.58;
+}
+.modulebar{
+  background:var(--blue-dark);
+  color:#fff;
+  padding:.7rem 1rem;
+  font-size:.92rem;
+}
+.modulebar .inner{
+  max-width:var(--max);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+header{
+  background:linear-gradient(180deg,var(--soft),#fff);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--max);
+  margin:auto;
+  padding:2.3rem 1rem 1.8rem;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+h1{
+  margin:.2rem 0 .25rem;
+  color:var(--blue);
+  font-size:clamp(2rem,5vw,3.1rem);
+  line-height:1.08;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:1.08rem;
+  margin:0;
+}
+main{
+  max-width:var(--max);
+  margin:auto;
+  padding:1.5rem 1rem 4rem;
+}
+.callout{
+  border:1px solid #9db8c7;
+  border-left:5px solid var(--blue);
+  border-radius:10px;
+  background:var(--soft);
+  padding:1rem 1.1rem;
+  margin:0 0 1.4rem;
+}
+.callout h2{
+  margin:0 0 .35rem;
+  color:var(--blue);
+  font-size:1rem;
+  letter-spacing:.03em;
+}
+.callout p:last-child{margin-bottom:0}
+.workflow{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1.7rem;
+}
+.workflow h2{
+  color:var(--blue);
+  font-size:1.1rem;
+  margin-top:0;
+}
+.workflow ul{margin-bottom:.2rem}
+.phase{
+  margin-top:2.1rem;
+  scroll-margin-top:1rem;
+}
+.phase-banner{
+  background:var(--blue);
+  color:#fff;
+  border-radius:9px;
+  padding:.7rem 1rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  font-size:.92rem;
+}
+.phase-intro{
+  color:var(--muted);
+  margin:.55rem .15rem 1rem;
+}
+.task{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1rem;
+  background:#fff;
+}
+.task h3{
+  margin:0 0 .65rem;
+  color:var(--blue);
+  font-size:1.18rem;
+}
+.task-label{
+  font-weight:800;
+  color:var(--blue);
+}
+.group{
+  margin:.45rem 0;
+}
+.record{
+  margin:.85rem 0 0;
+  padding:.7rem .85rem;
+  border-left:4px solid var(--blue);
+  background:var(--grey);
+  border-radius:0 7px 7px 0;
+}
+.record strong{
+  color:var(--blue);
+}
+code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:var(--grey);
+  border:1px solid #e1e6ea;
+  padding:.08em .32em;
+  border-radius:4px;
+  font-size:.92em;
+}
+pre{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.9rem 1rem;
+  overflow:auto;
+  line-height:1.45;
+}
+pre code{border:0;padding:0;background:transparent}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:.8rem 0;
+  font-size:.96rem;
+}
+th,td{
+  padding:.55rem .6rem;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{
+  background:var(--grey);
+  color:var(--blue);
+}
+blockquote{
+  margin:.8rem 0;
+  padding:.6rem 1rem;
+  border-left:4px solid #a8bac4;
+  background:var(--grey);
+  font-size:1.05rem;
+}
+.nav{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:0 0 1.6rem;
+}
+.nav a{
+  color:var(--blue);
+  text-decoration:none;
+  border:1px solid #b8c9d2;
+  border-radius:999px;
+  padding:.35rem .65rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+.nav a:hover,.nav a:focus{
+  background:var(--soft);
+  outline:none;
+}
+.assessment{
+  background:var(--green);
+  border:1px solid #b9d7c7;
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin-top:2rem;
+}
+.assessment strong{color:#24563d}
+footer{
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.85rem;
+  padding:1.3rem 1rem 2rem;
+}
+footer .inner{
+  max-width:var(--max);
+  margin:auto;
+}
+@media (max-width:650px){
+  .header-inner{padding-top:1.7rem}
+  main{padding-top:1rem}
+  .task{padding:.9rem}
+  th,td{padding:.45rem}
+}
+@media print{
+  .modulebar,.nav{display:none}
+  body{font-size:11pt}
+  .task{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="modulebar">
+  <div class="inner">
+    <span><strong>B1700</strong> · Introduction to Sport Data Analytics</span>
+    <span>2026–27</span>
+  </div>
+</div>
+<header>
+  <div class="header-inner">
+    <div class="kicker">Week 1 · Task Sheet</div>
+    <h1>Understanding Data and R</h1>
+    <p class="subtitle">Group Task Sheet · Core → Transfer → Extension</p>
+  </div>
+</header>
+<main>
+
+<div class="callout">
+  <h2>WHY THIS MATTERS</h2>
+  <p><strong>Central question:</strong> What does our data mean, and how is R representing it?</p>
+  <p>R can execute an operation correctly even when the operation is analytically meaningless. R knows the representation; the analyst has to understand the meaning.</p>
+</div>
+
+<section class="workflow">
+  <h2>How to work this week</h2>
+  <p>Work through this page in order as a <strong>small group</strong>. This task page is your activity script.</p>
+  <p>Use the supplied <strong>Week 1 RStudio project</strong> as your shared workspace. It contains the datasets, setup code and labelled spaces for each phase. Decide together what analysis or code is needed, and keep brief notes or comments in the R script as you work. The R file is not a completed solution.</p>
+  <p>If your group gets stuck, open the <strong>Week 1 Hint Sheet</strong> and use the hint for the relevant task. Try to return to the task before reading ahead.</p>
+  <p>For this first session, use <strong>one active RStudio project per group</strong> and rotate the person operating RStudio at least once during the activity. Everyone should be able to explain the group's decisions.</p>
+</section>
+
+<nav class="nav" aria-label="Phase navigation">
+  <a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a>
+  <a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a>
+</nav>
+
+<section class="phase" id="p1">
+  <div class="phase-banner">PHASE 1 — RETRIEVAL / STARTING POINT</div>
+  <p class="phase-intro">Start with meaning before touching the data in R.</p>
+
+  <article class="task">
+    <h3>Task 1.1 — Classify the variables</h3>
+    <p class="group"><strong>As a group:</strong> Without using R, consider the variables below. Agree the analytical role of each using <strong>identifier, category, quantity or logical</strong>.</p>
+    <table>
+      <thead><tr><th>Variable</th><th>Example</th><th>Analytical role</th></tr></thead>
+      <tbody>
+        <tr><td><code>player_id</code></td><td>P009</td><td></td></tr>
+        <tr><td><code>squad_number</code></td><td>27</td><td></td></tr>
+        <tr><td><code>age</code></td><td>20</td><td></td></tr>
+        <tr><td><code>position</code></td><td>Midfielder</td><td></td></tr>
+        <tr><td><code>is_captain</code></td><td>FALSE</td><td></td></tr>
+      </tbody>
+    </table>
+    <p class="record"><strong>Record:</strong> Add your classifications to the Phase 1 section of <code>week01_session.R</code>.</p>
+  </article>
+
+  <article class="task">
+    <h3>Task 1.2 — Spot the misleading number</h3>
+    <p class="group"><strong>As a group:</strong> Identify one variable whose value looks numeric but should not automatically be treated as a measured quantity.</p>
+    <p class="record"><strong>Record:</strong> Write one sentence explaining why.</p>
+  </article>
+</section>
+
+<section class="phase" id="p2">
+  <div class="phase-banner">PHASE 2 — CONSEQUENCE PROBLEM</div>
+  <p class="phase-intro">Now test whether your distinction between representation and meaning actually matters.</p>
+  <article class="task">
+    <h3>Task 2.1 — Judge the analysis</h3>
+    <p>A colleague reports the <strong>mean squad number</strong> for a team and suggests that this describes the squad. R has performed the calculation correctly.</p>
+    <p class="group"><strong>As a group:</strong> Decide whether the analysis is meaningful. What has R done correctly, and what judgement has the analyst failed to make?</p>
+    <p class="record"><strong>Record:</strong> Write a short group response in the Phase 2 section of the R script.</p>
+  </article>
+</section>
+
+<section class="phase" id="p3">
+  <div class="phase-banner">PHASE 3 — CORE PRACTICAL</div>
+  <p class="phase-intro">Use the Strathclyde FC squad data to investigate how R represents variables and how that differs from analytical meaning.</p>
+
+  <article class="task">
+    <h3>Task 3.1 — Establish the grain</h3>
+    <p>Open the Week 1 RStudio project and inspect the <code>squad</code> data.</p>
+    <p class="group"><strong>As a group:</strong> Agree what one row represents.</p>
+    <p class="record"><strong>Record:</strong> Write one clear sentence in the R script.</p>
+  </article>
+
+  <article class="task">
+    <h3>Task 3.2 — Compare role and representation</h3>
+    <p>Focus on <code>player_id</code>, <code>squad_number</code>, <code>age</code> and <code>position</code>.</p>
+    <p class="group"><strong>As a group:</strong> For each variable, compare its analytical role with the way R represents it. Identify any case where relying on the R class alone could encourage a poor analytical decision.</p>
+    <p class="record"><strong>Record:</strong> Add a brief role-versus-representation note for each variable.</p>
+  </article>
+
+  <article class="task">
+    <h3>Task 3.3 — Choose a sensible summary for age</h3>
+    <p class="group"><strong>As a group:</strong> Produce a small set of numerical summaries that help describe the ages in the squad. Decide which summaries are useful and what each contributes.</p>
+    <p class="record"><strong>Record:</strong> Save the output you need and add a short interpretation.</p>
+  </article>
+
+  <article class="task">
+    <h3>Task 3.4 — Choose a sensible summary for position</h3>
+    <p class="group"><strong>As a group:</strong> Summarise the squad's playing positions in a way that respects the meaning of the variable.</p>
+    <p class="record"><strong>Record:</strong> Add the result and one sentence explaining why this form of summary is appropriate.</p>
+  </article>
+
+  <article class="task">
+    <h3>Task 3.5 — Revisit the squad-number problem</h3>
+    <p class="group"><strong>As a group:</strong> Ask R for the mean squad number, then interpret the result critically.</p>
+    <p class="record"><strong>Record:</strong> Write one sentence explaining why a technically valid calculation can still be analytically unhelpful.</p>
+  </article>
+</section>
+
+<section class="phase" id="p4">
+  <div class="phase-banner">PHASE 4 — CHECKPOINT</div>
+  <p class="phase-intro">Pause before moving to a new dataset.</p>
+  <article class="task">
+    <h3>Task 4.1 — State the rule you are using</h3>
+    <p class="group"><strong>As a group:</strong> Agree on a short set of principles that would help an analyst avoid confusing storage type with analytical meaning.</p>
+    <p><strong>Record:</strong> Write four concise bullet points covering:</p>
+    <ul>
+      <li>what one row represents;</li>
+      <li>identifier, category, quantity and logical variables;</li>
+      <li>representation versus analytical meaning;</li>
+      <li>choosing a summary because it suits the variable and question.</li>
+    </ul>
+  </article>
+</section>
+
+<section class="phase" id="p5">
+  <div class="phase-banner">PHASE 5 — TRANSFER</div>
+  <p class="phase-intro">Apply the same reasoning to an unfamiliar sport and a fresh set of variables.</p>
+
+  <article class="task">
+    <h3>Task 5.1 — Audit the swimming data</h3>
+    <p>Open <code>week01_transfer_swimmers.csv</code> using the supplied RStudio project.</p>
+    <p class="group"><strong>As a group:</strong> For each variable, decide:</p>
+    <ul>
+      <li>what it means;</li>
+      <li>its analytical role;</li>
+      <li>how R represents it;</li>
+      <li>one operation that would make analytical sense;</li>
+      <li>one operation that would be misleading or meaningless.</li>
+    </ul>
+    <p class="record"><strong>Record:</strong> Keep a concise representation audit in the Phase 5 section of the R script.</p>
+  </article>
+
+  <article class="task">
+    <h3>Task 5.2 — Identify what transferred</h3>
+    <p class="group"><strong>As a group:</strong> Compare your reasoning on the football and swimming datasets. What did you do the same even though the sport and variables changed?</p>
+    <p class="record"><strong>Record:</strong> Write one or two sentences identifying the transferable analytical principle.</p>
+  </article>
+</section>
+
+<section class="phase" id="p6">
+  <div class="phase-banner">PHASE 6 — EXTENSION</div>
+  <p class="phase-intro">Use this if your group completes the core and transfer work comfortably.</p>
+  <article class="task">
+    <h3>Task 6.1 — Challenge the default representation</h3>
+    <p class="group"><strong>As a group:</strong> Identify any swimming variable where its R class could tempt an inexperienced analyst into the wrong interpretation. Decide what, if anything, you would change, what you would leave unchanged, and why.</p>
+    <p class="record"><strong>Record:</strong> Add a short representation audit. The focus is the quality of your judgement, not the number of functions used.</p>
+  </article>
+</section>
+
+<section class="phase" id="p7">
+  <div class="phase-banner">PHASE 7 — DEBRIEF</div>
+  <p class="phase-intro">Finish by articulating the principle that should carry into later weeks.</p>
+  <article class="task">
+    <h3>Task 7.1 — Complete the takeaway</h3>
+    <p class="group"><strong>As a group:</strong> Complete the sentence together:</p>
+    <blockquote>Before analysing a variable, an analyst needs to know …</blockquote>
+    <p class="record"><strong>Record:</strong> Add your final sentence to the R script.</p>
+  </article>
+</section>
+
+<div class="assessment">
+  <strong>Assessment One connection:</strong> you may be asked to inspect unfamiliar data, identify what one row represents, interpret variable roles and decide whether an operation is meaningful.
+</div>
+
+</main>
+<footer><div class="inner">B1700 · Week 1 · 2026–27</div></footer>
+</body>
+</html>
