@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Understanding Data and R · B1700</title>
+<style>
+:root{
+  --blue:#124864;
+  --blue-dark:#0d354a;
+  --soft:#e8f1f5;
+  --grey:#f6f8fa;
+  --green:#e8f4ee;
+  --orange:#fdf2e2;
+  --ink:#17212b;
+  --muted:#5b6770;
+  --line:#d8e0e5;
+  --white:#ffffff;
+  --max:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#fff;
+  line-height:1.58;
+}
+.modulebar{
+  background:var(--blue-dark);
+  color:#fff;
+  padding:.7rem 1rem;
+  font-size:.92rem;
+}
+.modulebar .inner{
+  max-width:var(--max);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+header{
+  background:linear-gradient(180deg,var(--soft),#fff);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--max);
+  margin:auto;
+  padding:2.3rem 1rem 1.8rem;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+h1{
+  margin:.2rem 0 .25rem;
+  color:var(--blue);
+  font-size:clamp(2rem,5vw,3.1rem);
+  line-height:1.08;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:1.08rem;
+  margin:0;
+}
+main{
+  max-width:var(--max);
+  margin:auto;
+  padding:1.5rem 1rem 4rem;
+}
+.callout{
+  border:1px solid #9db8c7;
+  border-left:5px solid var(--blue);
+  border-radius:10px;
+  background:var(--soft);
+  padding:1rem 1.1rem;
+  margin:0 0 1.4rem;
+}
+.callout h2{
+  margin:0 0 .35rem;
+  color:var(--blue);
+  font-size:1rem;
+  letter-spacing:.03em;
+}
+.callout p:last-child{margin-bottom:0}
+.workflow{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1.7rem;
+}
+.workflow h2{
+  color:var(--blue);
+  font-size:1.1rem;
+  margin-top:0;
+}
+.workflow ul{margin-bottom:.2rem}
+.phase{
+  margin-top:2.1rem;
+  scroll-margin-top:1rem;
+}
+.phase-banner{
+  background:var(--blue);
+  color:#fff;
+  border-radius:9px;
+  padding:.7rem 1rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  font-size:.92rem;
+}
+.phase-intro{
+  color:var(--muted);
+  margin:.55rem .15rem 1rem;
+}
+.task{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1rem;
+  background:#fff;
+}
+.task h3{
+  margin:0 0 .65rem;
+  color:var(--blue);
+  font-size:1.18rem;
+}
+.task-label{
+  font-weight:800;
+  color:var(--blue);
+}
+.group{
+  margin:.45rem 0;
+}
+.record{
+  margin:.85rem 0 0;
+  padding:.7rem .85rem;
+  border-left:4px solid var(--blue);
+  background:var(--grey);
+  border-radius:0 7px 7px 0;
+}
+.record strong{
+  color:var(--blue);
+}
+code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:var(--grey);
+  border:1px solid #e1e6ea;
+  padding:.08em .32em;
+  border-radius:4px;
+  font-size:.92em;
+}
+pre{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.9rem 1rem;
+  overflow:auto;
+  line-height:1.45;
+}
+pre code{border:0;padding:0;background:transparent}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:.8rem 0;
+  font-size:.96rem;
+}
+th,td{
+  padding:.55rem .6rem;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{
+  background:var(--grey);
+  color:var(--blue);
+}
+blockquote{
+  margin:.8rem 0;
+  padding:.6rem 1rem;
+  border-left:4px solid #a8bac4;
+  background:var(--grey);
+  font-size:1.05rem;
+}
+.nav{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:0 0 1.6rem;
+}
+.nav a{
+  color:var(--blue);
+  text-decoration:none;
+  border:1px solid #b8c9d2;
+  border-radius:999px;
+  padding:.35rem .65rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+.nav a:hover,.nav a:focus{
+  background:var(--soft);
+  outline:none;
+}
+details{
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:0 0 .8rem;
+  background:#fff;
+  overflow:hidden;
+}
+summary{
+  cursor:pointer;
+  padding:.85rem 1rem;
+  color:var(--blue);
+  font-weight:800;
+  background:var(--grey);
+}
+summary:hover{background:var(--soft)}
+details.deeper{
+  margin:.85rem 0 0;
+  border-color:#e7cfa8;
+  background:#fffdf8;
+}
+details.deeper > summary{
+  background:var(--orange);
+  color:#7a4a12;
+  font-size:.95rem;
+  padding:.7rem .85rem;
+}
+details.deeper > summary:hover{
+  background:#f9e7ca;
+}
+.troubleshoot{
+  margin-top:2.2rem;
+  border-top:2px solid var(--line);
+  padding-top:1.2rem;
+}
+.hint-body{
+  padding:.85rem 1rem 1rem;
+}
+.hint-body p:first-child{margin-top:0}
+.hint-body p:last-child{margin-bottom:0}
+.support-note{
+  background:var(--orange);
+  border:1px solid #e7cfa8;
+  border-radius:10px;
+  padding:.9rem 1rem;
+  margin-bottom:1.4rem;
+}
+footer{
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.85rem;
+  padding:1.3rem 1rem 2rem;
+}
+footer .inner{
+  max-width:var(--max);
+  margin:auto;
+}
+@media (max-width:650px){
+  .header-inner{padding-top:1.7rem}
+  main{padding-top:1rem}
+  .task{padding:.9rem}
+  th,td{padding:.45rem}
+}
+@media print{
+  .modulebar,.nav{display:none}
+  body{font-size:11pt}
+  .task,details{break-inside:avoid}
+  details > *{display:block}
+  summary{list-style:none}
+}
+</style>
+</head>
+<body>
+<div class="modulebar">
+  <div class="inner">
+    <span><strong>B1700</strong> · Introduction to Sport Data Analytics</span>
+    <span>2026–27</span>
+  </div>
+</div>
+<header>
+  <div class="header-inner">
+    <div class="kicker">Week 1 · Hint Sheet</div>
+    <h1>Understanding Data and R</h1>
+    <p class="subtitle">Hint Sheet · Open only the support you need</p>
+  </div>
+</header>
+<main>
+
+<div class="callout">
+  <h2>HOW TO USE THIS PAGE</h2>
+  <p>Use this page <strong>only when your group needs help to make progress</strong>. Find the hint for the task you are working on, open only that hint, use as little support as you need, then return to the task sheet.</p>
+  <p>The hints may suggest an R function or a way of thinking, but they do not replace the group's analytical judgement.</p>
+</div>
+
+<nav class="nav" aria-label="Phase navigation">
+  <a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a>
+  <a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a>
+</nav>
+
+<section class="phase" id="p1">
+  <div class="phase-banner">PHASE 1 — RETRIEVAL / STARTING POINT</div>
+
+  <details>
+    <summary>Hint for Task 1.1 — Classify the variables</summary>
+    <div class="hint-body">
+      <p>Ask what the values are <em>for</em>, not just what they look like.</p>
+      <ul>
+        <li>An <strong>identifier</strong> tells you which person or record something belongs to.</li>
+        <li>A <strong>category</strong> places an observation into a group.</li>
+        <li>A <strong>quantity</strong> measures an amount for which arithmetic may be meaningful.</li>
+        <li>A <strong>logical</strong> variable records a TRUE/FALSE condition.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Hint for Task 1.2 — Spot the misleading number</summary>
+    <div class="hint-body">
+      <p>A variable can contain numbers without measuring an amount. Ask whether adding, averaging or taking differences between the values would have a meaningful interpretation.</p>
+    </div>
+  </details>
+</section>
+
+<section class="phase" id="p2">
+  <div class="phase-banner">PHASE 2 — CONSEQUENCE PROBLEM</div>
+  <details>
+    <summary>Hint for Task 2.1 — Judge the analysis</summary>
+    <div class="hint-body">
+      <p>Separate two questions:</p>
+      <ul>
+        <li>Can R perform the calculation?</li>
+        <li>Does the result answer a meaningful analytical question?</li>
+      </ul>
+      <p>A correct computation does not guarantee a useful analysis.</p>
+    </div>
+  </details>
+</section>
+
+<section class="phase" id="p3">
+  <div class="phase-banner">PHASE 3 — CORE PRACTICAL</div>
+
+  <details>
+    <summary>Hint for Task 3.1 — Establish the grain</summary>
+    <div class="hint-body">
+      <p>Useful inspection functions include:</p>
+      <pre><code>head(squad)
+glimpse(squad)</code></pre>
+      <p>Ask what entity or event each row records. The answer should describe the observational unit, not merely list the columns.</p>
+      <details class="deeper">
+        <summary>Still stuck?</summary>
+        <div class="hint-body">
+          <p>Look at two or three rows and complete the sentence: <strong>“Each row represents one …”</strong> Describe the real-world thing being recorded, not the columns you can see.</p>
+        </div>
+      </details>
+    </div>
+  </details>
+
+  <details>
+    <summary>Hint for Task 3.2 — Compare role and representation</summary>
+    <div class="hint-body">
+      <p>You can inspect R's representation with:</p>
+      <pre><code>class(squad$player_id)
+class(squad$squad_number)
+class(squad$age)
+class(squad$position)</code></pre>
+      <p>Then compare each result with the role your group assigned in Phase 1. R's class tells you how the value is stored; it does not decide how the variable should be analysed.</p>
+      <details class="deeper">
+        <summary>Still stuck?</summary>
+        <div class="hint-body">
+          <p>For each variable, make a two-part note: <strong>“R represents this as …”</strong> and <strong>“Analytically, we regard this as …”</strong>. The two descriptions do not have to be the same.</p>
+        </div>
+      </details>
+    </div>
+  </details>
+
+  <details>
+    <summary>Hint for Task 3.3 — Choose a sensible summary for age</summary>
+    <div class="hint-body">
+      <p>For a measured quantity such as age, you might consider measures of centre and range. At this stage, simple functions such as the following are sufficient:</p>
+      <pre><code>mean(squad$age)
+min(squad$age)
+max(squad$age)</code></pre>
+      <p>The important part is explaining what each result contributes.</p>
+      <details class="deeper">
+        <summary>Still stuck?</summary>
+        <div class="hint-body">
+          <p>Try to report <strong>one value describing a typical age</strong> and <strong>at least one value describing the range</strong>. Then say what each result tells you about the squad.</p>
+        </div>
+      </details>
+    </div>
+  </details>
+
+  <details>
+    <summary>Hint for Task 3.4 — Choose a sensible summary for position</summary>
+    <div class="hint-body">
+      <p>For a categorical variable, frequencies are usually more informative than arithmetic summaries. One option is:</p>
+      <pre><code>table(squad$position)</code></pre>
+      <details class="deeper">
+        <summary>Still stuck?</summary>
+        <div class="hint-body">
+          <p>If arithmetic does not make sense for a variable, ask instead: <strong>how many observations fall into each category?</strong></p>
+        </div>
+      </details>
+    </div>
+  </details>
+
+  <details>
+    <summary>Hint for Task 3.5 — Revisit the squad-number problem</summary>
+    <div class="hint-body">
+      <p>Try the calculation if you have not already done so:</p>
+      <pre><code>mean(squad$squad_number)</code></pre>
+      <p>The fact that R returns a number tells you the calculation is computationally valid. Ask what the number means in the real-world context.</p>
+    </div>
+  </details>
+</section>
+
+<section class="phase" id="p4">
+  <div class="phase-banner">PHASE 4 — CHECKPOINT</div>
+  <details>
+    <summary>Hint for Task 4.1 — State the rule you are using</summary>
+    <div class="hint-body">
+      <p>If you are struggling to formulate the principles, start each bullet with one of these prompts:</p>
+      <ul>
+        <li>“One row represents …”</li>
+        <li>“A variable's analytical role depends on …”</li>
+        <li>“R's class tells us …, but not …”</li>
+        <li>“A useful summary should …”</li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<section class="phase" id="p5">
+  <div class="phase-banner">PHASE 5 — TRANSFER</div>
+
+  <details>
+    <summary>Hint for Task 5.1 — Audit the swimming data</summary>
+    <div class="hint-body">
+      <p>Inspect the dataset first. Then ask the same questions you used for the football data.</p>
+      <p>If useful, focus on potentially ambiguous variables such as <code>lane</code>, <code>pb_seconds</code> and <code>injured</code>. Two variables can share the same R class while requiring very different analytical treatment.</p>
+      <details class="deeper">
+        <summary>Still stuck?</summary>
+        <div class="hint-body">
+          <p>Restart the audit using the same sequence for each variable:</p>
+          <ol>
+            <li>What does the variable mean?</li>
+            <li>What is its analytical role?</li>
+            <li>How does R represent it?</li>
+            <li>What is one sensible operation?</li>
+            <li>What is one misleading or meaningless operation?</li>
+          </ol>
+          <p>If needed, begin with <code>lane</code>, then <code>pb_seconds</code>, then <code>injured</code>.</p>
+        </div>
+      </details>
+    </div>
+  </details>
+
+  <details>
+    <summary>Hint for Task 5.2 — Identify what transferred</summary>
+    <div class="hint-body">
+      <p>Do not focus on football versus swimming. Focus on the reasoning process: grain, meaning, role, representation and choice of operation.</p>
+    </div>
+  </details>
+</section>
+
+<section class="phase" id="p6">
+  <div class="phase-banner">PHASE 6 — EXTENSION</div>
+  <details>
+    <summary>Hint for Task 6.1 — Challenge the default representation</summary>
+    <div class="hint-body">
+      <p>There may be more than one defensible answer. A strong response explains the consequences of leaving a variable as it is or changing its representation; it does not simply convert everything to a different class.</p>
+    </div>
+  </details>
+</section>
+
+<section class="phase" id="p7">
+  <div class="phase-banner">PHASE 7 — DEBRIEF</div>
+  <details>
+    <summary>Hint for Task 7.1 — Complete the takeaway</summary>
+    <div class="hint-body">
+      <p>Your sentence should capture the distinction between <strong>what a variable means</strong> and <strong>how software stores it</strong>. Keep it concise enough that you could apply it to a new dataset next week.</p>
+    </div>
+  </details>
+</section>
+
+<section class="troubleshoot" id="troubleshooting">
+  <details>
+    <summary>If your R code isn’t working</summary>
+    <div class="hint-body">
+      <p>Work through these checks in order before asking for further help:</p>
+      <ol>
+        <li>Make sure you opened <code>week_one.Rproj</code>, not just an individual file.</li>
+        <li>Run the setup section at the top of <code>week01_session.R</code>.</li>
+        <li>Check that the object exists with <code>glimpse(squad)</code> or <code>glimpse(swimmers)</code>.</li>
+        <li>Check the exact variable names with <code>names(squad)</code> or <code>names(swimmers)</code>.</li>
+        <li>Run one line or one operation at a time rather than the whole section at once.</li>
+        <li>Read the first error message carefully and identify the first line that failed.</li>
+        <li>Inspect the object again before continuing so you know what the previous line actually produced.</li>
+      </ol>
+    </div>
+  </details>
+</section>
+
+</main>
+<footer><div class="inner">B1700 · Week 1 · 2026–27</div></footer>
+</body>
+</html>
