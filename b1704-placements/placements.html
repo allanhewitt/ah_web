@@ -27,7 +27,7 @@ body{
   background:var(--paper);
   color:var(--ink);
   font-family:'Inter',system-ui,sans-serif;
-  line-height:1.5;
+  line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
 .masthead{
@@ -36,7 +36,7 @@ body{
   padding:36px 24px;
 }
 .masthead-inner,.wrap,.footer-inner{
-  max-width:1120px;
+  max-width:1080px;
   margin:0 auto;
 }
 .kicker{
@@ -52,69 +52,102 @@ h1{
 }
 .wrap{padding:36px 24px 60px}
 
-.tablewrap{margin:0 0 48px}
-.org-meta{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:baseline;
-  gap:4px 14px;
-  margin:0 0 10px;
+.org-section{
+  margin:0 0 48px;
 }
-.org-meta h2{
+.org-section h2{
   font-family:'Source Serif 4',Georgia,serif;
-  font-size:1.2rem;
+  font-size:1.35rem;
   color:var(--navy-dark);
-  margin:0;
+  margin:0 0 18px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--line);
 }
-.org-meta .contact{
-  font-size:.86rem;
-  color:var(--slate);
-}
-.org-meta .contact a{color:var(--navy)}
 
-.tablescroll{overflow-x:auto}
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:.9rem;
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:20px;
 }
-th{
-  text-align:left;
+.card{
+  border:1px solid var(--line);
+  background:#fff;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+}
+.card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin:0 0 4px;
+}
+.card-head h3{
+  margin:0;
+  font-family:'Source Serif 4',Georgia,serif;
+  font-size:1.15rem;
+  color:var(--navy-dark);
+}
+.squad{
+  margin:0 0 12px;
+  color:var(--amber);
+  font-size:.82rem;
+  font-weight:600;
+}
+.deliver{
+  background:var(--tint);
+  border-left:3px solid var(--navy);
+  padding:10px 12px;
+  font-size:.88rem;
+  color:var(--navy-dark);
+  margin:0 0 14px;
+}
+.deliver strong{
+  display:block;
+  color:var(--navy);
   font-size:.74rem;
+  text-transform:uppercase;
   letter-spacing:.03em;
+  margin-bottom:3px;
+}
+.meta{
+  margin:auto 0 0;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  font-size:.85rem;
+}
+.meta-row{
+  display:flex;
+  gap:8px;
+  padding:3px 0;
+}
+.meta-row dt{
+  flex:0 0 82px;
   color:var(--slate);
   font-weight:600;
-  padding:8px 12px;
-  border-bottom:2px solid var(--navy);
-  white-space:nowrap;
+  font-size:.76rem;
+  text-transform:uppercase;
+  letter-spacing:.02em;
 }
-td{
-  padding:11px 12px;
-  border-bottom:1px solid var(--line);
+.meta-row dd{
+  margin:0;
   color:var(--ink);
-  vertical-align:top;
 }
-tbody tr:hover{background:var(--tint)}
-td.focus{font-weight:600;color:var(--navy-dark);white-space:nowrap}
-td.sport{white-space:nowrap}
-td.squad{color:var(--slate);white-space:nowrap}
-td.deliverable{max-width:280px}
-td.next-steps{max-width:220px;color:var(--slate)}
-td.deadline{white-space:nowrap}
-td.deadline.rolling{color:var(--slate)}
-td.deadline.set{color:var(--amber);font-weight:600}
-.muted{color:var(--slate);font-style:italic}
+.meta-row a{color:var(--navy)}
 
 .badge{
   display:inline-block;
   padding:3px 9px;
-  font-size:.76rem;
+  font-size:.74rem;
   font-weight:600;
   border-radius:2px;
   white-space:nowrap;
 }
 .badge.open{background:var(--green-tint);color:var(--green)}
 .badge.filled{background:var(--line);color:var(--slate)}
+
+.muted{color:var(--slate);font-style:italic}
 
 footer{
   border-top:1px solid var(--line);
@@ -123,11 +156,6 @@ footer{
   font-size:.86rem;
 }
 footer a{color:var(--navy)}
-
-@media(max-width:760px){
-  th:nth-child(3), td.squad,
-  th:nth-child(4), td.deliverable{display:none}
-}
 </style>
 </head>
 <body>
@@ -173,55 +201,43 @@ async function loadPlacements(){
 
   container.innerHTML = '';
   for(const [org, rows] of groups){
-    const first = rows[0];
-    const section = document.createElement('div');
-    section.className = 'tablewrap';
+    const section = document.createElement('section');
+    section.className = 'org-section';
+    section.innerHTML = `<h2>${org}</h2>`;
 
-    const meta = document.createElement('div');
-    meta.className = 'org-meta';
-    meta.innerHTML = `<h2>${org}</h2><span class="contact">${
-      first.contactEmail
-        ? `${first.contactName}, <a href="mailto:${first.contactEmail}">${first.contactEmail}</a>`
-        : first.contactName
-    }</span>`;
-    section.appendChild(meta);
-
-    const scroll = document.createElement('div');
-    scroll.className = 'tablescroll';
-    const table = document.createElement('table');
-    table.innerHTML = `
-      <thead>
-        <tr>
-          <th scope="col">Focus</th>
-          <th scope="col">Sport</th>
-          <th scope="col">Squad</th>
-          <th scope="col">Deliverable</th>
-          <th scope="col">Next steps</th>
-          <th scope="col">Deadline</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    `;
-    const tbody = table.querySelector('tbody');
+    const cardsWrap = document.createElement('div');
+    cardsWrap.className = 'cards';
 
     for(const p of rows){
       const deadlineText = formatDate(p.deadline);
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td class="focus">${p.focus ?? '<span class="muted">To be discussed</span>'}</td>
-        <td class="sport">${p.sport ?? '-'}</td>
-        <td class="squad">${p.squad ?? '-'}</td>
-        <td class="deliverable">${p.deliverable ?? '<span class="muted">To be agreed with the organisation</span>'}</td>
-        <td class="next-steps">${p.nextSteps ?? '-'}</td>
-        <td class="deadline ${deadlineText ? 'set' : 'rolling'}">${deadlineText ?? 'Rolling'}</td>
-        <td><span class="badge ${p.status}">${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span></td>
+      const contactHtml = p.contactEmail
+        ? `${p.contactName}, <a href="mailto:${p.contactEmail}">${p.contactEmail}</a>`
+        : p.contactName;
+      const squadLine = [p.sport, p.squad].filter(Boolean).join(' · ');
+      const statusLabel = p.status.charAt(0).toUpperCase() + p.status.slice(1);
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-head">
+          <h3>${p.focus ?? '<span class="muted">To be discussed</span>'}</h3>
+          <span class="badge ${p.status}">${statusLabel}</span>
+        </div>
+        <p class="squad">${squadLine || '-'}</p>
+        <div class="deliver">
+          <strong>Deliverable</strong>
+          ${p.deliverable ?? '<span class="muted">To be agreed with the organisation</span>'}
+        </div>
+        <dl class="meta">
+          <div class="meta-row"><dt>Contact</dt><dd>${contactHtml}</dd></div>
+          <div class="meta-row"><dt>Next steps</dt><dd>${p.nextSteps ?? '-'}</dd></div>
+          <div class="meta-row"><dt>Deadline</dt><dd>${deadlineText ?? 'Rolling'}</dd></div>
+        </dl>
       `;
-      tbody.appendChild(tr);
+      cardsWrap.appendChild(card);
     }
 
-    scroll.appendChild(table);
-    section.appendChild(scroll);
+    section.appendChild(cardsWrap);
     container.appendChild(section);
   }
 }
