@@ -1,0 +1,215 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 9 Hints — From Description to Inference</title><link rel="stylesheet" href="resource.css"></head><body>
+<div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
+<header class="hero"><div class="wrap"><div class="eyebrow">Week 9 · Hint Sheet</div><h1>From Description to Inference</h1><p class="subtitle">Technical Hint Sheet · Open only the support you need</p></div></header>
+<main class="wrap">
+
+<section class="intro"><h2>How to use this page</h2>
+<p>Use this sheet as a technical reference, not as a substitute for the pre-class reading. The important connection is <strong>description → precision → test statistic → evidence</strong>.</p>
+</section>
+
+<nav class="phase-nav" aria-label="Section navigation">
+<a href="#s1">1–2</a><a href="#s3">3–4</a><a href="#s5">5–6</a><a href="#s7">7–8</a><a href="#s9">9</a><a href="#s10">10–12</a><a href="#s13">13–14</a><a href="#s15">Common mistakes</a>
+</nav>
+
+<section class="phase" id="s1"><div class="phase-head"><h2>1–2 · LOAD THE CORE DATA AND FIX THE COMPARISON DIRECTION</h2></div>
+<details><summary>1. Load the core data and fix the comparison direction</summary><div class="hint-body">
+<pre><code>library(tidyverse)
+
+warmup <- read_csv("data/week09_core_warmup.csv") |>
+  mutate(
+    group = factor(group, levels = c("standard", "priming"))
+  )</code></pre>
+<p>The factor order means differences and confidence intervals are interpreted as <strong>standard minus priming</strong>.</p>
+<p><strong>Watch for:</strong> if you skip setting the factor levels explicitly, R will order groups alphabetically instead (<code>priming</code> before <code>standard</code>), silently flipping the sign of every difference you calculate afterwards. Run <code>levels(warmup$group)</code> to confirm the order before continuing.</p>
+</div></details>
+<details><summary>2. Group summaries</summary><div class="hint-body">
+<pre><code>warmup_summary <- warmup |>
+  group_by(group) |>
+  summarise(
+    n = n(),
+    mean_time = mean(sprint_20m_s),
+    sd_time = sd(sprint_20m_s)
+  )
+
+warmup_summary</code></pre>
+<p>You need n, mean and SD for each group before calculating SE.</p>
+<p><strong>Sanity check:</strong> the two n values should sum to the total number of athletes in the file. If they do not, some rows have an unexpected or missing <code>group</code> value — check with <code>count(warmup, group)</code> before going further.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s3"><div class="phase-head"><h2>3–4 · PLOT BEFORE TESTING; RAW DIFFERENCE</h2></div>
+<details><summary>3. Plot before testing</summary><div class="hint-body">
+<pre><code>ggplot(warmup, aes(x = group, y = sprint_20m_s)) +
+  geom_boxplot() +
+  labs(x = "Warm-up group", y = "20 m sprint time (s)") +
+  theme_minimal()</code></pre>
+<p>Check direction, spread, overlap and any unusual values. <strong>Before moving on:</strong> based on the plot alone, guess whether you expect the eventual p-value to be well below 0.05, close to it, or well above it, and note what makes you say so.</p>
+<p><strong>Watch for:</strong> box overlap alone is not a reliable guide — it does not represent sample size or the precision of the mean difference, so two datasets with near-identical boxplots can produce quite different p-values once n differs. Treat this step as a sense check on direction and any unusual points, not as a shortcut past the test itself. A point sitting well outside the rest of its group's box is worth a second look: with a class-sized sample, one unusual value can move a mean and SD more than it would in a much larger dataset.</p>
+</div></details>
+<details><summary>4. Raw difference</summary><div class="hint-body">
+<p>A compact way to obtain the two means is:</p>
+<pre><code>means <- warmup |>
+  group_by(group) |>
+  summarise(mean_time = mean(sprint_20m_s))
+
+mean_difference <- means$mean_time[1] - means$mean_time[2]
+mean_difference</code></pre>
+<p>Because lower times are better, a positive standard-minus-priming difference favours priming.</p>
+<p><strong>Watch for:</strong> <code>means$mean_time[1]</code> and <code>[2]</code> rely on <code>standard</code> appearing first in the summary table, which only holds because you set the factor order in Section 1. Indexing by position like this is fine here, but it is fragile in general — if you are ever unsure, index by name instead, e.g. filtering to each group before subtracting.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s5"><div class="phase-head"><h2>5–6 · STANDARD ERROR AND THE t STATISTIC</h2></div>
+<details><summary>5. Standard error of the difference</summary><div class="hint-body">
+<p>For Welch's independent-groups comparison: <code>SE = √(s₁²/n₁ + s₂²/n₂)</code>.</p>
+<p>You can calculate it directly from the summary table:</p>
+<pre><code>n1  <- warmup_summary$n[1]
+n2  <- warmup_summary$n[2]
+sd1 <- warmup_summary$sd_time[1]
+sd2 <- warmup_summary$sd_time[2]
+
+se_difference <- sqrt(sd1^2 / n1 + sd2^2 / n2)
+se_difference</code></pre>
+<p>Interpret SE as sampling uncertainty around the estimated mean difference.</p>
+<p><strong>Observation:</strong> SE depends on both group SDs and both sample sizes, not on the mean difference itself. Two studies with identical mean differences can have very different SEs if one has more athletes or more variable individual times — this is exactly why the raw difference and its precision are reported separately, and exactly why a boxplot cannot substitute for calculating SE.</p>
+</div></details>
+<details><summary>6. Approximate the t statistic</summary><div class="hint-body">
+<p>The null difference is zero, so:</p>
+<pre><code>t_manual <- mean_difference / se_difference
+t_manual</code></pre>
+<p>This should be close to the t statistic returned by R. Small discrepancies can arise from rounding if you use rounded summary values.</p>
+<p><strong>If your manual value is a long way off</strong> R's t statistic (not just a rounding difference), the most likely causes are: dividing by the wrong SD, using a pooled SD instead of the Welch formula from Section 5, or a sign error from Section 4. Re-check those before assuming R is wrong.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s7"><div class="phase-head"><h2>7–8 · RUNNING WELCH'S TEST AND READING THE OUTPUT</h2></div>
+<details><summary>7. Run Welch's test and extract the output</summary><div class="hint-body">
+<pre><code>test_result <- t.test(
+  sprint_20m_s ~ group,
+  data = warmup
+)
+
+test_result</code></pre>
+<p>Useful components:</p>
+<pre><code>unname(test_result$statistic)   # t
+unname(test_result$parameter)   # df
+test_result$p.value             # p
+test_result$conf.int            # 95% CI</code></pre>
+<p>Read the output as one connected argument, not as a hunt for p &lt; 0.05.</p>
+<p><strong>Reporting tip:</strong> <code>str(test_result)</code> lists every component the object holds, in case you need something beyond the four extracted above. When writing up a result for a coach, round sensibly, e.g. <code>round(test_result$conf.int, 3)</code> — fifteen decimal places of a confidence interval communicates false precision, not rigour.</p>
+</div></details>
+<details><summary>8. Interpretation sequence</summary><div class="hint-body">
+<p>Ask, in order:</p>
+<ol>
+<li>What is the observed effect in seconds?</li>
+<li>How large is the SE relative to that effect?</li>
+<li>How many SEs from zero is the estimate?</li>
+<li>What population differences remain compatible with the 95% CI?</li>
+<li>Does zero remain inside the interval?</li>
+<li>Does the interval sit wholly above the 0.08 s worthwhile threshold?</li>
+<li>What does the p-value add to that evidence?</li>
+</ol>
+<p><strong>Common mistake:</strong> answering only the last question and skipping the rest. A p-value with no context about the effect's size or the CI's width is not a complete answer, even if it is technically correct.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s9"><div class="phase-head"><h2>9 · SWIMMING TRANSFER</h2></div>
+<details><summary>9. Swimming transfer</summary><div class="hint-body">
+<p>Set the factor order first:</p>
+<pre><code>swimming <- read_csv("data/week09_transfer_swimming.csv") |>
+  mutate(
+    feedback = factor(
+      feedback,
+      levels = c("standard_feedback", "video_feedback")
+    )
+  )</code></pre>
+<p>Then rebuild the same objects yourself: summary, mean difference, SE, test result and conclusion.</p>
+<p>The unknown allocation mechanism is a <strong>design limitation</strong>. It does not prevent a two-group statistical comparison, but it weakens a claim that feedback type <em>caused</em> the observed difference.</p>
+<p><strong>Watch for:</strong> it is tempting to write "video feedback improved times" once you have a small p-value. Without knowing swimmers were randomly allocated, the defensible claim is that video feedback is <em>associated with</em> faster times in this sample — the swimmers who chose or were given video feedback might have differed in other relevant ways from the start.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s10"><div class="phase-head"><h2>10–12 · PART TWO: ONE-SAMPLE, PAIRED, ANOVA</h2></div>
+<details><summary>10. Part Two A: one-sample t-test</summary><div class="hint-body">
+<pre><code>cmj <- read_csv("data/week09_challenge_onesample_cmj.csv")
+
+cmj_summary <- cmj |>
+  summarise(n = n(), mean_cmj = mean(cmj_height_cm), sd_cmj = sd(cmj_height_cm))
+cmj_summary
+
+se_cmj <- cmj_summary$sd_cmj / sqrt(cmj_summary$n)
+t_manual <- (cmj_summary$mean_cmj - 28) / se_cmj
+t_manual
+
+t.test(cmj$cmj_height_cm, mu = 28)</code></pre>
+<p>Reference values: mean ≈ 31.79 cm, SE ≈ 0.84, t ≈ 4.49, df = 15, p &lt; 0.001, 95% CI ≈ (30.0, 33.6) cm. Your manual t should be close to R's. The squad's mean sits clearly above the 28 cm benchmark.</p>
+<p><strong>Observation:</strong> <code>mu</code> in <code>t.test()</code> is the fixed value you are testing against, not a second dataset — there is no second group here, which is what makes this a one-sample rather than a two-sample test.</p>
+</div></details>
+<details><summary>11. Part Two B: paired t-test</summary><div class="hint-body">
+<pre><code>reaction <- read_csv("data/week09_challenge_paired_reaction.csv") |>
+  mutate(diff_ms = reaction_before_ms - reaction_after_ms)
+
+diff_summary <- reaction |>
+  summarise(n = n(), mean_diff = mean(diff_ms), sd_diff = sd(diff_ms))
+diff_summary
+
+se_diff <- diff_summary$sd_diff / sqrt(diff_summary$n)
+t_manual <- diff_summary$mean_diff / se_diff
+t_manual
+
+t.test(reaction$reaction_before_ms, reaction$reaction_after_ms,
+       paired = TRUE)</code></pre>
+<p>This is paired because the same 14 sprinters were measured twice; an independent-groups test would ignore that each athlete's "before" and "after" values are linked, and would waste the precision that pairing buys. Reference values: mean decrease ≈ 9.43 ms, SE ≈ 1.56, t ≈ 6.04, df = 13, p &lt; 0.001, 95% CI ≈ (6.1, 12.8) ms.</p>
+<p><strong>Watch for:</strong> the order of the two arguments in <code>t.test(x, y, paired = TRUE)</code> sets the sign of the difference, exactly as the factor order did in Sections 1–4. Here it is before minus after, so a positive result means reaction time fell. As with the resting-heart-rate example in the reading, pairing rules out between-athlete variation as the explanation for the fall, but with no untrained comparison group it does not, on its own, rule out every other change happening over the same four weeks.</p>
+</div></details>
+<details><summary>12. Part Two C: one-way ANOVA</summary><div class="hint-body">
+<pre><code>plyo <- read_csv("data/week09_challenge_anova_plyo.csv") |>
+  mutate(protocol = factor(protocol,
+                            levels = c("control", "depth_jump", "hurdle_hop")))
+
+plyo |>
+  group_by(protocol) |>
+  summarise(n = n(), mean_cmj = mean(cmj_height_cm), sd_cmj = sd(cmj_height_cm))
+
+model <- aov(cmj_height_cm ~ protocol, data = plyo)
+summary(model)
+
+TukeyHSD(model)</code></pre>
+<p>Reference values: F(2,42) ≈ 9.81, p &lt; 0.001. Tukey's HSD shows both <code>depth_jump</code> and <code>hurdle_hop</code> differ from <code>control</code> (p ≈ 0.003 and p &lt; 0.001 respectively), but <code>depth_jump</code> and <code>hurdle_hop</code> do not differ from each other (p ≈ 0.83). The evidence supports using either plyometric protocol over no warm-up at all, but does not support choosing between the two treatment protocols on this evidence.</p>
+<p><strong>Watch for:</strong> in the sequential workflow this module teaches, running <code>TukeyHSD()</code> without first checking that the omnibus F-test is significant is treated as a mistake, since with no overall evidence of a difference, pairwise comparisons here are just as likely to turn up a false positive as the unprotected t-tests this method was built to avoid. That said, this omnibus-then-Tukey ordering is a teaching convention adopted for B1700, not a strict logical requirement of every defensible statistical workflow; you may meet other conventions later in your studies or on placement.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s13"><div class="phase-head"><h2>13–14 · PART TWO D: PRECISION AND EFFECT SIZE</h2></div>
+<details><summary>13. Part Two D1: precision and sample size</summary><div class="hint-body">
+<p>If both sample sizes are multiplied by 2 while the SDs stay the same, SE_new ≈ SE_old / √2.</p>
+<p>Therefore the CI narrows and |t| increases. The observed raw mean difference does not change.</p>
+</div></details>
+<details><summary>14. Part Two D3: standardised effect size</summary><div class="hint-body">
+<pre><code>sd_pooled <- sqrt(
+  ((n1 - 1) * sd1^2 + (n2 - 1) * sd2^2) / (n1 + n2 - 2)
+)
+
+cohens_d <- mean_difference / sd_pooled
+cohens_d</code></pre>
+<p>n1, n2, sd1 and sd2 are already defined from Section 5. Compare the resulting d against the conventional 0.2/0.5/0.8 benchmarks from the reading, and note that d is unit-free: useful for comparing across studies or outcome measures, but it no longer tells a coach how many seconds are at stake.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s15"><div class="phase-head"><h2>COMMON MISTAKES, IN ONE PLACE</h2><p>The individual sections above flag these as they come up; this is the same list gathered together for a final check before you submit.</p></div>
+<details><summary>Common mistakes checklist</summary><div class="hint-body">
+<ul>
+<li><strong>Sign flipped.</strong> Factor levels, or argument order in a paired test, not set the way the question defines the difference (Sections 1, 4, 11).</li>
+<li><strong>Indexing by position instead of name.</strong> <code>summary[1]</code> silently breaks if the row order ever changes (Section 4).</li>
+<li><strong>Manual and R values disagree by more than rounding.</strong> Usually a wrong SD, wrong SE formula, or a sign error, not a mistake in R's calculation (Section 6).</li>
+<li><strong>Reading boxplot overlap as a substitute for the test.</strong> Overlap is a rough sense check on direction, not a stand-in for SE, n or the eventual p-value (Section 3).</li>
+<li><strong>Post-hoc test run without a significant omnibus result first.</strong> The convention this module follows treats Tukey's HSD as a follow-up question, not a starting point (Section 12).</li>
+<li><strong>Causal language used where the design does not support it.</strong> "Improved" and "caused" are stronger claims than an observational comparison, or a paired before/after comparison with no control group, can justify on its own — however small the p-value (Sections 9, 11).</li>
+<li><strong>Only the p-value reported.</strong> A complete answer states the effect, its precision, the evidence against zero, and whether it clears a practical threshold — not p alone (Section 8).</li>
+</ul>
+</div></details>
+</section>
+
+</main>
+<footer>B1700 · Week 9 · 2026–27</footer>
+</body></html>

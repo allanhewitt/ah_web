@@ -1,0 +1,151 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 10 Hints — Modelling Relationships</title><link rel="stylesheet" href="resource.css"></head><body>
+<div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
+<header class="hero"><div class="wrap"><div class="eyebrow">Week 10 · Hint Sheet</div><h1>Modelling Relationships</h1><p class="subtitle">Technical Hint Sheet · Open only the support you need</p></div></header>
+<main class="wrap">
+
+<section class="intro"><h2>How to use this page</h2>
+<p>Use this sheet as a technical reference, not as a substitute for the pre-class reading. The important connection is <strong>relationship → model → prediction → evidence</strong>.</p>
+</section>
+
+<nav class="phase-nav" aria-label="Section navigation">
+<a href="#s1">1–2</a><a href="#s3">3–4</a><a href="#s5">5–6</a><a href="#s1ext">Part One extension</a><a href="#s7">7–8</a><a href="#s9">9–10</a><a href="#s11">Common mistakes</a>
+</nav>
+
+<section class="phase" id="s1"><div class="phase-head"><h2>1–2 · LOAD THE TRAINING-VOLUME DATA; CORRELATION</h2></div>
+<details><summary>1. Load the training-volume data and look before quantifying</summary><div class="hint-body">
+<pre><code>library(tidyverse)
+
+riders <- read_csv("data/week10_riders_training.csv")
+
+ggplot(riders, aes(x = weekly_hours, y = time_trial_min)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme_minimal()</code></pre>
+<p>Look for the direction of the relationship, its rough strength (how tightly points cluster around the line), and any point that looks like it is pulling the line on its own.</p>
+</div></details>
+<details><summary>2. Pearson correlation</summary><div class="hint-body">
+<pre><code>cor(riders$weekly_hours, riders$time_trial_min)</code></pre>
+<p>Reference value: r ≈ −0.75. The negative sign means more training is associated with faster (lower) times.</p>
+<p><strong>Watch for:</strong> r says nothing about units or slope; a correlation of −0.75 could come from a shallow or a steep line depending on the scales involved.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s3"><div class="phase-head"><h2>3–4 · FIT THE REGRESSION; CONFIRM R² = r²</h2></div>
+<details><summary>3. Fit and read the regression</summary><div class="hint-body">
+<pre><code>model <- lm(time_trial_min ~ weekly_hours, data = riders)
+summary(model)</code></pre>
+<p>Reference values: intercept ≈ 32.4, slope ≈ −0.85 (SE ≈ 0.158, t ≈ −5.38, p &lt; .001), R² ≈ .568, F(1,22) ≈ 28.9.</p>
+<p><strong>Observation:</strong> the intercept is technically the predicted time at zero weekly training hours, but no rider in this sample trains anywhere near zero hours, so treat that number as a mathematical artefact of the line, not a real prediction.</p>
+</div></details>
+<details><summary>4. Confirm R² = r²</summary><div class="hint-body">
+<pre><code>cor(riders$weekly_hours, riders$time_trial_min)^2
+summary(model)$r.squared</code></pre>
+<p>Both should return approximately 0.568.</p>
+<p><strong>Watch for:</strong> this equality only holds for a single-predictor regression. Once a model has two or more predictors, R² and any one predictor's r² diverge, because R² then reflects the combined explanatory power of all predictors together.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s5"><div class="phase-head"><h2>5–6 · REGRESSION TO THE MEAN; CONFOUNDING</h2></div>
+<details><summary>5. Regression to the mean, in plain terms</summary><div class="hint-body">
+<p>No code is required here; this is a reasoning question. An athlete's single extreme result is a mix of their true underlying ability and a certain amount of day-to-day noise (form, conditions, luck). On retest, the noise component is not expected to repeat in the same direction, so the average of a retested extreme group typically drifts back towards the overall mean, even with no real change in ability.</p>
+</div></details>
+<details><summary>6. Confounding, in plain terms</summary><div class="hint-body">
+<p>A defensible answer names a third variable that plausibly affects <em>both</em> weekly training hours and time-trial performance, without training hours themselves doing the work: for example, a rider's overall commitment, experience, or access to coaching.</p>
+<p><strong>Watch for:</strong> naming a variable that is really just a consequence of training volume (for example, fitness) does not describe a confounder; a confounder needs to plausibly influence both variables from outside the relationship you are studying.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s1ext"><div class="phase-head"><h2>PART ONE EXTENSION — RECOVERY PROTOCOL DUMMY CODING</h2></div>
+<details><summary>8. Set the reference level and plot</summary><div class="hint-body">
+<pre><code>recovery <- read_csv("data/week10_recovery_protocol.csv") |>
+  mutate(protocol = factor(protocol, levels = c("standard", "active", "contrast")))
+
+ggplot(recovery, aes(x = protocol, y = recovery_min)) +
+  geom_boxplot() +
+  theme_minimal()</code></pre>
+<p>Setting <code>standard</code> as the first factor level makes it the <strong>reference category</strong> that every dummy coefficient will be read against.</p>
+<p><strong>Watch for:</strong> as in Week 9, if you skip setting the factor levels explicitly, R defaults to alphabetical order (<code>active</code> first), which would put <code>active</code> in the reference row instead of <code>standard</code> and change what every coefficient means.</p>
+</div></details>
+<details><summary>9. Fit the dummy-coded model</summary><div class="hint-body">
+<pre><code>model_dummy <- lm(recovery_min ~ protocol, data = recovery)
+summary(model_dummy)</code></pre>
+<pre><code>Coefficients:
+                 Estimate Std. Error t value Pr(>|t|)
+(Intercept)        8.555      0.339   25.20   <2e-16
+protocolactive    -0.796      0.480   -1.66   0.1030
+protocolcontrast  -2.047      0.480   -4.26   <0.001
+
+Multiple R-squared:  0.245,  F-statistic: 9.24 on 2 and 57 DF</code></pre>
+<p>Read against the reference category, <code>standard</code>: the intercept (8.555) is exactly the standard group's mean; <code>protocolactive</code> (−0.796) is the active group's mean minus the standard group's mean; <code>protocolcontrast</code> (−2.047) is the same for contrast.</p>
+<p><strong>Observation:</strong> a categorical predictor with k levels becomes k−1 dummy columns, not k — with three protocols you get exactly two coefficients besides the intercept, because once a case is known not to be standard and not active, it must be contrast. A third column would be entirely predictable from the other two.</p>
+</div></details>
+<details><summary>10. Which protocol(s) differ, and how does this compare with ANOVA?</summary><div class="hint-body">
+<p>Only <code>protocolcontrast</code> clears conventional significance (p &lt; .001); <code>protocolactive</code> does not (p = .103). On this evidence, contrast recovery differs from standard, but active recovery does not show clear evidence of differing from standard.</p>
+<p>The omnibus F-test, F(2,57) = 9.24, p &lt; .001, is identical to what a one-way <code>aov(recovery_min ~ protocol, data = recovery)</code> would report on the same data: <code>aov()</code> performs the same dummy-coding conversion internally, so the two approaches agree on the overall test by construction.</p>
+<p><strong>Watch for:</strong> the omnibus F-test only tells you that at least one protocol differs from another somewhere; it does not by itself tell you which one. That is the job of the individual dummy coefficients here, or of Tukey's HSD in Week 9.</p>
+</div></details>
+<details><summary>11. Dummy coefficient vs Tukey comparison</summary><div class="hint-body">
+<p>A dummy coefficient compares one level against the reference category only, with no adjustment for having made more than one comparison. Tukey's HSD, by contrast, adjusts every pairwise comparison for the number of comparisons made, using the studentized range distribution.</p>
+<p><strong>Watch for:</strong> the two approaches often point the same way, as they do here, but they are not interchangeable — they can disagree, particularly when several comparisons sit close to the conventional significance threshold. A dummy-coded model also does not hand you every pairwise comparison automatically: comparing <code>active</code> against <code>contrast</code> directly would need the model re-fitted with a different reference level.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s7"><div class="phase-head"><h2>7–8 · PART TWO: LOGISTIC REGRESSION AND ODDS RATIOS</h2></div>
+<details><summary>7. Fitting the logistic regression</summary><div class="hint-body">
+<pre><code>top10 <- read_csv("data/week10_riders_top10.csv")
+
+top10_model <- glm(made_top10 ~ avg_power, family = binomial, data = top10)
+summary(top10_model)</code></pre>
+<p>Reference values: intercept ≈ −13.96, <code>avg_power</code> coefficient ≈ 0.051 (SE ≈ 0.016, z ≈ 3.09, p ≈ .002).</p>
+<p><strong>Watch for:</strong> this coefficient is on the log-odds scale. Reporting 0.051 directly to a coach as "the effect of power" is technically correct but practically meaningless without converting it.</p>
+</div></details>
+<details><summary>8. Odds ratios</summary><div class="hint-body">
+<pre><code>exp(coef(top10_model))              # per one watt
+exp(coef(top10_model)["avg_power"] * 10)   # per ten watts</code></pre>
+<p>Reference values: ≈ 1.05 per watt (about 5% higher odds), ≈ 1.66 per ten watts (about 66% higher odds).</p>
+<p><strong>Watch for:</strong> an odds ratio is a multiplier on the <em>odds</em>, not the probability; a 66% increase in odds does not mean a 66-percentage-point increase in probability, particularly once probability is already far from 0.5.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s9"><div class="phase-head"><h2>9–10 · PREDICTIONS, CLASSIFICATION AND PERFORMANCE METRICS</h2></div>
+<details><summary>9. Predicted probabilities and classification</summary><div class="hint-body">
+<pre><code>top10 <- top10 |>
+  mutate(
+    pred_prob  = predict(top10_model, type = "response"),
+    pred_class = if_else(pred_prob >= 0.5, 1L, 0L)
+  )
+
+conf <- table(Actual = top10$made_top10, Predicted = top10$pred_class)
+conf</code></pre>
+<p><strong>Watch for:</strong> <code>predict()</code> without <code>type = "response"</code> returns log-odds, not probabilities. It is a common mistake to forget the argument and then misread a log-odds value (which can be negative, or larger than 1) as though it were a probability.</p>
+</div></details>
+<details><summary>10. Accuracy, sensitivity, specificity, and the baseline</summary><div class="hint-body">
+<pre><code>accuracy    <- sum(diag(conf)) / sum(conf)
+sensitivity <- conf["1", "1"] / sum(conf["1", ])
+specificity <- conf["0", "0"] / sum(conf["0", ])
+baseline    <- max(table(top10$made_top10)) / nrow(top10)
+
+cat("Accuracy:   ", round(accuracy, 3), "\n")
+cat("Sensitivity:", round(sensitivity, 3), "\n")
+cat("Specificity:", round(specificity, 3), "\n")
+cat("Baseline:   ", round(baseline, 3), "\n")</code></pre>
+<p>Reference values (with the confusion matrix above): accuracy ≈ .783, sensitivity ≈ .400, specificity ≈ .911, baseline (always predict "not top 10") = .75.</p>
+<p><strong>Observation:</strong> accuracy clears the baseline by only a few percentage points, and sensitivity is low: the model is currently missing 3 in every 5 riders who genuinely go on to finish top 10. A model can look reasonable on accuracy alone while performing poorly at the specific job of <em>finding</em> the riders who matter.</p>
+</div></details>
+</section>
+
+<section class="phase" id="s11"><div class="phase-head"><h2>COMMON MISTAKES, IN ONE PLACE</h2></div>
+<details><summary>Common mistakes checklist</summary><div class="hint-body">
+<ul>
+<li><strong>Reading a correlation as a slope.</strong> r = −0.75 tells you direction and strength, not minutes per hour; that is the regression coefficient's job (Section 2 vs 3).</li>
+<li><strong>Trusting the intercept.</strong> An intercept far outside the observed range of x is a mathematical necessity of the fitted line, not a real-world prediction (Section 3).</li>
+<li><strong>Forgetting <code>type = "response"</code>.</strong> Without it, <code>predict()</code> returns log-odds, not a probability between 0 and 1 (Section 9).</li>
+<li><strong>Reporting accuracy without a baseline or without sensitivity/specificity.</strong> A high accuracy figure for an uncommon outcome can hide a classifier that misses most of the cases that actually matter (Section 10).</li>
+<li><strong>Treating an odds ratio as a probability change.</strong> A 66% increase in odds is not a 66-percentage-point increase in probability (Section 8).</li>
+</ul>
+</div></details>
+</section>
+
+</main>
+<footer>B1700 · Week 10 · 2026–27</footer>
+</body></html>

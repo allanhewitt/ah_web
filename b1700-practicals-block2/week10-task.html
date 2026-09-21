@@ -1,0 +1,94 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 10 Task — Modelling Relationships</title><link rel="stylesheet" href="resource.css"></head><body>
+<div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
+<header class="hero"><div class="wrap"><div class="eyebrow">Week 10 · Task Sheet</div><h1>Modelling Relationships</h1><p class="subtitle">Student Task Sheet · Riverside Cycling Club</p></div></header>
+<main class="wrap">
+
+<section class="intro"><h2>Why this matters</h2>
+<p><strong>This session assumes the pre-class reading has been completed.</strong> We move from comparing groups (Week 9) to describing and predicting from relationships between variables, then to predicting a yes/no outcome.</p>
+<p><strong>Central question:</strong> is an observed relationship strong enough to describe, and to predict from?</p>
+</section>
+
+<nav class="phase-nav" aria-label="Section navigation">
+<a href="#pre">Pre-reading</a><a href="#consequence">Consequence problem</a><a href="#p1">Part One</a><a href="#p1ext">Part One extension</a><a href="#p2">Part Two</a><a href="#debrief">Debrief</a>
+</nav>
+
+<section class="phase" id="pre"><div class="phase-head"><h2>PRE-READING CHECKPOINT</h2></div>
+<article class="task"><p>In one sentence each, explain:</p>
+<ul>
+<li>what a correlation coefficient tells you, and one thing it does not;</li>
+<li>what the slope and the intercept of a regression line each represent;</li>
+<li>what regression to the mean is;</li>
+<li>why an ordinary straight line is the wrong tool for a 0/1 outcome.</li>
+</ul>
+</article></section>
+
+<section class="phase" id="consequence"><div class="phase-head"><h2>CONSEQUENCE PROBLEM</h2></div>
+<article class="task">
+<p>Riverside's coaches want to know whether weekly training volume predicts 10-mile time-trial performance, and whether average power output predicts a top-10 season finish. Before touching R, identify: which of these two questions produces a <strong>number</strong> (a predicted time), and which produces a <strong>probability</strong> (a predicted chance of an event)? Why does that distinction determine which type of model is appropriate?</p>
+</article></section>
+
+<section class="phase" id="p1"><div class="phase-head"><h2>PART ONE — TRAINING VOLUME AND TIME-TRIAL PERFORMANCE</h2><p>Work in <code>week10_session.R</code>.</p></div>
+<article class="task">
+<p>The file <code>week10_riders_training.csv</code> contains, for 24 riders, average weekly training hours over the previous eight weeks and their time in a 10-mile time trial. Lower times are better.</p>
+<h3>Task 1 — Plot the relationship</h3>
+<p>Plot <code>time_trial_min</code> against <code>weekly_hours</code>. Describe the direction and strength of the relationship you see.</p>
+<h3>Task 2 — Correlation</h3>
+<p>Calculate the Pearson correlation coefficient with <code>cor()</code>. What does its sign and magnitude tell you? What does it <strong>not</strong> tell you?</p>
+<h3>Task 3 — Fit the model</h3>
+<p>Fit <code>model &lt;- lm(time_trial_min ~ weekly_hours, data = riders)</code> and inspect <code>summary(model)</code>. Identify the intercept, the slope, and the R².</p>
+<h3>Task 4 — Interpret the coefficients</h3>
+<p>Write one sentence interpreting the slope in minutes per additional hour of weekly training. Write one sentence explaining why the intercept should not be read as a realistic prediction here.</p>
+<h3>Task 5 — Confirm R² = r²</h3>
+<p>Confirm that R² equals r² for this model. Explain, in your own words, why this equality is specific to a single-predictor regression.</p>
+<h3>Task 6 — Regression to the mean</h3>
+<p>Riverside's coaches are excited that a rider who trained unusually little this month recorded an unusually fast time. Using the idea of regression to the mean, explain why that rider's next result is unlikely to be quite as extreme, even with no change in ability.</p>
+<h3>Task 7 — Confounding</h3>
+<p>Suggest one plausible confounding variable for the training-volume/time-trial relationship, and explain how it could produce the observed correlation without training volume having a direct causal effect.</p>
+<p class="record"><strong>Checkpoint:</strong> you should be able to state the fitted equation, explain what each coefficient means in context, and explain one reason the relationship might not be causal. If you cannot do all three, revisit the reading before continuing.</p>
+</article>
+</section>
+
+<section class="phase" id="p1ext"><div class="phase-head"><h2>PART ONE EXTENSION — ONE-HOT CODING WITH THREE RECOVERY PROTOCOLS</h2></div>
+<article class="task">
+<p>Open <code>week10_recovery_protocol.csv</code>. It contains recovery time (minutes) for 60 athletes randomly allocated to one of three post-session recovery protocols: <code>standard</code>, <code>active</code>, <code>contrast</code>.</p>
+<h3>Task 8 — Set up the factor</h3>
+<p>Set <code>protocol</code> as a factor with <code>standard</code> as the reference level. Create a boxplot comparing recovery time across the three protocols.</p>
+<h3>Task 9 — Fit and read the dummy regression</h3>
+<p>Fit <code>lm(recovery_min ~ protocol, data = recovery)</code> and inspect <code>summary()</code>. State what the intercept represents, and what each of the two dummy coefficients represents relative to the reference group.</p>
+<h3>Task 10 — Compare with the ANOVA</h3>
+<p>Which protocol(s), if any, differ significantly from standard? Compare the model's omnibus F-statistic with what a one-way ANOVA on the same data would report.</p>
+<h3>Task 11 — Dummy coefficient vs Tukey comparison</h3>
+<p>In one sentence, explain why a significant dummy coefficient here is not the same claim as a significant Tukey comparison from Week 9's ANOVA follow-up.</p>
+</article>
+</section>
+
+<section class="phase" id="p2"><div class="phase-head"><h2>PART TWO — PREDICTING A TOP-10 FINISH</h2><p>This part has less scaffolding than Part One. Build a complete, defensible analysis rather than following numbered sub-steps.</p></div>
+<article class="task">
+<p>Open <code>week10_riders_top10.csv</code>. It contains average power output (watts) in a qualifying time trial for 60 riders, and whether each rider went on to finish in the top 10 of the season-ending race (<code>made_top10</code>, already coded 0/1).</p>
+<p>Your analysis should produce:</p>
+<ul>
+<li>a logistic regression model predicting <code>made_top10</code> from <code>avg_power</code>, fitted with <code>glm(..., family = binomial)</code>;</li>
+<li>the odds ratio for a one-watt increase, and a rescaled odds ratio for a 10-watt increase, with a one-sentence interpretation of each;</li>
+<li>predicted probabilities for every rider, and a classification at the 0.5 threshold;</li>
+<li>a confusion matrix, with accuracy, sensitivity and specificity calculated from it;</li>
+<li>the baseline accuracy from always predicting the majority class, and a judgement of whether the fitted model clears that baseline convincingly;</li>
+<li>one sentence on what sensitivity and specificity each tell a coach that accuracy alone does not.</li>
+</ul>
+<h3>Task 12 — Recommend or not</h3>
+<p>Would you recommend this model to Riverside's selectors as it stands? Justify your answer using the sensitivity and specificity you calculated, not accuracy alone.</p>
+<h3>Task 13 — Moving the threshold</h3>
+<p>Suggest one reason the threshold might reasonably be moved away from 0.5 for this specific use case (selecting riders to invest development time in), and explain which error type your suggested change would trade off against the other.</p>
+</article>
+</section>
+
+<section class="phase" id="debrief"><div class="phase-head"><h2>DEBRIEF</h2></div>
+<article class="task">
+<p>Complete both statements:</p>
+<blockquote>A correlation coefficient tells me …, but it does not tell me …</blockquote>
+<blockquote>Before I trust a classifier's accuracy figure, I need to know …</blockquote>
+</article>
+</section>
+
+</main>
+<footer>B1700 · Week 10 · 2026–27</footer>
+</body></html>

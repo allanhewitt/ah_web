@@ -1,0 +1,124 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 9 Task — From Description to Inference</title><link rel="stylesheet" href="resource.css"></head><body>
+<div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
+<header class="hero"><div class="wrap"><div class="eyebrow">Week 9 · Task Sheet</div><h1>From Description to Inference</h1><p class="subtitle">Student Task Sheet · Riverside Cycling Club</p></div></header>
+<main class="wrap">
+
+<section class="intro"><h2>Why this matters</h2>
+<p><strong>This session assumes the pre-class reading has been completed.</strong> We will move quickly from descriptive summaries to the mechanics of inference and then to practitioner judgement.</p>
+<p><strong>Central question:</strong> when is an observed difference convincing enough to act on?</p>
+</section>
+
+<nav class="phase-nav" aria-label="Section navigation">
+<a href="#pre">Pre-reading</a><a href="#consequence">Consequence problem</a><a href="#p1">Part One</a><a href="#p1ext">Swimming transfer</a><a href="#p2">Part Two</a><a href="#p2d">Further reflection</a><a href="#debrief">Debrief</a>
+</nav>
+
+<section class="phase" id="pre"><div class="phase-head"><h2>PRE-READING CHECKPOINT</h2></div>
+<article class="task"><p>In one sentence each, distinguish:</p>
+<ul>
+<li>standard deviation from standard error;</li>
+<li>an observed mean difference from a population mean difference;</li>
+<li>a confidence interval from a p-value;</li>
+<li>Type I error from Type II error.</li>
+</ul>
+</article></section>
+
+<section class="phase" id="consequence"><div class="phase-head"><h2>CONSEQUENCE PROBLEM</h2></div>
+<article class="task">
+<p>A priming warm-up group appears faster than a standard warm-up group. The performance staff had already decided that an improvement of <strong>0.08 seconds</strong> would justify changing practice.</p>
+<p>Before touching R, identify the four quantities you need in order to move from an observed sample difference to a defensible decision. Then write, from memory if you can, the two relationships introduced in the reading:</p>
+<p><code>SE = √(s₁²/n₁ + s₂²/n₂)</code> and <code>t = observed difference / SE</code>.</p>
+<p>You do not need perfect notation. The aim is to show that you understand how the quantities connect before software produces them.</p>
+</article></section>
+
+<section class="phase" id="p1"><div class="phase-head"><h2>PART ONE — WARM-UP STRATEGY AND 20 M SPRINT PERFORMANCE</h2><p>Work in <code>week09_session.R</code>.</p></div>
+
+<article class="task">
+<p>The file <code>week09_core_warmup.csv</code> contains one post-warm-up sprint time for each athlete. Athletes were <strong>randomly allocated</strong> to either a standard warm-up or a priming warm-up, and each athlete appears once.</p>
+<p><strong>Smallest worthwhile difference: 0.08 seconds.</strong> Lower sprint times are better. Define all differences as <strong>standard minus priming</strong>.</p>
+<h3>Task 1 — Establish the design</h3>
+<p>Confirm the grain, grouping variable and outcome. Explain why this is an independent two-group comparison, why random allocation strengthens the causal interpretation, and why each athlete appearing only once matters for that independence.</p>
+<h3>Task 2 — Describe before testing</h3>
+<p>Calculate <em>n</em>, mean and SD for each group. Create a boxplot and write one sentence about direction, spread and overlap, and a second sentence on whether any individual point looks unusually extreme relative to the rest of its group.</p>
+<h3>Task 3 — Calculate the standard error</h3>
+<p>Calculate the raw mean difference in seconds, then evaluate the standard error <code>SE = √(s₁²/n₁ + s₂²/n₂)</code>. State what each quantity represents.</p>
+<h3>Task 4 — Predict, then test</h3>
+<p>Predict <code>t ≈ observed difference / SE</code> before running the test. Then run Welch's t-test using <code>t.test()</code> and compare R's t statistic, df, p-value and 95% CI with your prediction.</p>
+<h3>Task 5 — Interpret the interval</h3>
+<p>Explain what the 95% CI says relative to 0.00 s (no population difference) and 0.08 s (the pre-specified worthwhile threshold).</p>
+<h3>Task 6 — Interpret the p-value</h3>
+<p>Explain the p-value correctly, then state what it does <strong>not</strong> tell you about effect size or practical importance.</p>
+<h3>Task 7 — Recommend</h3>
+<p>Write a three-sentence recommendation to the performance staff incorporating magnitude, uncertainty, statistical evidence and practical importance.</p>
+<p class="record"><strong>Checkpoint:</strong> your inferential chain should now be explicit — means + SDs + n → SE → t and df → CI and p → practical decision. If those quantities feel disconnected, go back one step rather than jumping straight to the p-value. Do not continue until you can explain each link.</p>
+</article>
+</section>
+
+<section class="phase" id="p1ext"><div class="phase-head"><h2>NOW ON YOUR OWN — SWIMMING FEEDBACK AND 50 M PERFORMANCE</h2></div>
+<article class="task">
+<p>Open <code>week09_transfer_swimming.csv</code>. Each swimmer appears once and received either standard technical feedback or video feedback. The file does <strong>not</strong> establish how swimmers were allocated.</p>
+<p>Lower times are better. Define the difference as <strong>standard feedback minus video feedback</strong>. The smallest worthwhile improvement is <strong>0.30 s</strong>.</p>
+<p>Repeat the sequence above on this dataset, this time without individual step-by-step prompts. Your result should include: the descriptive comparison and plot; the raw mean difference and SE; t, df, p and the 95% CI; interpretation relative to 0.00 s and 0.30 s; a practitioner conclusion; and one sentence on why the statistical comparison is possible but a causal claim is not automatic, given the unknown allocation mechanism.</p>
+</article>
+</section>
+
+<section class="phase" id="p2"><div class="phase-head"><h2>PART TWO — THREE FURTHER SITUATIONS</h2><p>Part One worked through one technique in full. Part Two extends the same logic — design, describe, predict, test, interpret, decide — to three further situations you will meet regularly in practice, each with its own dataset.</p></div>
+
+<article class="task">
+<h3>A. One-sample t-test: is this squad unusual?</h3>
+<p>Open <code>week09_challenge_onesample_cmj.csv</code>: countermovement jump (CMJ) height for 16 netball players. A published sub-elite benchmark is μ₀ = 28 cm.</p>
+<ul>
+<li>State the null and alternative hypotheses for comparing this squad's mean CMJ against the fixed benchmark.</li>
+<li>Calculate n, mean and SD. Create a plot and write one sentence about shape and any unusual values.</li>
+<li>Calculate the standard error <code>SE = s/√n</code>, then predict <code>t ≈ (x̄ − μ₀) / SE</code> before running the test.</li>
+<li>Run <code>t.test(cmj$cmj_height_cm, mu = 28)</code>. Compare R's t, df, p-value and 95% CI with your prediction.</li>
+<li>Explain what the 95% CI says about plausible values for the squad's true mean CMJ, relative to the 28 cm benchmark.</li>
+<li>Write one sentence a strength and conditioning coach could act on.</li>
+</ul>
+</article>
+
+<article class="task">
+<h3>B. Paired t-test: did coaching change reaction time?</h3>
+<p>Open <code>week09_challenge_paired_reaction.csv</code>: reaction time (ms) for 14 sprinters, recorded before and after four weeks of block-start coaching. Lower is better.</p>
+<ul>
+<li>Explain why this is a paired rather than an independent-groups design. What would be lost by analysing it as two independent groups?</li>
+<li>Calculate each athlete's within-athlete difference (before minus after), then the mean and SD of those differences.</li>
+<li>Calculate the standard error <code>SE = s_d/√n</code>, then predict <code>t ≈ d̄ / SE</code> before running the test.</li>
+<li>Run <code>t.test(reaction$reaction_before_ms, reaction$reaction_after_ms, paired = TRUE)</code>. Compare R's output with your prediction.</li>
+<li>Explain what the 95% CI says about the plausible size of the true change, and whether zero remains plausible.</li>
+<li>Write one sentence a sprints coach could act on, and one sentence on what the paired design does and does not rule out as an explanation for the change.</li>
+</ul>
+</article>
+
+<article class="task">
+<h3>C. One-way ANOVA: which warm-up protocol works best?</h3>
+<p>Open <code>week09_challenge_anova_plyo.csv</code>: 45 athletes randomly allocated to one of three plyometric warm-up protocols (<code>control</code>, <code>depth_jump</code>, <code>hurdle_hop</code>), with CMJ height recorded afterwards.</p>
+<ul>
+<li>Explain why comparing all three protocols with three separate t-tests would be a weaker approach than a single ANOVA.</li>
+<li>Calculate n, mean and SD for each protocol. Create a boxplot comparing all three groups.</li>
+<li>Set <code>protocol</code> as a factor with levels <code>control</code>, <code>depth_jump</code>, <code>hurdle_hop</code>, then run <code>aov(cmj_height_cm ~ protocol, data = plyo)</code> and <code>summary()</code>. Report F, df and p for the omnibus test.</li>
+<li>If the omnibus test is significant, run <code>TukeyHSD()</code>. Which protocol(s) differ from control? Do the two treatment protocols differ from each other?</li>
+<li>Write one sentence a coach could act on, and one sentence explaining what the omnibus F-test does <strong>not</strong> tell you on its own.</li>
+</ul>
+</article>
+
+<article class="task">
+<h3>D. Further reflection</h3>
+<ul>
+<li><strong>Precision without changing the effect.</strong> Imagine the Part One warm-up study produced the same group means and SDs but with twice as many athletes in each group. Explain what would happen to the SE, CI width, absolute t statistic and p-value. Which quantity would remain unchanged?</li>
+<li><strong>Different practical thresholds.</strong> One coach would act on a 0.05 s improvement; another requires 0.12 s. Using the same estimate and CI from Part One, explain why they can reach different practical decisions without disagreeing about the statistics.</li>
+<li><strong>Standardised effect size.</strong> Calculate Cohen's <code>d = (x̄₁ − x̄₂) / s_pooled</code> for the Part One warm-up comparison. Using the conventional benchmarks (0.2 small, 0.5 medium, 0.8 large), how would you describe this effect? What does d add to the raw seconds figure, and what does it lose?</li>
+</ul>
+</article>
+</section>
+
+<section class="phase" id="debrief"><div class="phase-head"><h2>DEBRIEF</h2></div>
+<article class="task">
+<p>Complete both statements:</p>
+<blockquote>A t statistic tells me …</blockquote>
+<blockquote>A p-value tells me …, but it does not tell me …</blockquote>
+</article>
+</section>
+
+</main>
+<footer>B1700 · Week 9 · 2026–27</footer>
+</body></html>

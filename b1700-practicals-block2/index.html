@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1700 Practical Activities & Hints · Block Two</title>
+<style>
+:root{--blue:#124864;--blue-dark:#0d354a;--soft:#e8f1f5;--grey:#f6f8fa;--ink:#17212b;--muted:#5b6770;--line:#d8e0e5;--white:#fff;--max:1180px}*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#eef2f4}body{display:flex;flex-direction:column}.modulebar{background:var(--blue-dark);color:#fff;padding:.7rem 1rem;font-size:.92rem}.modulebar .inner,.header-inner,.portal{max-width:var(--max);margin:auto}.modulebar .inner{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}header{background:linear-gradient(180deg,var(--soft),#fff);border-bottom:1px solid var(--line)}.header-inner{padding:1.8rem 1rem 1.3rem}.kicker{color:var(--blue);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:.76rem}h1{margin:.15rem 0 .35rem;color:var(--blue);font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.1}.lede{margin:0;color:var(--muted);max-width:72ch}.portal{width:100%;padding:1rem}.controls{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem;margin-bottom:.8rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}.week-tabs,.view-tabs{display:flex;gap:.45rem;flex-wrap:wrap}button,.open-link{font:inherit}.tab{border:1px solid #b8c9d2;background:#fff;color:var(--blue);border-radius:999px;padding:.5rem .85rem;font-weight:750;cursor:pointer}.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}.week-note{font-size:.84rem;color:var(--muted);margin-top:.3rem}.view-tabs{background:var(--grey);padding:.25rem;border-radius:10px}.view-tabs .tab{border:0;border-radius:8px;padding:.48rem .9rem;background:transparent}.view-tabs .tab.active{background:#fff;color:var(--blue);box-shadow:0 1px 5px rgba(13,53,74,.14)}.meta{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:.6rem 0;color:var(--muted);font-size:.88rem}.meta strong{color:var(--blue-dark)}.open-link{color:var(--blue);font-weight:700;text-decoration:none}.open-link:hover{text-decoration:underline}.frame-wrap{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 3px 16px rgba(13,53,74,.07)}iframe{display:block;width:100%;height:calc(100vh - 265px);min-height:620px;border:0;background:#fff}footer{max-width:var(--max);width:100%;margin:auto;padding:.7rem 1rem 1.5rem;color:var(--muted);font-size:.82rem}@media(max-width:680px){.controls{align-items:flex-start}.controls>div{width:100%}.view-tabs{width:max-content!important}iframe{height:calc(100vh - 355px);min-height:560px}}
+</style>
+</head>
+<body>
+<div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
+<header><div class="header-inner"><div class="kicker">Practical activities · Block Two</div><h1>Tasks &amp; Hints</h1><p class="lede">Riverside Cycling Club. Choose the week, work through the task, and open the hints only when you need support to make progress.</p></div></header>
+<main class="portal">
+  <div class="controls">
+    <div>
+      <div class="week-tabs" role="tablist" aria-label="Week navigation">
+        <button class="tab week-tab active" data-week="9" type="button" role="tab" aria-selected="true">Week 9 · From Description to Inference</button>
+        <button class="tab week-tab" data-week="10" type="button" role="tab" aria-selected="false">Week 10 · Modelling Relationships</button>
+      </div>
+      <div class="week-note">Weeks 9–10 form Block Two, leading to Assessment Two. Week 11 is a lecture-only session and is not included here.</div>
+    </div>
+    <div class="view-tabs" role="tablist" aria-label="Resource view">
+      <button id="taskTab" class="tab active" type="button" role="tab" aria-selected="true">Task</button>
+      <button id="hintTab" class="tab" type="button" role="tab" aria-selected="false">Hints</button>
+    </div>
+  </div>
+  <div class="meta"><span><strong id="viewTitle">Week 9 Task</strong> · <span id="weekTitle">From Description to Inference</span></span><a id="openLink" class="open-link" href="week09-task.html" target="_blank" rel="noopener">Open this page separately ↗</a></div>
+  <div class="frame-wrap"><iframe id="contentFrame" title="Week 9 Task" src="week09-task.html"></iframe></div>
+</main>
+<footer>B1700 · Practical activities portal · Block Two · Task and hint pages remain available as separate resources.</footer>
+<script>
+const frame=document.getElementById('contentFrame');
+const taskTab=document.getElementById('taskTab');
+const hintTab=document.getElementById('hintTab');
+const openLink=document.getElementById('openLink');
+const viewTitle=document.getElementById('viewTitle');
+const weekTitle=document.getElementById('weekTitle');
+const weekTabs=[...document.querySelectorAll('.week-tab')];
+const weeks={
+  '9':{label:'Week 9',title:'From Description to Inference',task:'week09-task.html',hints:'week09-hints.html'},
+  '10':{label:'Week 10',title:'Modelling Relationships',task:'week10-task.html',hints:'week10-hints.html'}
+};
+let currentWeek='9';let currentView='task';
+function render(updateUrl=true){
+  const w=weeks[currentWeek];
+  const src=currentView==='hints'?w.hints:w.task;
+  const label=`${w.label} ${currentView==='hints'?'Hints':'Task'}`;
+  frame.src=src;frame.title=label;openLink.href=src;viewTitle.textContent=label;weekTitle.textContent=w.title;
+  weekTabs.forEach(btn=>{const active=btn.dataset.week===currentWeek;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',active?'true':'false');});
+  taskTab.classList.toggle('active',currentView==='task');hintTab.classList.toggle('active',currentView==='hints');
+  taskTab.setAttribute('aria-selected',currentView==='task'?'true':'false');hintTab.setAttribute('aria-selected',currentView==='hints'?'true':'false');
+  if(updateUrl){const url=new URL(window.location.href);url.searchParams.set('week',currentWeek);url.searchParams.set('view',currentView);history.replaceState({},'',url);}
+}
+weekTabs.forEach(btn=>btn.addEventListener('click',()=>{currentWeek=btn.dataset.week;render();}));
+taskTab.addEventListener('click',()=>{currentView='task';render();});
+hintTab.addEventListener('click',()=>{currentView='hints';render();});
+const params=new URLSearchParams(window.location.search);const qWeek=params.get('week');const qView=params.get('view');
+if(weeks[qWeek])currentWeek=qWeek;if(qView==='hints')currentView='hints';render(false);
+</script>
+</body></html>
