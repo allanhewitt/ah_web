@@ -1,0 +1,63 @@
+<svg viewBox="0 0 1512 340" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+
+  <!-- Missing/implausible card -->
+  <g>
+    <rect x="10" y="10" width="352" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="352" height="8" rx="4" fill="#16191C"/>
+    <text x="50" y="70" font-size="15" font-weight="700" letter-spacing="2" fill="#6B7078">PROBLEM 1</text>
+    <text x="50" y="104" font-size="22" font-weight="700" fill="#16191C">Missing or</text>
+    <text x="50" y="130" font-size="22" font-weight="700" fill="#16191C">implausible values</text>
+    <rect x="50" y="160" width="272" height="60" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="80" y="188" font-size="15" fill="#6B7078">NA vs. -99 vs. 200.5</text>
+    <text x="80" y="208" font-size="15" fill="#6B7078">presence &#8800; validity</text>
+    <text x="50" y="266" font-size="15" fill="#3A3F44">Fix: diagnose range,</text>
+    <text x="50" y="288" font-size="15" fill="#3A3F44">represent as NA if</text>
+    <text x="50" y="310" font-size="15" fill="#3A3F44">clearly impossible.</text>
+  </g>
+
+  <!-- Duplicates card -->
+  <g transform="translate(382,0)">
+    <rect x="10" y="10" width="352" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="352" height="8" rx="4" fill="#16191C"/>
+    <text x="50" y="70" font-size="15" font-weight="700" letter-spacing="2" fill="#6B7078">PROBLEM 2</text>
+    <text x="50" y="104" font-size="22" font-weight="700" fill="#16191C">Duplicates</text>
+    <text x="50" y="130" font-size="22" font-weight="700" fill="#16191C">relative to grain</text>
+    <rect x="50" y="160" width="272" height="60" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="80" y="188" font-size="15" fill="#6B7078">repeated player_id</text>
+    <text x="80" y="208" font-size="15" fill="#6B7078">is expected, not an error</text>
+    <text x="50" y="266" font-size="15" fill="#3A3F44">Fix: check for exact</text>
+    <text x="50" y="288" font-size="15" fill="#3A3F44">repeated rows, not</text>
+    <text x="50" y="310" font-size="15" fill="#3A3F44">repeated identifiers.</text>
+  </g>
+
+  <!-- Inconsistent labels card -->
+  <g transform="translate(754,0)">
+    <rect x="10" y="10" width="352" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="352" height="8" rx="4" fill="#16191C"/>
+    <text x="50" y="70" font-size="15" font-weight="700" letter-spacing="2" fill="#6B7078">PROBLEM 3</text>
+    <text x="50" y="104" font-size="22" font-weight="700" fill="#16191C">Inconsistent</text>
+    <text x="50" y="130" font-size="22" font-weight="700" fill="#16191C">categorical labels</text>
+    <rect x="50" y="160" width="272" height="60" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="80" y="188" font-size="15" fill="#6B7078">"Forward" / "forward"</text>
+    <text x="80" y="208" font-size="15" fill="#6B7078">/ " FWD " are one category</text>
+    <text x="50" y="266" font-size="15" fill="#3A3F44">Fix: trim and lower</text>
+    <text x="50" y="288" font-size="15" fill="#3A3F44">case, then explicitly</text>
+    <text x="50" y="310" font-size="15" fill="#3A3F44">map abbreviations.</text>
+  </g>
+
+  <!-- Wide structure card -->
+  <g transform="translate(1126,0)">
+    <rect x="10" y="10" width="376" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="376" height="8" rx="4" fill="#16191C"/>
+    <text x="50" y="70" font-size="15" font-weight="700" letter-spacing="2" fill="#6B7078">PROBLEM 4</text>
+    <text x="50" y="104" font-size="22" font-weight="700" fill="#16191C">Wide structure</text>
+    <text x="50" y="130" font-size="22" font-weight="700" fill="#16191C">needs long form</text>
+    <rect x="50" y="160" width="296" height="60" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="80" y="188" font-size="15" fill="#6B7078">one column per week</text>
+    <text x="80" y="208" font-size="15" fill="#6B7078">makes grouping hard</text>
+    <text x="50" y="266" font-size="15" fill="#3A3F44">Fix: pivot_longer() so</text>
+    <text x="50" y="288" font-size="15" fill="#3A3F44">week becomes a variable,</text>
+    <text x="50" y="310" font-size="15" fill="#3A3F44">not a set of columns.</text>
+  </g>
+</svg>
+

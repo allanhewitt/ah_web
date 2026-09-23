@@ -1,0 +1,45 @@
+<svg viewBox="0 0 1512 340" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+
+  <!-- left_join card -->
+  <g>
+    <rect x="10" y="10" width="482" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="482" height="8" rx="4" fill="#16191C"/>
+    <text x="50" y="70" font-size="15" font-weight="700" letter-spacing="2" fill="#6B7078">JOIN TYPE</text>
+    <text x="50" y="108" font-size="30" font-weight="700" fill="#16191C" font-family="Consolas, monospace">left_join()</text>
+    <rect x="50" y="140" width="402" height="70" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="80" y="168" font-size="16" fill="#3A3F44">Keep every row from the left</text>
+    <text x="80" y="190" font-size="16" fill="#3A3F44">table. Add matches where found.</text>
+    <text x="50" y="248" font-size="17" font-weight="700" fill="#16191C">9 events in &#8594; 9 rows out</text>
+    <text x="50" y="272" font-size="16" fill="#6B7078">1 unmatched row gets NA,</text>
+    <text x="50" y="294" font-size="16" fill="#6B7078">not dropped.</text>
+  </g>
+
+  <!-- inner_join card -->
+  <g transform="translate(512,0)">
+    <rect x="10" y="10" width="482" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="482" height="8" rx="4" fill="#6B7078"/>
+    <text x="50" y="70" font-size="15" font-weight="700" letter-spacing="2" fill="#6B7078">JOIN TYPE</text>
+    <text x="50" y="108" font-size="30" font-weight="700" fill="#16191C" font-family="Consolas, monospace">inner_join()</text>
+    <rect x="50" y="140" width="402" height="70" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="80" y="168" font-size="16" fill="#3A3F44">Keep only rows that match</text>
+    <text x="80" y="190" font-size="16" fill="#3A3F44">in both tables.</text>
+    <text x="50" y="248" font-size="17" font-weight="700" fill="#16191C">9 events in &#8594; 8 rows out</text>
+    <text x="50" y="272" font-size="16" fill="#6B7078">The unmatched row is silently</text>
+    <text x="50" y="294" font-size="16" fill="#6B7078">discarded, not flagged.</text>
+  </g>
+
+  <!-- anti_join card -->
+  <g transform="translate(1014,0)">
+    <rect x="10" y="10" width="488" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="488" height="8" rx="4" fill="#6B7078"/>
+    <text x="50" y="70" font-size="15" font-weight="700" letter-spacing="2" fill="#6B7078">JOIN TYPE</text>
+    <text x="50" y="108" font-size="30" font-weight="700" fill="#16191C" font-family="Consolas, monospace">anti_join()</text>
+    <rect x="50" y="140" width="408" height="70" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="80" y="168" font-size="16" fill="#3A3F44">Keep only left-hand rows with</text>
+    <text x="80" y="190" font-size="16" fill="#3A3F44">no match on the right.</text>
+    <text x="50" y="248" font-size="17" font-weight="700" fill="#16191C">9 events in &#8594; 1 row out</text>
+    <text x="50" y="272" font-size="16" fill="#6B7078">A diagnostic tool, not an</text>
+    <text x="50" y="294" font-size="16" fill="#6B7078">analytical result.</text>
+  </g>
+</svg>
+
