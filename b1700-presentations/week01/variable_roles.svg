@@ -1,0 +1,65 @@
+<svg viewBox="0 0 1512 340" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+
+  <!-- Identifier card -->
+  <g>
+    <rect x="10" y="10" width="352" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="352" height="8" rx="4" fill="#16191C"/>
+    <!-- icon: tag -->
+    <path d="M60 62 L100 62 L130 92 L100 122 L60 122 Z" fill="none" stroke="#16191C" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="78" cy="92" r="5" fill="#16191C"/>
+    <text x="150" y="100" font-size="26" font-weight="700" fill="#16191C">Identifier</text>
+    <text x="60" y="165" font-size="18" fill="#3A3F44">Tells us which person</text>
+    <text x="60" y="190" font-size="18" fill="#3A3F44">or record.</text>
+    <rect x="60" y="230" width="272" height="60" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="196" y="257" text-anchor="middle" font-size="15" fill="#6B7078">e.g. player_id</text>
+    <text x="196" y="278" text-anchor="middle" font-size="16" font-family="Consolas, monospace" fill="#16191C">"P009"</text>
+  </g>
+
+  <!-- Category card -->
+  <g transform="translate(382,0)">
+    <rect x="10" y="10" width="352" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="352" height="8" rx="4" fill="#16191C"/>
+    <!-- icon: folder / groups -->
+    <rect x="58" y="70" width="30" height="30" rx="4" fill="none" stroke="#16191C" stroke-width="3"/>
+    <rect x="98" y="70" width="30" height="30" rx="4" fill="none" stroke="#16191C" stroke-width="3"/>
+    <rect x="78" y="105" width="30" height="30" rx="4" fill="#16191C"/>
+    <text x="150" y="100" font-size="26" font-weight="700" fill="#16191C">Category</text>
+    <text x="60" y="165" font-size="18" fill="#3A3F44">Tells us which group</text>
+    <text x="60" y="190" font-size="18" fill="#3A3F44">an observation is in.</text>
+    <rect x="60" y="230" width="272" height="60" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="196" y="257" text-anchor="middle" font-size="15" fill="#6B7078">e.g. position</text>
+    <text x="196" y="278" text-anchor="middle" font-size="16" font-family="Consolas, monospace" fill="#16191C">"Midfielder"</text>
+  </g>
+
+  <!-- Quantity card -->
+  <g transform="translate(764,0)">
+    <rect x="10" y="10" width="352" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="352" height="8" rx="4" fill="#16191C"/>
+    <!-- icon: bars -->
+    <rect x="60" y="100" width="18" height="35" fill="#16191C"/>
+    <rect x="86" y="80" width="18" height="55" fill="#16191C"/>
+    <rect x="112" y="60" width="18" height="75" fill="#16191C"/>
+    <text x="150" y="100" font-size="26" font-weight="700" fill="#16191C">Quantity</text>
+    <text x="60" y="165" font-size="18" fill="#3A3F44">Measures an amount;</text>
+    <text x="60" y="190" font-size="18" fill="#3A3F44">arithmetic can be meaningful.</text>
+    <rect x="60" y="230" width="272" height="60" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="196" y="257" text-anchor="middle" font-size="15" fill="#6B7078">e.g. age</text>
+    <text x="196" y="278" text-anchor="middle" font-size="16" font-family="Consolas, monospace" fill="#16191C">20</text>
+  </g>
+
+  <!-- Logical card -->
+  <g transform="translate(1146,0)">
+    <rect x="10" y="10" width="352" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="352" height="8" rx="4" fill="#16191C"/>
+    <!-- icon: toggle -->
+    <rect x="58" y="80" width="76" height="38" rx="19" fill="#16191C"/>
+    <circle cx="115" cy="99" r="14" fill="#ffffff"/>
+    <text x="150" y="100" font-size="26" font-weight="700" fill="#16191C">Logical</text>
+    <text x="60" y="165" font-size="18" fill="#3A3F44">Records a TRUE/FALSE</text>
+    <text x="60" y="190" font-size="18" fill="#3A3F44">condition.</text>
+    <rect x="60" y="230" width="272" height="60" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="196" y="257" text-anchor="middle" font-size="15" fill="#6B7078">e.g. is_captain</text>
+    <text x="196" y="278" text-anchor="middle" font-size="16" font-family="Consolas, monospace" fill="#16191C">FALSE</text>
+  </g>
+</svg>
+

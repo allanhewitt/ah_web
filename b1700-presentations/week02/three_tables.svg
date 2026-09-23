@@ -1,0 +1,42 @@
+<svg viewBox="0 0 1512 340" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+
+  <!-- players card -->
+  <g>
+    <rect x="10" y="10" width="482" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="482" height="8" rx="4" fill="#16191C"/>
+    <text x="50" y="80" font-size="15" font-weight="700" letter-spacing="2" fill="#6B7078">TABLE</text>
+    <text x="50" y="118" font-size="34" font-weight="700" fill="#16191C" font-family="Consolas, monospace">players</text>
+    <rect x="50" y="150" width="402" height="90" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="80" y="182" font-size="16" fill="#6B7078">One row =</text>
+    <text x="80" y="212" font-size="22" font-weight="700" fill="#16191C">one player</text>
+    <text x="50" y="278" font-size="16" fill="#3A3F44">20 rows. Repeated player_id</text>
+    <text x="50" y="302" font-size="16" fill="#3A3F44">would be a problem here.</text>
+  </g>
+
+  <!-- matches card -->
+  <g transform="translate(512,0)">
+    <rect x="10" y="10" width="482" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="482" height="8" rx="4" fill="#16191C"/>
+    <text x="50" y="80" font-size="15" font-weight="700" letter-spacing="2" fill="#6B7078">TABLE</text>
+    <text x="50" y="118" font-size="34" font-weight="700" fill="#16191C" font-family="Consolas, monospace">matches</text>
+    <rect x="50" y="150" width="402" height="90" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="80" y="182" font-size="16" fill="#6B7078">One row =</text>
+    <text x="80" y="212" font-size="22" font-weight="700" fill="#16191C">one match</text>
+    <text x="50" y="278" font-size="16" fill="#3A3F44">34 rows. One season's</text>
+    <text x="50" y="302" font-size="16" fill="#3A3F44">fixtures for the club.</text>
+  </g>
+
+  <!-- tracking card -->
+  <g transform="translate(1014,0)">
+    <rect x="10" y="10" width="488" height="320" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5"/>
+    <rect x="10" y="10" width="488" height="8" rx="4" fill="#16191C"/>
+    <text x="50" y="80" font-size="15" font-weight="700" letter-spacing="2" fill="#6B7078">TABLE</text>
+    <text x="50" y="118" font-size="30" font-weight="700" fill="#16191C" font-family="Consolas, monospace">tracking</text>
+    <rect x="50" y="150" width="408" height="90" rx="8" fill="#ffffff" stroke="#E4E6E8" stroke-width="1"/>
+    <text x="80" y="176" font-size="16" fill="#6B7078">One row = one player</text>
+    <text x="80" y="206" font-size="20" font-weight="700" fill="#16191C">appearance in one match</text>
+    <text x="50" y="278" font-size="16" fill="#3A3F44">476 rows. Repeated player_id</text>
+    <text x="50" y="302" font-size="16" fill="#3A3F44">is expected, not an error.</text>
+  </g>
+</svg>
+
