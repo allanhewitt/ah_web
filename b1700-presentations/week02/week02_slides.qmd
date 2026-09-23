@@ -1,0 +1,286 @@
+---
+title: "Week 2: Importing Data and Establishing Trust"
+subtitle: "B1700 · Week 2 · 2026-27"
+format:
+  revealjs:
+    theme: default
+    css: ../styles.css
+    slide-number: true
+    transition: none
+    width: 1600
+    height: 900
+    margin: 0.08
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+---
+
+## Our six-week analytical journey
+
+![](roadmap_week02.svg){width="100%"}
+
+Today:
+
+# TRUST
+
+------------------------------------------------------------------------
+
+## PART ONE
+
+# Introduction
+
+------------------------------------------------------------------------
+
+## Retrieval
+
+1. What does one row represent in the squad table?
+2. Can two variables have the same R class but different analytical meanings?
+3. Why is `squad_number` not automatically a quantity just because it is numeric?
+
+------------------------------------------------------------------------
+
+## Central question
+
+# Did the data enter R correctly, and should we trust what came in?
+
+::: {.why}
+A successful import is not proof that the resulting data are analytically usable.
+:::
+
+> **Every downstream result depends on the integrity of the data foundation.**
+
+------------------------------------------------------------------------
+
+## Consequence problem
+
+A GPS file imports with no error.
+
+But one field has the wrong type, some values are missing, and an identifier does not match the roster.
+
+A coach wants a report today.
+
+### Are we ready to analyse?
+
+------------------------------------------------------------------------
+
+## Our trust workflow
+
+> **IMPORT → INSPECT → CHECK → VERIFY → STATE WHAT REMAINS UNCERTAIN**
+
+We are not trying to prove that the data are perfect.
+
+We are trying to establish what we can reasonably trust before analysis begins.
+
+------------------------------------------------------------------------
+
+## Import, then inspect
+
+```r
+players <- read_csv("data/players.csv")
+```
+
+Then ask:
+
+```r
+glimpse(players)
+head(players)
+```
+
+- Does the object look like the table we expected?
+- What does one row represent?
+- Are important variables represented plausibly?
+
+------------------------------------------------------------------------
+
+## Three Strathclyde FC tables
+
+![](three_tables.svg){width="100%"}
+
+**The grain of a table is what one row represents.**
+
+These three tables have different grain. That affects what repeated IDs mean.
+
+------------------------------------------------------------------------
+
+## Dimensions are a basic expectation check
+
+```r
+nrow(players)
+ncol(players)
+names(players)
+```
+
+These are not sophisticated analyses.
+
+They help answer a fundamental question:
+
+> **Did we import the object we thought we imported?**
+
+------------------------------------------------------------------------
+
+## Check important representations
+
+```r
+class(players$player_id)
+class(players$squad_number)
+class(players$contract_end)
+```
+
+Do not inspect every type for its own sake.
+
+Focus on variables whose representation could affect later analysis.
+
+------------------------------------------------------------------------
+
+## Dates need an explicit interpretation
+
+`contract_end` is stored as `DD/MM/YYYY`.
+
+```r
+players$contract_end <- as.Date(
+  players$contract_end,
+  format = "%d/%m/%Y"
+)
+```
+
+Then verify both representation and values:
+
+```r
+class(players$contract_end)
+sum(is.na(players$contract_end))
+head(players$contract_end)
+min(players$contract_end)
+max(players$contract_end)
+```
+
+> **A conversion is not complete until we check what happened to the actual values.**
+
+A wrong conversion can still produce a `Date` column with no missing values.
+
+------------------------------------------------------------------------
+
+## Missingness and plausibility are different questions
+
+```r
+sum(is.na(tracking$match_rating))
+```
+
+Missing means there is no recorded value.
+
+A recorded value can still be unusual or implausible.
+
+Use familiar summaries such as `min()` and `max()` to ask whether important numerical fields look plausible.
+
+Today we identify concerns.
+
+Week 4 asks how to intervene.
+
+------------------------------------------------------------------------
+
+## Identifier coverage
+
+Does every tracking player exist in the player table?
+
+```r
+all(tracking$player_id %in% players$player_id)
+```
+
+Does every tracking match exist in the match table?
+
+```r
+all(tracking$match_id %in% matches$match_id)
+```
+
+These checks test the integrity of the data foundation before joining in Week 5.
+
+------------------------------------------------------------------------
+
+## The trust statement
+
+A good trust statement separates:
+
+**what we have verified**
+
+from
+
+**what we have not yet established**
+
+For example, correct structure does not prove every measurement is accurate.
+
+------------------------------------------------------------------------
+
+## PART TWO
+
+# Pick up your task sheet
+
+------------------------------------------------------------------------
+
+## Work through, in order
+
+- **CORE**: establish trust in the Strathclyde FC data (`week02_session.R`)
+- **TRANSFER**: diagnose an unfamiliar athletics results file
+- **CHALLENGE**: trust audit, if time allows
+
+Use the hint sheet if you get stuck.
+
+**Slides are paused until we regroup.**
+
+------------------------------------------------------------------------
+
+## PART THREE
+
+# Regroup: whole-group debrief
+
+------------------------------------------------------------------------
+
+## Unusual does not mean wrong
+
+`DNS` may be meaningful information.
+
+`01` may be an identifier.
+
+A mixed-format date may genuinely obstruct analysis.
+
+The analyst must distinguish:
+
+> **unusual value vs representation problem vs possible data-quality problem**
+
+------------------------------------------------------------------------
+
+## So what?
+
+A sophisticated model built on misunderstood input is still a poor analysis.
+
+> **Trust is established, not assumed.**
+
+------------------------------------------------------------------------
+
+## Assessment One connection
+
+You may need to:
+
+- import and inspect unfamiliar tables;
+- identify their grain;
+- recognise meaningful representation problems;
+- detect missing or implausible evidence;
+- test whether identifiers are covered by a reference table.
+
+The important skill is deciding which checks matter.
+
+------------------------------------------------------------------------
+
+## End checkpoint
+
+Before analysing imported data, can you say:
+
+1. what one row represents?
+2. whether the table and important variables look as expected?
+3. whether important values are missing or implausible?
+4. whether identifiers connect as expected?
+5. what remains uncertain?
+
+Next week:
+
+# TRANSFORM
+

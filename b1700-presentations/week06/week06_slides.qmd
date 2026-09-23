@@ -1,0 +1,337 @@
+---
+title: "Week 6: Describing and Communicating Evidence"
+subtitle: "B1700 · Week 6 · 2026-27"
+format:
+  revealjs:
+    theme: default
+    css: ../styles.css
+    slide-number: true
+    transition: none
+    width: 1600
+    height: 900
+    margin: 0.08
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+---
+
+## Our six-week analytical journey
+
+![](roadmap_week06.svg){width="100%"}
+
+Today we bring the workflow together:
+
+# DESCRIBE & COMMUNICATE
+
+------------------------------------------------------------------------
+
+## PART ONE
+
+# Introduction
+
+------------------------------------------------------------------------
+
+## Retrieval
+
+Before communicating evidence, what earlier questions still matter?
+
+- What does one row represent?
+- Is the variable meaningful for the operation?
+- Have missing/implausible values been considered?
+- If tables were joined, was the resulting grain verified?
+
+A graph does not remove the need for earlier analytical judgement.
+
+------------------------------------------------------------------------
+
+## Central question
+
+# What does the evidence show, and how should we represent it?
+
+::: {.why}
+A technically correct summary can still provide a misleading or incomplete account of the evidence.
+:::
+
+------------------------------------------------------------------------
+
+## Consequence problem
+
+Two analysts use the same observations.
+
+One reports only a mean.
+
+The other shows the distribution and its spread.
+
+Both calculations are technically correct.
+
+### Do they communicate the same evidence?
+
+------------------------------------------------------------------------
+
+## A representation is a choice
+
+Every statistic compresses.
+
+Every plot directs attention.
+
+So ask:
+
+> **What does this reveal?**
+
+and
+
+> **What does it hide?**
+
+------------------------------------------------------------------------
+
+## Start from the question and variable structure
+
+A simple framework is enough for many introductory problems:
+
+> **one numeric variable → histogram**
+
+> **numeric + category → boxplot**
+
+> **two numeric variables → scatterplot**
+
+Choose the representation because it matches the question, not because it is familiar.
+
+------------------------------------------------------------------------
+
+## Numerical summaries: centre
+
+```r
+mean(x)
+median(x)
+```
+
+The mean uses every value.
+
+The median identifies the middle.
+
+If they differ, ask what the distribution may be doing.
+
+------------------------------------------------------------------------
+
+## Numerical summaries: spread
+
+```r
+sd(x)
+IQR(x)
+quantile(x)
+```
+
+Centre without spread is often incomplete.
+
+Two groups can have similar means but very different variability.
+
+------------------------------------------------------------------------
+
+## Histogram: one numeric variable
+
+```r
+ggplot(analysis_data, aes(x = distance_km)) +
+  geom_histogram(binwidth = 1)
+```
+
+Question:
+
+> What is the distribution of distance covered?
+
+Bin width can change the visual impression without changing the observations.
+
+------------------------------------------------------------------------
+
+## Boxplot: numeric + category
+
+```r
+ggplot(
+  analysis_data,
+  aes(x = position, y = distance_km)
+) +
+  geom_boxplot()
+```
+
+Question:
+
+> How does distance differ across positions?
+
+A boxplot can reveal spread and unusual observations that a table of means may hide.
+
+------------------------------------------------------------------------
+
+## Scatterplot: two numeric variables
+
+```r
+ggplot(
+  analysis_data,
+  aes(x = distance_km, y = sprints)
+) +
+  geom_point()
+```
+
+Question:
+
+> How are distance and sprint count related?
+
+Describe the observed pattern before explaining why it may occur.
+
+------------------------------------------------------------------------
+
+## Association is not causation
+
+If distance and sprints are associated, we can describe the pattern.
+
+We cannot conclude from the scatterplot alone that:
+
+> increasing distance **causes** more sprints
+
+Other variables or the structure of the activity may explain the relationship.
+
+------------------------------------------------------------------------
+
+## Presentation choices still matter
+
+Technically correct plots can communicate poorly through:
+
+- misleading scales;
+- unhelpful bin widths;
+- clutter;
+- missing labels;
+- excessive visual emphasis.
+
+The task is not simply to make a graph. It is to represent evidence responsibly.
+
+------------------------------------------------------------------------
+
+## Put the slides down
+
+# Pick up the visual critique handout
+
+------------------------------------------------------------------------
+
+## Visual critique: laptops closed
+
+Work through the four panels on the printed handout:
+
+1. scale;
+2. histogram bins;
+3. clutter and excessive encoding;
+4. summary versus individual observations.
+
+For each case ask:
+
+> **What does this make easy to see? What does it make difficult to see?**
+
+**Slides resume once everyone has worked through all four panels.**
+
+------------------------------------------------------------------------
+
+## Labels serve the analytical question
+
+```r
+labs(
+  title = "...",
+  x = "...",
+  y = "..."
+) +
+  theme_minimal()
+```
+
+Clear labels should help a reader understand what is being compared or related.
+
+------------------------------------------------------------------------
+
+## PART TWO
+
+# Pick up your task sheet
+
+------------------------------------------------------------------------
+
+## Work through, in order
+
+- **CORE**: describe and communicate Strathclyde FC evidence (`week06_session.R`, no joining required)
+- **TRANSFER**: swimming performance, training load and race time
+- **CHALLENGE**: two representations of the same comparison, if time allows
+
+Use the hint sheet if you get stuck.
+
+**Slides are paused until we regroup.**
+
+------------------------------------------------------------------------
+
+## PART THREE
+
+# Regroup: whole-group debrief
+
+------------------------------------------------------------------------
+
+## Grouping can change the story
+
+A relationship seen in pooled data may look different within meaningful subgroups.
+
+In the swimming transfer file, event groups operate on very different race-time scales.
+
+So ask:
+
+> **Am I comparing like with like?**
+
+------------------------------------------------------------------------
+
+## Six-week lesson
+
+R can:
+
+- import;
+- transform;
+- clean;
+- join;
+- calculate;
+- plot.
+
+R cannot decide:
+
+- what a variable means;
+- whether evidence is trustworthy;
+- which question matters;
+- whether a cleaning decision is defensible;
+- whether a join preserves the intended grain;
+- what conclusion is justified.
+
+------------------------------------------------------------------------
+
+## So what?
+
+A graph is not the data.
+
+A statistic is not the data.
+
+Both are selective representations used to answer a question.
+
+> **Good communication makes the analytical choices visible rather than hiding them.**
+
+------------------------------------------------------------------------
+
+## Assessment One connection
+
+The common core is deliberately finite.
+
+You are not being assessed on every R function you have seen.
+
+You are being assessed on whether you can:
+
+> **recognise the analytical task → choose basic operations → obtain a defensible result → interpret it**
+
+------------------------------------------------------------------------
+
+## End of the six-week core
+
+Can you now move through:
+
+> **UNDERSTAND → TRUST → TRANSFORM → CLEAN → CONNECT → DESCRIBE & COMMUNICATE**
+
+**Week 7 has no scheduled class.** Use the week to revise and practise the whole workflow with unfamiliar data.
+
+**Assessment One is in Week 8.**
+
