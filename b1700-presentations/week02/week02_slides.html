@@ -1214,14 +1214,6 @@ margin-right: 0; }
 <h1>Introduction</h1>
 
 </section>
-<section id="retrieval" class="slide level2">
-<h2>Retrieval</h2>
-<ol type="1">
-<li>What does one row represent in the squad table?</li>
-<li>Can two variables have the same R class but different analytical meanings?</li>
-<li>Why is <code>squad_number</code> not automatically a quantity just because it is numeric?</li>
-</ol>
-</section>
 <section id="central-question" class="slide level2">
 <h2>Central question</h2>
 </section></section>
@@ -1247,12 +1239,27 @@ margin-right: 0; }
 <blockquote>
 <p><strong>IMPORT → INSPECT → CHECK → VERIFY → STATE WHAT REMAINS UNCERTAIN</strong></p>
 </blockquote>
-<p>We are not trying to prove that the data are perfect.</p>
-<p>We are trying to establish what we can reasonably trust before analysis begins.</p>
+<p>We are not trying to prove that the data are perfect but…</p>
+<p>We ARE trying to establish what we can reasonably trust before analysis begins.</p>
+</section>
+<section id="set-up-your-workspace" class="slide level2">
+<h2>Set up your workspace</h2>
+<ol type="1">
+<li><strong>Download</strong> the Week 2 project (<code>week_two_r_project.zip</code>)</li>
+<li><strong>Decompress</strong> it (Extract All on Windows; double-click on a Mac)</li>
+<li><strong>Open</strong> <code>week_two.Rproj</code> in RStudio</li>
+<li>Check that the Files pane shows the <code>data</code> folder</li>
+<li><strong>Create a new script</strong>: File &gt; New File &gt; R Script</li>
+<li>Type the commands as we go, and add your own comments (lines starting with <code>#</code>)</li>
+</ol>
 </section>
 <section id="import-then-inspect" class="slide level2">
 <h2>Import, then inspect</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href aria-label="1"></a>players <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/players.csv&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href aria-label="1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href aria-label="2"></a></span>
+<span id="cb1-3"><a href aria-label="3"></a>players <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/players.csv&quot;</span>)</span>
+<span id="cb1-4"><a href aria-label="4"></a>matches <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/match_results.csv&quot;</span>)</span>
+<span id="cb1-5"><a href aria-label="5"></a>tracking <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/player_match_tracking.csv&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Then ask:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href aria-label="1"></a><span class="fu">glimpse</span>(players)</span>
 <span id="cb2-2"><a href aria-label="2"></a><span class="fu">head</span>(players)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1289,17 +1296,26 @@ margin-right: 0; }
 </section>
 <section id="dates-need-an-explicit-interpretation" class="slide level2">
 <h2>Dates need an explicit interpretation</h2>
-<p><code>contract_end</code> is stored as <code>DD/MM/YYYY</code>.</p>
+<p><code>contract_end</code> is stored as text, in <code>DD/MM/YYYY</code> layout.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href aria-label="1"></a>players<span class="sc">$</span>contract_end <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(</span>
-<span id="cb5-2"><a href aria-label="2"></a>  players<span class="sc">$</span>contract_end,</span>
-<span id="cb5-3"><a href aria-label="3"></a>  <span class="at">format =</span> <span class="st">&quot;%d/%m/%Y&quot;</span></span>
+<span id="cb5-2"><a href aria-label="2"></a>  players<span class="sc">$</span>contract_end,   <span class="co"># the text column to convert</span></span>
+<span id="cb5-3"><a href aria-label="3"></a>  <span class="at">format =</span> <span class="st">&quot;%d/%m/%Y&quot;</span>     <span class="co"># how to read it: day/month/year</span></span>
 <span id="cb5-4"><a href aria-label="4"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Then verify both representation and values:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href aria-label="1"></a><span class="fu">class</span>(players<span class="sc">$</span>contract_end)</span>
-<span id="cb6-2"><a href aria-label="2"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(players<span class="sc">$</span>contract_end))</span>
-<span id="cb6-3"><a href aria-label="3"></a><span class="fu">head</span>(players<span class="sc">$</span>contract_end)</span>
-<span id="cb6-4"><a href aria-label="4"></a><span class="fu">min</span>(players<span class="sc">$</span>contract_end)</span>
-<span id="cb6-5"><a href aria-label="5"></a><span class="fu">max</span>(players<span class="sc">$</span>contract_end)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>%d</code> is the day, <code>%m</code> the month and <code>%Y</code> the four-digit year</li>
+<li>The <code>/</code> characters match the separators in the file</li>
+<li>We tell R the layout; it does not guess</li>
+<li>The result replaces the original column</li>
+</ul>
+<p>If the layout does not match, R gives <code>NA</code> rather than an error.</p>
+</section>
+<section id="verify-the-conversion" class="slide level2">
+<h2>Verify the conversion</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href aria-label="1"></a><span class="fu">class</span>(players<span class="sc">$</span>contract_end)           <span class="co"># is it now a Date?</span></span>
+<span id="cb6-2"><a href aria-label="2"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(players<span class="sc">$</span>contract_end))      <span class="co"># did any values fail to convert?</span></span>
+<span id="cb6-3"><a href aria-label="3"></a><span class="fu">head</span>(players<span class="sc">$</span>contract_end)            <span class="co"># do the converted values look right?</span></span>
+<span id="cb6-4"><a href aria-label="4"></a><span class="fu">min</span>(players<span class="sc">$</span>contract_end)             <span class="co"># earliest date</span></span>
+<span id="cb6-5"><a href aria-label="5"></a><span class="fu">max</span>(players<span class="sc">$</span>contract_end)             <span class="co"># latest date</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote>
 <p><strong>A conversion is not complete until we check what happened to the actual values.</strong></p>
 </blockquote>
@@ -1314,13 +1330,41 @@ margin-right: 0; }
 <p>Today we identify concerns.</p>
 <p>Week 4 asks how to intervene.</p>
 </section>
-<section id="identifier-coverage" class="slide level2">
-<h2>Identifier coverage</h2>
-<p>Does every tracking player exist in the player table?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href aria-label="1"></a><span class="fu">all</span>(tracking<span class="sc">$</span>player_id <span class="sc">%in%</span> players<span class="sc">$</span>player_id)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Does every tracking match exist in the match table?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href aria-label="1"></a><span class="fu">all</span>(tracking<span class="sc">$</span>match_id <span class="sc">%in%</span> matches<span class="sc">$</span>match_id)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>These checks test the integrity of the data foundation before joining in Week 5.</p>
+<section id="identifier-coverage-what-are-we-asking" class="slide level2">
+<h2>Identifier coverage: what are we asking?</h2>
+<p>Each row in <code>tracking</code> is one player in one match.</p>
+<p>It names the player (<code>player_id</code>) and the match (<code>match_id</code>).</p>
+<p>The <code>players</code> and <code>matches</code> tables are our reference lists: who exists, and which matches were played.</p>
+<blockquote>
+<p><strong>Does every ID used in <code>tracking</code> appear in its reference table?</strong></p>
+</blockquote>
+</section>
+<section id="identifier-coverage-how-r-answers" class="slide level2">
+<h2>Identifier coverage: how R answers</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href aria-label="1"></a>tracking<span class="sc">$</span>player_id <span class="sc">%in%</span> players<span class="sc">$</span>player_id</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>For each value on the left, is it found on the right?</li>
+<li>The answer is one <code>TRUE</code> or <code>FALSE</code> per row of <code>tracking</code></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href aria-label="1"></a><span class="fu">all</span>(tracking<span class="sc">$</span>player_id <span class="sc">%in%</span> players<span class="sc">$</span>player_id)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>all()</code> collapses those answers into one</li>
+<li><code>TRUE</code> only if every single value was found</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href aria-label="1"></a><span class="fu">all</span>(tracking<span class="sc">$</span>match_id <span class="sc">%in%</span> matches<span class="sc">$</span>match_id)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Same question, for matches.</p>
+</section>
+<section id="identifier-coverage-reading-the-result" class="slide level2">
+<h2>Identifier coverage: reading the result</h2>
+<p><code>TRUE</code> tells us that every ID in <code>tracking</code> has a match in the reference table.</p>
+<p>It does <strong>not</strong> tell us that:</p>
+<ul>
+<li>the IDs point to the right player or match;</li>
+<li>the measurements attached to them are accurate;</li>
+<li>every player or match in the reference table appears in <code>tracking</code>.</li>
+</ul>
+<p><code>FALSE</code> tells us something is unmatched. We would then look for which values failed before deciding whether the data are wrong.</p>
+<p>These checks prepare the ground for joining tables in Week 5.</p>
 </section>
 <section id="the-trust-statement" class="slide level2">
 <h2>The trust statement</h2>
@@ -1334,16 +1378,16 @@ margin-right: 0; }
 <h2>PART TWO</h2>
 </section></section>
 <section>
-<section id="pick-up-your-task-sheet" class="title-slide slide level1 center">
-<h1>Pick up your task sheet</h1>
+<section id="open-the-week-two-task-sheet" class="title-slide slide level1 center">
+<h1>Open the Week Two Task Sheet</h1>
 
 </section>
 <section id="work-through-in-order" class="slide level2">
 <h2>Work through, in order</h2>
 <ul>
-<li><strong>CORE</strong>: establish trust in the Strathclyde FC data (<code>week02_session.R</code>)</li>
+<li><strong>CORE</strong>: establish trust in the Strathclyde FC data</li>
 <li><strong>TRANSFER</strong>: diagnose an unfamiliar athletics results file</li>
-<li><strong>CHALLENGE</strong>: trust audit, if time allows</li>
+<li><strong>EXTENSION</strong>: trust audit, if time allows</li>
 </ul>
 <p>Use the hint sheet if you get stuck.</p>
 <p><strong>Slides are paused until we regroup.</strong></p>
