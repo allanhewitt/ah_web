@@ -32,19 +32,11 @@ Today:
 
 ------------------------------------------------------------------------
 
-## Retrieval
-
-1. What does one row represent in the squad table?
-2. Can two variables have the same R class but different analytical meanings?
-3. Why is `squad_number` not automatically a quantity just because it is numeric?
-
-------------------------------------------------------------------------
-
 ## Central question
 
 # Did the data enter R correctly, and should we trust what came in?
 
-::: {.why}
+::: why
 A successful import is not proof that the resulting data are analytically usable.
 :::
 
@@ -68,21 +60,36 @@ A coach wants a report today.
 
 > **IMPORT → INSPECT → CHECK → VERIFY → STATE WHAT REMAINS UNCERTAIN**
 
-We are not trying to prove that the data are perfect.
+We are not trying to prove that the data are perfect but...
 
-We are trying to establish what we can reasonably trust before analysis begins.
+We ARE trying to establish what we can reasonably trust before analysis begins.
+
+------------------------------------------------------------------------
+
+## Set up your workspace
+
+1.  **Download** the Week 2 project (`week_two_r_project.zip`)
+2.  **Decompress** it (Extract All on Windows; double-click on a Mac)
+3.  **Open** `week_two.Rproj` in RStudio
+4.  Check that the Files pane shows the `data` folder
+5.  **Create a new script**: File \> New File \> R Script
+6.  Type the commands as we go, and add your own comments (lines starting with `#`)
 
 ------------------------------------------------------------------------
 
 ## Import, then inspect
 
-```r
+``` r
+library(tidyverse)
+
 players <- read_csv("data/players.csv")
+matches <- read_csv("data/match_results.csv")
+tracking <- read_csv("data/player_match_tracking.csv")
 ```
 
 Then ask:
 
-```r
+``` r
 glimpse(players)
 head(players)
 ```
@@ -105,7 +112,7 @@ These three tables have different grain. That affects what repeated IDs mean.
 
 ## Dimensions are a basic expectation check
 
-```r
+``` r
 nrow(players)
 ncol(players)
 names(players)
@@ -121,7 +128,7 @@ They help answer a fundamental question:
 
 ## Check important representations
 
-```r
+``` r
 class(players$player_id)
 class(players$squad_number)
 class(players$contract_end)
@@ -135,23 +142,32 @@ Focus on variables whose representation could affect later analysis.
 
 ## Dates need an explicit interpretation
 
-`contract_end` is stored as `DD/MM/YYYY`.
+`contract_end` is stored as text, in `DD/MM/YYYY` layout.
 
-```r
+``` r
 players$contract_end <- as.Date(
-  players$contract_end,
-  format = "%d/%m/%Y"
+  players$contract_end,   # the text column to convert
+  format = "%d/%m/%Y"     # how to read it: day/month/year
 )
 ```
 
-Then verify both representation and values:
+- `%d` is the day, `%m` the month and `%Y` the four-digit year
+- The `/` characters match the separators in the file
+- We tell R the layout; it does not guess
+- The result replaces the original column
 
-```r
-class(players$contract_end)
-sum(is.na(players$contract_end))
-head(players$contract_end)
-min(players$contract_end)
-max(players$contract_end)
+If the layout does not match, R gives `NA` rather than an error.
+
+------------------------------------------------------------------------
+
+## Verify the conversion
+
+``` r
+class(players$contract_end)           # is it now a Date?
+sum(is.na(players$contract_end))      # did any values fail to convert?
+head(players$contract_end)            # do the converted values look right?
+min(players$contract_end)             # earliest date
+max(players$contract_end)             # latest date
 ```
 
 > **A conversion is not complete until we check what happened to the actual values.**
@@ -162,7 +178,7 @@ A wrong conversion can still produce a `Date` column with no missing values.
 
 ## Missingness and plausibility are different questions
 
-```r
+``` r
 sum(is.na(tracking$match_rating))
 ```
 
@@ -178,21 +194,55 @@ Week 4 asks how to intervene.
 
 ------------------------------------------------------------------------
 
-## Identifier coverage
+## Identifier coverage: what are we asking?
 
-Does every tracking player exist in the player table?
+Each row in `tracking` is one player in one match.
 
-```r
+It names the player (`player_id`) and the match (`match_id`).
+
+The `players` and `matches` tables are our reference lists: who exists, and which matches were played.
+
+> **Does every ID used in `tracking` appear in its reference table?**
+
+------------------------------------------------------------------------
+
+## Identifier coverage: how R answers
+
+``` r
+tracking$player_id %in% players$player_id
+```
+
+- For each value on the left, is it found on the right?
+- The answer is one `TRUE` or `FALSE` per row of `tracking`
+
+``` r
 all(tracking$player_id %in% players$player_id)
 ```
 
-Does every tracking match exist in the match table?
+- `all()` collapses those answers into one
+- `TRUE` only if every single value was found
 
-```r
+``` r
 all(tracking$match_id %in% matches$match_id)
 ```
 
-These checks test the integrity of the data foundation before joining in Week 5.
+Same question, for matches.
+
+------------------------------------------------------------------------
+
+## Identifier coverage: reading the result
+
+`TRUE` tells us that every ID in `tracking` has a match in the reference table.
+
+It does **not** tell us that:
+
+- the IDs point to the right player or match;
+- the measurements attached to them are accurate;
+- every player or match in the reference table appears in `tracking`.
+
+`FALSE` tells us something is unmatched. We would then look for which values failed before deciding whether the data are wrong.
+
+These checks prepare the ground for joining tables in Week 5.
 
 ------------------------------------------------------------------------
 
@@ -212,15 +262,15 @@ For example, correct structure does not prove every measurement is accurate.
 
 ## PART TWO
 
-# Pick up your task sheet
+# Open the Week Two Task Sheet
 
 ------------------------------------------------------------------------
 
 ## Work through, in order
 
-- **CORE**: establish trust in the Strathclyde FC data (`week02_session.R`)
+- **CORE**: establish trust in the Strathclyde FC data
 - **TRANSFER**: diagnose an unfamiliar athletics results file
-- **CHALLENGE**: trust audit, if time allows
+- **EXTENSION**: trust audit, if time allows
 
 Use the hint sheet if you get stuck.
 
@@ -274,13 +324,12 @@ The important skill is deciding which checks matter.
 
 Before analysing imported data, can you say:
 
-1. what one row represents?
-2. whether the table and important variables look as expected?
-3. whether important values are missing or implausible?
-4. whether identifiers connect as expected?
-5. what remains uncertain?
+1.  what one row represents?
+2.  whether the table and important variables look as expected?
+3.  whether important values are missing or implausible?
+4.  whether identifiers connect as expected?
+5.  what remains uncertain?
 
 Next week:
 
 # TRANSFORM
-
