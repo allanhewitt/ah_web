@@ -3,32 +3,275 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>B1700 Week 2 Task — Importing Data and Establishing Trust</title>
+<title>B1700 Week 2 Task: Importing Data and Establishing Trust</title>
 <style>
-:root{--blue:#124864;--blue-dark:#0d354a;--soft:#e8f1f5;--grey:#f6f8fa;--ink:#17212b;--muted:#5b6770;--line:#d8e0e5;--green:#e8f4ee;--orange:#fdf2e2;--max:980px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.58}.modulebar{background:var(--blue-dark);color:#fff;padding:.7rem 1rem;font-size:.92rem}.modulebar .inner,.wrap{max-width:var(--max);margin:auto}.modulebar .inner{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}.hero{background:linear-gradient(180deg,var(--soft),#fff);border-bottom:1px solid var(--line)}.hero .wrap{padding:2rem 1rem 1.6rem}.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}h1{margin:.15rem 0 .35rem;color:var(--blue);font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.08}.subtitle{margin:0;color:var(--muted);font-weight:650}.wrap{padding-left:1rem;padding-right:1rem}.why,.how{margin:1.25rem auto;border-radius:12px;padding:1rem 1.1rem}.why{background:var(--soft);border-left:4px solid var(--blue)}.why h2,.how h2{margin:0 0 .4rem;font-size:.92rem;letter-spacing:.06em;text-transform:uppercase;color:var(--blue-dark)}.why p,.how p{margin:.35rem 0}.how{background:var(--grey);border:1px solid var(--line)}.phase-nav{display:flex;gap:.4rem;flex-wrap:wrap;margin:1.2rem auto}.phase-nav a{color:var(--blue);text-decoration:none;font-size:.82rem;font-weight:750;background:var(--grey);border:1px solid var(--line);padding:.35rem .55rem;border-radius:999px}.phase{margin:1.35rem auto 2rem}.phase-head{background:var(--blue);color:#fff;padding:.65rem .85rem;border-radius:10px 10px 0 0}.phase-head h2{margin:0;font-size:1rem;letter-spacing:.03em}.phase-head p{margin:.2rem 0 0;color:#dce9ef;font-size:.9rem}.task{border:1px solid var(--line);border-top:0;padding:1rem 1rem 1.05rem;background:#fff}.task:last-child{border-radius:0 0 10px 10px}.task+.task{border-top:1px solid var(--line)}.task h3{margin:0 0 .5rem;color:var(--blue-dark);font-size:1.05rem}.task p{margin:.45rem 0}.task ul{margin:.45rem 0 .55rem;padding-left:1.35rem}.record{margin-top:.75rem;background:var(--green);border-left:4px solid #4b8f6a;padding:.65rem .75rem;border-radius:6px}.workflow{font-weight:800;color:var(--blue-dark);letter-spacing:.02em}.assessment{margin:1.6rem auto 2.4rem;background:var(--orange);border-left:4px solid #d28a33;padding:.9rem 1rem;border-radius:8px}.assessment strong{color:#70400f}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#eef2f4;padding:.08rem .28rem;border-radius:4px;font-size:.92em}footer{border-top:1px solid var(--line);color:var(--muted);font-size:.84rem;padding:1rem;text-align:center}@media print{.phase-nav{display:none}.task{break-inside:avoid}body{font-size:10.5pt}}
+:root{
+  --blue:#124864;
+  --blue-dark:#0d354a;
+  --soft:#e8f1f5;
+  --grey:#f6f8fa;
+  --green:#e8f4ee;
+  --orange:#fdf2e2;
+  --ink:#17212b;
+  --muted:#5b6770;
+  --line:#d8e0e5;
+  --white:#ffffff;
+  --max:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#fff;
+  line-height:1.58;
+}
+.modulebar{
+  background:var(--blue-dark);
+  color:#fff;
+  padding:.7rem 1rem;
+  font-size:.92rem;
+}
+.modulebar .inner{
+  max-width:var(--max);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+header{
+  background:linear-gradient(180deg,var(--soft),#fff);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--max);
+  margin:auto;
+  padding:2.3rem 1rem 1.8rem;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+h1{
+  margin:.2rem 0 .25rem;
+  color:var(--blue);
+  font-size:clamp(2rem,5vw,3.1rem);
+  line-height:1.08;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:1.08rem;
+  margin:0;
+}
+main{
+  max-width:var(--max);
+  margin:auto;
+  padding:1.5rem 1rem 4rem;
+}
+.callout{
+  border:1px solid #9db8c7;
+  border-left:5px solid var(--blue);
+  border-radius:10px;
+  background:var(--soft);
+  padding:1rem 1.1rem;
+  margin:0 0 1.4rem;
+}
+.callout h2{
+  margin:0 0 .35rem;
+  color:var(--blue);
+  font-size:1rem;
+  letter-spacing:.03em;
+}
+.callout p:last-child{margin-bottom:0}
+.workflow{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1.7rem;
+}
+.workflow h2{
+  color:var(--blue);
+  font-size:1.1rem;
+  margin-top:0;
+}
+.workflow ul{margin-bottom:.2rem}
+.phase{
+  margin-top:2.1rem;
+  scroll-margin-top:1rem;
+}
+.phase-banner{
+  background:var(--blue);
+  color:#fff;
+  border-radius:9px;
+  padding:.7rem 1rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  font-size:.92rem;
+}
+.phase-intro{
+  color:var(--muted);
+  margin:.55rem .15rem 1rem;
+}
+.task{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1rem;
+  background:#fff;
+}
+.task h3{
+  margin:0 0 .65rem;
+  color:var(--blue);
+  font-size:1.18rem;
+}
+.task-label{
+  font-weight:800;
+  color:var(--blue);
+}
+.group{
+  margin:.45rem 0;
+}
+.record{
+  margin:.85rem 0 0;
+  padding:.7rem .85rem;
+  border-left:4px solid var(--blue);
+  background:var(--grey);
+  border-radius:0 7px 7px 0;
+}
+.record strong{
+  color:var(--blue);
+}
+code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:var(--grey);
+  border:1px solid #e1e6ea;
+  padding:.08em .32em;
+  border-radius:4px;
+  font-size:.92em;
+}
+pre{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.9rem 1rem;
+  overflow:auto;
+  line-height:1.45;
+}
+pre code{border:0;padding:0;background:transparent}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:.8rem 0;
+  font-size:.96rem;
+}
+th,td{
+  padding:.55rem .6rem;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{
+  background:var(--grey);
+  color:var(--blue);
+}
+blockquote{
+  margin:.8rem 0;
+  padding:.6rem 1rem;
+  border-left:4px solid #a8bac4;
+  background:var(--grey);
+  font-size:1.05rem;
+}
+.nav{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:0 0 1.6rem;
+}
+.nav a{
+  color:var(--blue);
+  text-decoration:none;
+  border:1px solid #b8c9d2;
+  border-radius:999px;
+  padding:.35rem .65rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+.nav a:hover,.nav a:focus{
+  background:var(--soft);
+  outline:none;
+}
+details{
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:0 0 .8rem;
+  background:#fff;
+  overflow:hidden;
+}
+summary{
+  cursor:pointer;
+  padding:.85rem 1rem;
+  color:var(--blue);
+  font-weight:800;
+  background:var(--grey);
+}
+summary:hover{background:var(--soft)}
+.hint-body{
+  padding:.85rem 1rem 1rem;
+}
+.hint-body p:first-child{margin-top:0}
+.hint-body p:last-child{margin-bottom:0}
+.support-note{
+  background:var(--orange);
+  border:1px solid #e7cfa8;
+  border-radius:10px;
+  padding:.9rem 1rem;
+  margin-bottom:1.4rem;
+}
+footer{
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.85rem;
+  padding:1.3rem 1rem 2rem;
+}
+footer .inner{
+  max-width:var(--max);
+  margin:auto;
+}
+@media (max-width:650px){
+  .header-inner{padding-top:1.7rem}
+  main{padding-top:1rem}
+  .task{padding:.9rem}
+  th,td{padding:.45rem}
+}
+@media print{
+  .modulebar,.nav{display:none}
+  body{font-size:11pt}
+  .task,details{break-inside:avoid}
+  details > *{display:block}
+  summary{list-style:none}
+}
 </style>
 </head>
 <body>
 <div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
-<header class="hero"><div class="wrap"><div class="eyebrow">Week 2 · Task Sheet</div><h1>Importing Data and Establishing Trust</h1><p class="subtitle">Group Task Sheet · Core → Transfer → Extension</p></div></header>
-<main class="wrap">
-<section class="why"><h2>Why this matters</h2><p><strong>Central question:</strong> Did the data enter R correctly, and should we trust what came in?</p><p>A file can import without an error and still be unfit for analysis. Every downstream result depends on the integrity of the data foundation.</p></section>
-<section class="how"><h2>How to work this week</h2><p>Work through this page in order as a small group. This task page is your activity script.</p><p>Use the supplied Week 2 RStudio project as your shared workspace. It contains the datasets, setup code and labelled spaces for each phase. Decide together what analysis or code is needed, and keep brief notes or comments in <code>week02_session.R</code> as you work. The R file is not a completed solution.</p><p>If your group gets stuck, open the Week 2 Hint Sheet and use the hint for the relevant task. Use as little support as you need, then return to the task.</p><p>Use one active RStudio project per group and rotate the person operating RStudio during the activity. Everyone should be able to explain the group's decisions.</p></section>
-<nav class="phase-nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
-<section class="phase" id="p1"><div class="phase-head"><h2>PHASE 1 — RETRIEVAL</h2><p>Reconnect Week 1 ideas with the problem of trusting imported data.</p></div><article class="task"><h3>Task 1.1 — Test three claims</h3><p><strong>As a group:</strong> Decide whether you agree with each statement and explain why:</p><ul><li>If a column is numeric in R, it should be treated as a quantity.</li><li>If <code>read_csv()</code> returns no error, the imported data are ready for analysis.</li><li>Repeated player IDs can be legitimate when one row represents a player appearance rather than one player.</li></ul><div class="record"><strong>Record:</strong> Write a brief agree/disagree justification for each claim in the Phase 1 section of the R script.</div></article></section>
-<section class="phase" id="p2"><div class="phase-head"><h2>PHASE 2 — CONSEQUENCE PROBLEM</h2><p>Apply the trust principle before any analysis begins.</p></div><article class="task"><h3>Task 2.1 — Decide what must happen first</h3><p>A GPS export imports successfully. One important variable has an awkward representation, some values are missing, and one identifier does not match the roster. A coach needs a report this afternoon.</p><p><strong>As a group:</strong> Decide what should happen before any performance analysis begins.</p><div class="record"><strong>Record:</strong> Write a short response that identifies the checks you regard as essential and why.</div></article></section>
-<section class="phase" id="p3"><div class="phase-head"><h2>PHASE 3 — CORE PRACTICAL</h2><p>Establish what can reasonably be trusted before analysis.</p></div>
-<article class="task"><h3>Task 3.1 — Establish the grain of each table</h3><p>The Week 2 project contains <code>players</code>, <code>matches</code> and <code>tracking</code>, loaded from the three supplied CSV files.</p><p><strong>As a group:</strong> Inspect all three tables and state what one row represents in each.</p><div class="record"><strong>Record:</strong> Write one clear grain statement for each table.</div></article>
-<article class="task"><h3>Task 3.2 — Check that the objects are what you expected</h3><p><strong>As a group:</strong> Record the number of rows, number of columns and variable names for each table. Decide whether the dimensions and fields match the objects you expected to import.</p><div class="record"><strong>Record:</strong> Keep a concise structure check for all three tables.</div></article>
-<article class="task"><h3>Task 3.3 — Check representations that matter</h3><p><strong>As a group:</strong> Check the classes of the most important identifiers, <code>squad_number</code>, <code>contract_end</code> and selected numerical performance variables such as <code>distance_km</code> and <code>match_rating</code>. Focus on representations that could affect later analysis.</p><div class="record"><strong>Record:</strong> Note only the representations that are analytically important or potentially problematic.</div></article>
-<article class="task"><h3>Task 3.4 — Convert and verify the contract dates</h3><p><strong>As a group:</strong> Convert <code>contract_end</code> from day/month/year into an R date. Then verify the result: check the class, whether unexpected missing values were created, some converted values, and the minimum/maximum date. Decide whether the years and date range look plausible.</p><div class="record"><strong>Record:</strong> Record your verification evidence, not just that the conversion ran.</div></article>
-<article class="task"><h3>Task 3.5 — Check missingness and plausibility</h3><p><strong>As a group:</strong> Check missingness in important tracking variables and inspect plausible ranges for selected numerical fields. Identify anything that deserves investigation.</p><div class="record"><strong>Record:</strong> List the concerns you found and distinguish “missing” from “present but potentially implausible”.</div></article>
-<article class="task"><h3>Task 3.6 — Check identifier coverage</h3><p><strong>As a group:</strong> Test whether every <code>player_id</code> in tracking exists in the player table and every <code>match_id</code> exists in the match table.</p><div class="record"><strong>Record:</strong> Record whether each coverage check passed. If not, identify the unmatched values before judging them.</div></article>
-<article class="task"><h3>Task 3.7 — Write a trust statement</h3><p><strong>As a group:</strong> Summarise the status of the Strathclyde FC data in two parts: what you have verified and what remains uncertain.</p><div class="record"><strong>Record:</strong> Write the two-part trust statement in the R script.</div></article></section>
-<section class="phase" id="p4"><div class="phase-head"><h2>PHASE 4 — CHECKPOINT</h2><p>Make the trust workflow explicit before moving to a fresh dataset.</p></div><article class="task"><h3>Task 4.1 — Checkpoint the trust workflow</h3><p class="workflow">IMPORT → INSPECT → CHECK → VERIFY → STATE WHAT REMAINS UNCERTAIN</p><p><strong>As a group:</strong> Make sure you can explain why a successful import is only the beginning of this process.</p><div class="record"><strong>Record:</strong> Write one sentence identifying the main risk this workflow is designed to prevent.</div></article></section>
-<section class="phase" id="p5"><div class="phase-head"><h2>PHASE 5 — TRANSFER</h2><p>Apply the trust workflow to an unfamiliar athletics dataset.</p></div><article class="task"><h3>Task 5.1 — Diagnose the athletics results before changing them</h3><p>Open <code>week02_transfer_results.csv</code>.</p><p><strong>As a group:</strong> For each concern you identify, decide whether it is primarily a representation problem, a possible data-quality problem, a legitimate unusual value, or something that cannot be resolved without the original source. Pay particular attention to dates, a result such as DNS, digit-based codes and numerical performance fields.</p><div class="record"><strong>Record:</strong> Create a concise diagnosis before making any changes.</div></article><article class="task"><h3>Task 5.2 — Make only defensible changes</h3><p><strong>As a group:</strong> Decide which issues can be changed on the evidence available and which should be left or flagged for investigation.</p><div class="record"><strong>Record:</strong> Document any change you make and the evidence that justifies it.</div></article></section>
-<section class="phase" id="p6"><div class="phase-head"><h2>PHASE 6 — EXTENSION</h2><p>Push beyond checking syntax to the limits of what the file itself can establish.</p></div><article class="task"><h3>Task 6.1 — Produce a trust audit</h3><p><strong>As a group:</strong> Separate what you can verify from the transfer file itself from what would require checking the original data source. The focus is the quality of the audit, not the number of functions used.</p><div class="record"><strong>Record:</strong> Write a brief trust audit with “Verified from file” and “Requires source check” sections.</div></article></section>
-<section class="phase" id="p7"><div class="phase-head"><h2>PHASE 7 — DEBRIEF</h2><p>Connect the technical checks with professional analytical responsibility.</p></div><article class="task"><h3>Task 7.1 — Explain why inspection is professional practice</h3><p><strong>As a group:</strong> Why is “inspect before analyse” a professional responsibility rather than merely good R practice?</p><div class="record"><strong>Record:</strong> Write one or two sentences that your group could defend to a coach or colleague.</div></article></section>
-<div class="assessment"><strong>Assessment One connection:</strong> import, grain, focused type/date checks, missingness/plausibility and identifier coverage are part of the common core.</div>
-</main><footer>B1700 · Week 2 · 2026–27</footer>
+<header><div class="header-inner"><div class="kicker">Week 2 · Task Sheet</div><h1>Importing Data and Establishing Trust</h1><p class="subtitle">Group Task Sheet · Core → Transfer → Extension</p></div></header>
+<main>
+<div class="callout"><h2>WHY THIS MATTERS</h2><p><strong>Central question:</strong> Did the data enter R correctly, and should we trust what came in?</p><p>A file can import without an error and still be unfit for analysis. <strong>Every downstream result depends on the integrity of the data foundation.</strong></p></div>
+<div class="workflow"><h2>How to work this week</h2><p>In the demonstration you checked the <code>players</code> table. Here you <strong>apply the same checks to different tables</strong>: <code>matches</code>, then <code>tracking</code>. The techniques are the ones you have already used. What changes is the table, the column names and, often, the answers.</p><p>Work through this page <strong>in order as a small group</strong>, in your own script (your script from the demonstration is a good starting point). Keep brief comments as you go, so that your script records both what you ran and what you concluded. A script of bare commands is not a record of your thinking.</p><p>If your group gets stuck, open the <strong>Week 2 Hint Sheet</strong> and use the hint for the relevant task. Hints show patterns with placeholders, such as <code>class(table$column)</code>. You supply the real table and column names. Use as little support as you need, then return to the task.</p><p>Use one active RStudio project per group and rotate the person operating RStudio. Everyone should be able to explain the group's decisions.</p></div>
+<nav class="nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
+<section class="phase" id="p1"><div class="phase-banner">PHASE 1: SET UP</div><p class="phase-intro">Start from a clean session and bring in the other two tables.</p><article class="task"><h3>Task 1.1: Restart and import</h3><p>Use <strong>Session &gt; Restart R</strong> so that nothing from the demonstration is left in memory. Check that <code>week_two.Rproj</code> is the open project. Start a new script, save it, and load the tidyverse.</p><p class="group"><strong>As a group:</strong> Import the three tables into objects called <code>players</code>, <code>matches</code> and <code>tracking</code>. The files are in the <code>data</code> folder: <code>players.csv</code>, <code>match_results.csv</code> and <code>player_match_tracking.csv</code>.</p><p class="record"><strong>Record:</strong> Add a comment to your script noting that each import ran without an error. Then note what that does and does not tell you.</p></article><article class="task"><h3>Task 1.2: First look at the two new tables</h3><p class="group"><strong>As a group:</strong> Take a first look at <code>matches</code> and <code>tracking</code> in the same way as you did for <code>players</code>. Decide what stands out and what you would want to check.</p><p class="record"><strong>Record:</strong> Write two or three comments listing what you would check, before you start checking.</p></article></section>
+<section class="phase" id="p2"><div class="phase-banner">PHASE 2: CORE: THE MATCHES TABLE</div><p class="phase-intro">Repeat the players checks on a table with different grain and a different date column.</p><article class="task"><h3>Task 2.1: Grain of <code>matches</code></h3><p class="group"><strong>As a group:</strong> State what one row represents. Then decide what a repeated <code>match_id</code> in this table would tell you, and how that differs from a repeated <code>player_id</code> in <code>tracking</code>.</p><p class="record"><strong>Record:</strong> One grain statement and one sentence on repeated IDs.</p></article><article class="task"><h3>Task 2.2: Dimensions and names</h3><p class="group"><strong>As a group:</strong> Record the number of rows, the number of columns and the variable names. Decide whether this is the object you expected to import.</p><p class="record"><strong>Record:</strong> A concise structure check for <code>matches</code>.</p></article><article class="task"><h3>Task 2.3: Representations that matter</h3><p class="group"><strong>As a group:</strong> Check the classes of <code>match_id</code>, <code>date</code>, <code>goals_for</code> and <code>goals_against</code>. Decide which, if any, would obstruct later analysis.</p><p class="record"><strong>Record:</strong> Note only the representations that are analytically important or potentially problematic.</p></article><article class="task"><h3>Task 2.4: Convert and verify the match dates</h3><p class="group"><strong>As a group:</strong> The dates are stored as day/month/year. Convert them into R dates, then verify the result: class, unexpected missing values, some converted values, and the earliest and latest date. Decide whether you will overwrite <code>date</code> or create a new variable, and give a reason. Finally, decide whether the date range looks like a single football season.</p><p class="record"><strong>Record:</strong> Your verification evidence and the reasoning behind your naming choice. Not just that the conversion ran.</p></article><article class="task"><h3>Task 2.5: Missingness and plausibility in <code>matches</code></h3><p class="group"><strong>As a group:</strong> Check for missing values in the important variables, including the converted dates. Then use the smallest and largest values to ask whether <code>goals_for</code> and <code>goals_against</code> are plausible.</p><p class="record"><strong>Record:</strong> Your findings, distinguishing &ldquo;missing&rdquo; from &ldquo;present but potentially implausible&rdquo;.</p></article></section>
+<section class="phase" id="p3"><div class="phase-banner">PHASE 3: CORE: THE TRACKING TABLE</div><p class="phase-intro">Now a larger table with a different grain, where the checks connect to the matches table.</p><article class="task"><h3>Task 3.1: Grain of <code>tracking</code></h3><p class="group"><strong>As a group:</strong> State what one row represents. Decide what repeated <code>player_id</code> and repeated <code>match_id</code> values mean in this table.</p><p class="record"><strong>Record:</strong> One clear grain statement.</p></article><article class="task"><h3>Task 3.2: Dimensions, names and expectations</h3><p class="group"><strong>As a group:</strong> Record the rows, columns and variable names. Then compare <code>nrow(tracking)</code> with <code>nrow(matches)</code>. What relationship do you find, and what would it imply about how many players are tracked in each match?</p><p class="record"><strong>Record:</strong> The structure check, plus the relationship you found and what you infer from it.</p></article><article class="task"><h3>Task 3.3: Representations that matter</h3><p class="group"><strong>As a group:</strong> Check the classes of <code>match_id</code>, <code>player_id</code>, <code>minutes_played</code>, <code>distance_km</code>, <code>sprints</code> and <code>match_rating</code>. Decide which are identifiers and which are quantities, and whether R has represented each one as you would expect.</p><p class="record"><strong>Record:</strong> Note only what is analytically important or potentially problematic.</p></article><article class="task"><h3>Task 3.4: Missingness in <code>tracking</code></h3><p class="group"><strong>As a group:</strong> Count the missing values in each of the numerical variables. Identify which variables have missing values and how many.</p><p class="record"><strong>Record:</strong> A short list of what is missing and where.</p></article><article class="task"><h3>Task 3.5: Plausibility in <code>tracking</code></h3><p class="group"><strong>As a group:</strong> Find the smallest and largest value of <code>minutes_played</code>, <code>distance_km</code>, <code>sprints</code> and <code>match_rating</code>. If any summary does not return a number, work out why before moving on. Use your football knowledge to judge whether each range is plausible, and identify anything that deserves investigation.</p><p class="record"><strong>Record:</strong> Each range, your judgement of it, and any concern. Keep &ldquo;missing&rdquo; separate from &ldquo;present but potentially implausible&rdquo;.</p></article></section>
+<section class="phase" id="p4"><div class="phase-banner">PHASE 4: IDENTIFIERS AND TRUST</div><p class="phase-intro">Test whether the tables can be linked, then state what you can and cannot claim.</p><article class="task"><h3>Task 4.1: Identifier coverage</h3><p class="group"><strong>As a group:</strong> Adapt the coverage check to test whether every <code>player_id</code> in <code>tracking</code> exists in <code>players</code>, and whether every <code>match_id</code> in <code>tracking</code> exists in <code>matches</code>.</p><p class="record"><strong>Record:</strong> Whether each check passed. If one fails, identify the unmatched values before judging them.</p></article><article class="task"><h3>Task 4.2: Does the direction matter?</h3><p class="group"><strong>As a group:</strong> Now reverse each check: does every player in <code>players</code> appear in <code>tracking</code>, and does every match in <code>matches</code> appear in <code>tracking</code>? Decide what a <code>FALSE</code> would mean in each direction, and whether the direction you test matters.</p><p class="record"><strong>Record:</strong> The results and one sentence on why direction matters (or does not).</p></article><article class="task"><h3>Task 4.3: Write a trust statement</h3><p class="group"><strong>As a group:</strong> Summarise the status of the <code>matches</code> and <code>tracking</code> tables in two parts: <strong>what you have verified</strong> and <strong>what remains uncertain</strong>. Then write one sentence on the main risk this workflow is designed to prevent:<blockquote><strong>IMPORT → INSPECT → CHECK → VERIFY → STATE WHAT REMAINS UNCERTAIN</strong></blockquote></p><p class="record"><strong>Record:</strong> The two-part trust statement and the one-sentence risk, as comments in your script.</p></article></section>
+<section class="phase" id="p5"><div class="phase-banner">PHASE 5: TRANSFER</div><p class="phase-intro">Apply the trust workflow to an unfamiliar athletics dataset.</p><article class="task"><h3>Task 5.1: Diagnose the athletics results before changing them</h3><p>Open <code>week02_transfer_results.csv</code>.</p><p class="group"><strong>As a group:</strong> For each concern you identify, decide whether it is primarily a representation problem, a possible data-quality problem, a legitimate unusual value, or something that cannot be resolved without the original source. Pay particular attention to dates, a result such as <code>DNS</code>, digit-based codes and numerical performance fields.</p><p class="record"><strong>Record:</strong> A concise diagnosis before making any changes.</p></article><article class="task"><h3>Task 5.2: Make only defensible changes</h3><p class="group"><strong>As a group:</strong> Decide which issues can be changed on the evidence available and which should be left or flagged for investigation.</p><p class="record"><strong>Record:</strong> Any change you make and the evidence that justifies it.</p></article></section>
+<section class="phase" id="p6"><div class="phase-banner">PHASE 6: EXTENSION</div><p class="phase-intro">Push beyond the checks you have been shown.</p><article class="task"><h3>Task 6.1: Check the structure you expected</h3><p class="group"><strong>As a group:</strong> From Task 3.2 you expect 14 <code>tracking</code> rows per match. Devise a check that tests whether this holds for every match. Then devise a check on how many players in each position appear in each match, and ask whether the result is what a football match would produce.</p><p class="record"><strong>Record:</strong> What you checked, what you found, and whether it is a problem, a legitimate unusual value, or something you cannot resolve from the file.</p></article><article class="task"><h3>Task 6.2: Produce a trust audit</h3><p class="group"><strong>As a group:</strong> Separate what you can verify from the files themselves from what would require checking the original data source. The focus is the quality of the audit, not the number of functions used.</p><p class="record"><strong>Record:</strong> A brief trust audit with &ldquo;Verified from file&rdquo; and &ldquo;Requires source check&rdquo; sections.</p></article></section>
+<section class="phase" id="p7"><div class="phase-banner">PHASE 7: DEBRIEF</div><p class="phase-intro">Connect the technical checks with professional analytical responsibility.</p><article class="task"><h3>Task 7.1: Explain why inspection is professional practice</h3><p class="group"><strong>As a group:</strong> Answer: Why is &ldquo;inspect before analyse&rdquo; a professional responsibility rather than merely good R practice?</p><p class="record"><strong>Record:</strong> One or two sentences that your group could defend to a coach or colleague.</p></article></section>
+<div class="support-note"><strong>Assessment One connection:</strong> import, grain, focused type/date checks, missingness/plausibility and identifier coverage are part of the common core.</div>
+</main>
+<footer><div class="inner">B1700 · Week 2 · 2026–27</div></footer>
 </body></html>

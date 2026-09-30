@@ -3,49 +3,293 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>B1700 Week 2 Hints — Importing Data and Establishing Trust</title>
+<title>B1700 Week 2 Hints: Importing Data and Establishing Trust</title>
 <style>
-:root{--blue:#124864;--blue-dark:#0d354a;--soft:#e8f1f5;--grey:#f6f8fa;--ink:#17212b;--muted:#5b6770;--line:#d8e0e5;--green:#e8f4ee;--orange:#fdf2e2;--max:980px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.58}.modulebar{background:var(--blue-dark);color:#fff;padding:.7rem 1rem;font-size:.92rem}.modulebar .inner,.wrap{max-width:var(--max);margin:auto}.modulebar .inner{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}.hero{background:linear-gradient(180deg,var(--soft),#fff);border-bottom:1px solid var(--line)}.hero .wrap{padding:2rem 1rem 1.6rem}.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}h1{margin:.15rem 0 .35rem;color:var(--blue);font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.08}.subtitle{margin:0;color:var(--muted);font-weight:650}.wrap{padding-left:1rem;padding-right:1rem}.intro{margin:1.25rem auto;background:var(--soft);border-left:4px solid var(--blue);border-radius:10px;padding:1rem 1.1rem}.intro h2{margin:0 0 .4rem;font-size:.92rem;letter-spacing:.06em;text-transform:uppercase;color:var(--blue-dark)}.intro p{margin:.35rem 0}.phase-nav{display:flex;gap:.4rem;flex-wrap:wrap;margin:1.2rem auto}.phase-nav a{color:var(--blue);text-decoration:none;font-size:.82rem;font-weight:750;background:var(--grey);border:1px solid var(--line);padding:.35rem .55rem;border-radius:999px}.phase{margin:1.35rem auto 2rem}.phase-head{background:var(--blue);color:#fff;padding:.65rem .85rem;border-radius:10px}.phase-head h2{margin:0;font-size:1rem;letter-spacing:.03em}.phase-head p{margin:.2rem 0 0;color:#dce9ef;font-size:.9rem}details{border:1px solid var(--line);border-radius:9px;background:#fff;margin:.75rem 0;overflow:hidden}summary{cursor:pointer;padding:.85rem 1rem;font-weight:780;color:var(--blue-dark);background:var(--grey)}details[open] summary{border-bottom:1px solid var(--line)}.hint-body{padding:.85rem 1rem}.hint-body p{margin:.4rem 0}.hint-body ul{margin:.45rem 0;padding-left:1.35rem}pre{background:#17212b;color:#f7f9fa;padding:.8rem .9rem;border-radius:7px;overflow:auto;font-size:.88rem;line-height:1.5}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.note{background:var(--green);border-left:4px solid #4b8f6a;padding:.65rem .75rem;border-radius:6px;margin-top:.65rem}footer{border-top:1px solid var(--line);color:var(--muted);font-size:.84rem;padding:1rem;text-align:center}@media print{.phase-nav{display:none}details{break-inside:avoid}details>.hint-body{display:block!important}}
+:root{
+  --blue:#124864;
+  --blue-dark:#0d354a;
+  --soft:#e8f1f5;
+  --grey:#f6f8fa;
+  --green:#e8f4ee;
+  --orange:#fdf2e2;
+  --ink:#17212b;
+  --muted:#5b6770;
+  --line:#d8e0e5;
+  --white:#ffffff;
+  --max:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#fff;
+  line-height:1.58;
+}
+.modulebar{
+  background:var(--blue-dark);
+  color:#fff;
+  padding:.7rem 1rem;
+  font-size:.92rem;
+}
+.modulebar .inner{
+  max-width:var(--max);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+header{
+  background:linear-gradient(180deg,var(--soft),#fff);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--max);
+  margin:auto;
+  padding:2.3rem 1rem 1.8rem;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+h1{
+  margin:.2rem 0 .25rem;
+  color:var(--blue);
+  font-size:clamp(2rem,5vw,3.1rem);
+  line-height:1.08;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:1.08rem;
+  margin:0;
+}
+main{
+  max-width:var(--max);
+  margin:auto;
+  padding:1.5rem 1rem 4rem;
+}
+.callout{
+  border:1px solid #9db8c7;
+  border-left:5px solid var(--blue);
+  border-radius:10px;
+  background:var(--soft);
+  padding:1rem 1.1rem;
+  margin:0 0 1.4rem;
+}
+.callout h2{
+  margin:0 0 .35rem;
+  color:var(--blue);
+  font-size:1rem;
+  letter-spacing:.03em;
+}
+.callout p:last-child{margin-bottom:0}
+.workflow{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1.7rem;
+}
+.workflow h2{
+  color:var(--blue);
+  font-size:1.1rem;
+  margin-top:0;
+}
+.workflow ul{margin-bottom:.2rem}
+.phase{
+  margin-top:2.1rem;
+  scroll-margin-top:1rem;
+}
+.phase-banner{
+  background:var(--blue);
+  color:#fff;
+  border-radius:9px;
+  padding:.7rem 1rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  font-size:.92rem;
+}
+.phase-intro{
+  color:var(--muted);
+  margin:.55rem .15rem 1rem;
+}
+.task{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1rem;
+  background:#fff;
+}
+.task h3{
+  margin:0 0 .65rem;
+  color:var(--blue);
+  font-size:1.18rem;
+}
+.task-label{
+  font-weight:800;
+  color:var(--blue);
+}
+.group{
+  margin:.45rem 0;
+}
+.record{
+  margin:.85rem 0 0;
+  padding:.7rem .85rem;
+  border-left:4px solid var(--blue);
+  background:var(--grey);
+  border-radius:0 7px 7px 0;
+}
+.record strong{
+  color:var(--blue);
+}
+code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:var(--grey);
+  border:1px solid #e1e6ea;
+  padding:.08em .32em;
+  border-radius:4px;
+  font-size:.92em;
+}
+pre{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.9rem 1rem;
+  overflow:auto;
+  line-height:1.45;
+}
+pre code{border:0;padding:0;background:transparent}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:.8rem 0;
+  font-size:.96rem;
+}
+th,td{
+  padding:.55rem .6rem;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{
+  background:var(--grey);
+  color:var(--blue);
+}
+blockquote{
+  margin:.8rem 0;
+  padding:.6rem 1rem;
+  border-left:4px solid #a8bac4;
+  background:var(--grey);
+  font-size:1.05rem;
+}
+.nav{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:0 0 1.6rem;
+}
+.nav a{
+  color:var(--blue);
+  text-decoration:none;
+  border:1px solid #b8c9d2;
+  border-radius:999px;
+  padding:.35rem .65rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+.nav a:hover,.nav a:focus{
+  background:var(--soft);
+  outline:none;
+}
+details{
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:0 0 .8rem;
+  background:#fff;
+  overflow:hidden;
+}
+summary{
+  cursor:pointer;
+  padding:.85rem 1rem;
+  color:var(--blue);
+  font-weight:800;
+  background:var(--grey);
+}
+summary:hover{background:var(--soft)}
+.hint-body{
+  padding:.85rem 1rem 1rem;
+}
+.hint-body p:first-child{margin-top:0}
+.hint-body p:last-child{margin-bottom:0}
+.support-note{
+  background:var(--orange);
+  border:1px solid #e7cfa8;
+  border-radius:10px;
+  padding:.9rem 1rem;
+  margin-bottom:1.4rem;
+}
+footer{
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.85rem;
+  padding:1.3rem 1rem 2rem;
+}
+footer .inner{
+  max-width:var(--max);
+  margin:auto;
+}
+@media (max-width:650px){
+  .header-inner{padding-top:1.7rem}
+  main{padding-top:1rem}
+  .task{padding:.9rem}
+  th,td{padding:.45rem}
+}
+@media print{
+  .modulebar,.nav{display:none}
+  body{font-size:11pt}
+  .task,details{break-inside:avoid}
+  details > *{display:block}
+  summary{list-style:none}
+}
 </style>
 </head>
 <body>
 <div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
-<header class="hero"><div class="wrap"><div class="eyebrow">Week 2 · Hint Sheet</div><h1>Importing Data and Establishing Trust</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header>
-<main class="wrap">
-<section class="intro"><h2>How to use this page</h2><p>Use this page only when your group needs help to make progress. Find the hint for the task you are working on, open only that hint, use as little support as you need, then return to the task sheet.</p><p>The hints may suggest an R function or a way of thinking, but they do not replace the group's analytical judgement.</p></section>
-<nav class="phase-nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
-<section class="phase" id="p1"><div class="phase-head"><h2>PHASE 1 — RETRIEVAL</h2><p>Use these prompts only if the three claims are difficult to unpack.</p></div><details><summary>Hint for Task 1.1 — Test three claims</summary><div class="hint-body"><p>Separate representation from analytical meaning, remember that successful import does not validate contents, and use grain to decide whether repeated IDs are expected.</p></div></details></section>
-<section class="phase" id="p2"><div class="phase-head"><h2>PHASE 2 — CONSEQUENCE PROBLEM</h2><p>Think in terms of evidence needed before a report is defensible.</p></div><details><summary>Hint for Task 2.1 — Decide what must happen first</summary><div class="hint-body"><p>Useful categories are structure, representation, missingness/plausibility and identifier coverage. You are not trying to prove the file is perfect; you are trying to establish what can be trusted.</p></div></details></section>
-<section class="phase" id="p3"><div class="phase-head"><h2>PHASE 3 — CORE PRACTICAL</h2><p>Reveal only the syntax or reasoning your group needs.</p></div>
-<details><summary>Hint for Task 3.1 — Establish the grain of each table</summary><div class="hint-body"><pre><code>glimpse(players)
-head(players)
-glimpse(matches)
-glimpse(tracking)</code></pre><p>The grain is what one row represents. State it in words before treating repeated IDs as a problem.</p></div></details>
-<details><summary>Hint for Task 3.2 — Check that the objects are what you expected</summary><div class="hint-body"><pre><code>nrow(players)
-ncol(players)
-names(players)</code></pre><p>Repeat for the other tables. These are expectation checks, not sophisticated analyses.</p></div></details>
-<details><summary>Hint for Task 3.3 — Check representations that matter</summary><div class="hint-body"><pre><code>class(players$player_id)
-class(players$squad_number)
-class(players$contract_end)</code></pre><p>Inspect variables whose representation could change what later code means. You do not need to convert a variable merely because another class is possible.</p></div></details>
-<details><summary>Hint for Task 3.4 — Convert and verify the contract dates</summary><div class="hint-body"><pre><code>players$contract_end &lt;- as.Date(
-  players$contract_end,
-  format = "%d/%m/%Y"
+<header><div class="header-inner"><div class="kicker">Week 2 · Hint Sheet</div><h1>Importing Data and Establishing Trust</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header>
+<main>
+<div class="callout"><h2>HOW TO USE THIS PAGE</h2><p>Use this page <strong>only when your group needs help to make progress</strong>. Find the hint for the task you are working on, open only that hint, use as little support as you need, then return to the task sheet.</p><p>The hints show <strong>patterns</strong>. Words such as <code>table</code> and <code>column</code> are placeholders: replace them with the real table and column names. The hints do not replace the group's analytical judgement.</p></div>
+<nav class="nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
+<section class="phase" id="p1"><div class="phase-banner">PHASE 1: SET UP</div><p class="phase-intro">Start clean, then import.</p><details><summary>Hint for Task 1.1: Restart and import</summary><div class="hint-body"><p>Restart R from the <strong>Session</strong> menu. Create the script from <strong>File &gt; New File &gt; R Script</strong> and save it.</p><pre><code>library(tidyverse)
+
+table_name &lt;- read_csv(&quot;data/file_name.csv&quot;)</code></pre><p>You used this pattern for <code>players</code>. Change the object name and the file name. A successful import tells you only that R could read the file.</p></div></details><details><summary>Hint for Task 1.2: First look at the two new tables</summary><div class="hint-body"><pre><code>glimpse(table)
+head(table)</code></pre><p>Ask the same questions as before: does this look like the table I expected, what does one row represent, and are important variables represented plausibly?</p></div></details></section>
+<section class="phase" id="p2"><div class="phase-banner">PHASE 2: CORE: THE MATCHES TABLE</div><p class="phase-intro">Same patterns as the demonstration, different table and columns.</p><details><summary>Hint for Task 2.1: Grain of <code>matches</code></summary><div class="hint-body"><p>Complete the sentence &ldquo;One row is one ...&rdquo; using what you saw in <code>glimpse()</code>. Then ask what it would mean if the same ID appeared twice in a table whose rows are supposed to be unique.</p></div></details><details><summary>Hint for Task 2.2: Dimensions and names</summary><div class="hint-body"><pre><code>nrow(table)
+ncol(table)
+names(table)</code></pre><p>These are expectation checks, not sophisticated analyses.</p></div></details><details><summary>Hint for Task 2.3: Representations that matter</summary><div class="hint-body"><pre><code>class(table$column)</code></pre><p>Repeat for each column. Ask whether the class would change what later code means, not whether another class is merely possible.</p></div></details><details><summary>Hint for Task 2.4: Convert and verify the match dates</summary><div class="hint-body"><pre><code>table$column &lt;- as.Date(
+  table$column,
+  format = &quot;%d/%m/%Y&quot;
 )
 
-class(players$contract_end)
-sum(is.na(players$contract_end))
-head(players$contract_end)
-min(players$contract_end)
-max(players$contract_end)</code></pre><p>A valid Date class and zero unexpected NAs are not enough on their own. Inspect actual values and plausible bounds.</p></div></details>
-<details><summary>Hint for Task 3.5 — Check missingness and plausibility</summary><div class="hint-body"><pre><code>sum(is.na(tracking$match_rating))
-min(tracking$distance_km, na.rm = TRUE)
-max(tracking$distance_km, na.rm = TRUE)</code></pre><p>Missingness and plausibility are different checks. A recorded value can still deserve investigation.</p></div></details>
-<details><summary>Hint for Task 3.6 — Check identifier coverage</summary><div class="hint-body"><pre><code>all(tracking$player_id %in% players$player_id)
-all(tracking$match_id %in% matches$match_id)</code></pre><p>If a check returns <code>FALSE</code>, identify the values that failed before deciding that the data are wrong.</p></div></details>
-<details><summary>Hint for Task 3.7 — Write a trust statement</summary><div class="hint-body"><p>A useful structure is:</p><ul><li><strong>Verified:</strong> what the checks support;</li><li><strong>Uncertain:</strong> what cannot be established from these checks alone.</li></ul></div></details></section>
-<section class="phase" id="p4"><div class="phase-head"><h2>PHASE 4 — CHECKPOINT</h2><p>Use the sequence to check the logic of your work.</p></div><details><summary>Hint for Task 4.1 — Checkpoint the trust workflow</summary><div class="hint-body"><p>The point of the workflow is not to eliminate all uncertainty. It is to stop a successful import being mistaken for evidence that the data are analytically trustworthy.</p></div></details></section>
-<section class="phase" id="p5"><div class="phase-head"><h2>PHASE 5 — TRANSFER</h2><p>Use these prompts to avoid “cleaning” legitimate unusual values.</p></div><details><summary>Hint for Task 5.1 — Diagnose the athletics results before changing them</summary><div class="hint-body"><ul><li>DNS may be meaningful information rather than a typo.</li><li>A code such as 01 may be an identifier rather than a quantity.</li><li>Mixed date formats can obstruct analysis even when a human can read each date.</li><li>Do not change an unusual value merely to make a column easier to summarise.</li></ul></div></details><details><summary>Hint for Task 5.2 — Make only defensible changes</summary><div class="hint-body"><p>Ask: Do I have evidence that this value is wrong, or only evidence that it is inconvenient? If the original source is needed to decide, flag the issue rather than inventing certainty.</p></div></details></section>
-<section class="phase" id="p6"><div class="phase-head"><h2>PHASE 6 — EXTENSION</h2><p>Distinguish evidence from the file from evidence requiring provenance.</p></div><details><summary>Hint for Task 6.1 — Produce a trust audit</summary><div class="hint-body"><p>Keep the audit short. Strong answers clearly separate checks you actually performed from claims that would require metadata, documentation or the original provider.</p></div></details></section>
-<section class="phase" id="p7"><div class="phase-head"><h2>PHASE 7 — DEBRIEF</h2><p>Return to professional responsibility rather than syntax.</p></div><details><summary>Hint for Task 7.1 — Explain why inspection is professional practice</summary><div class="hint-body"><p>Think about what happens when a report, selection decision or intervention is based on a file whose structure or values were never checked.</p></div></details></section>
-</main><footer>B1700 · Week 2 · 2026–27</footer>
+class(table$column)
+sum(is.na(table$column))
+head(table$column)
+min(table$column)
+max(table$column)</code></pre><p>Check the date format in the original column first, so that the <code>format</code> matches what is actually stored. To keep the original, assign to a new name on the left of <code>&lt;-</code>, and then check the new column. A valid <code>Date</code> class and zero NAs are not enough: inspect the actual values and the range.</p></div></details><details><summary>Hint for Task 2.5: Missingness and plausibility in <code>matches</code></summary><div class="hint-body"><pre><code>sum(is.na(table$column))
+min(table$column)
+max(table$column)</code></pre><p>Missingness and plausibility are different checks. Ask whether the smallest and largest values are believable for what the column measures.</p></div></details></section>
+<section class="phase" id="p3"><div class="phase-banner">PHASE 3: CORE: THE TRACKING TABLE</div><p class="phase-intro">Same patterns, larger table.</p><details><summary>Hint for Task 3.1: Grain of <code>tracking</code></summary><div class="hint-body"><p>Look at which columns identify a row. If both a player and a match are needed to identify it, what is one row?</p></div></details><details><summary>Hint for Task 3.2: Dimensions, names and expectations</summary><div class="hint-body"><pre><code>nrow(table_a)
+nrow(table_b)
+nrow(table_a) / nrow(table_b)</code></pre><p>Interpret the result as &ldquo;rows of <code>tracking</code> per row of <code>matches</code>&rdquo;. What does that say about how many players are tracked in each match?</p></div></details><details><summary>Hint for Task 3.3: Representations that matter</summary><div class="hint-body"><pre><code>class(table$column)</code></pre><p>Identifiers identify, quantities measure. Ask whether the class matches the role.</p></div></details><details><summary>Hint for Task 3.4: Missingness in <code>tracking</code></summary><div class="hint-body"><pre><code>sum(is.na(table$column))</code></pre><p>Run it once for each numerical variable. Zero is a finding too.</p></div></details><details><summary>Hint for Task 3.5: Plausibility in <code>tracking</code></summary><div class="hint-body"><pre><code>min(table$column)
+max(table$column)</code></pre><p>If a result comes back as <code>NA</code>, think about what <code>min()</code> does when a value is missing. Look up the <code>na.rm</code> argument with <code>?min</code>, and think about what it changes and what it hides. Then judge the range: is a value possible, and is it typical?</p></div></details></section>
+<section class="phase" id="p4"><div class="phase-banner">PHASE 4: IDENTIFIERS AND TRUST</div><p class="phase-intro">Coverage tests and the trust statement.</p><details><summary>Hint for Task 4.1: Identifier coverage</summary><div class="hint-body"><pre><code>all(table_a$id_column %in% table_b$id_column)</code></pre><p>Read it as: is every value in the first column found in the second? Use the tracking column on the left and the reference table on the right. If it returns <code>FALSE</code>, identify the values that failed before deciding the data are wrong.</p></div></details><details><summary>Hint for Task 4.2: Does the direction matter?</summary><div class="hint-body"><p>Swap the two sides of the same pattern. Think about what each <code>FALSE</code> would mean: a tracking row with no reference record, versus a reference record with no tracking rows. Are these equally worrying for a join in Week 5?</p></div></details><details><summary>Hint for Task 4.3: Write a trust statement</summary><div class="hint-body"><p>A useful structure is:</p><ul><li><strong>Verified:</strong> what the checks support;</li><li><strong>Uncertain:</strong> what cannot be established from these checks alone.</li></ul><p>A passed check supports a claim about structure. It does not prove every measurement is accurate.</p></div></details></section>
+<section class="phase" id="p5"><div class="phase-banner">PHASE 5: TRANSFER</div><p class="phase-intro">Use these prompts to avoid &ldquo;cleaning&rdquo; legitimate unusual values.</p><details><summary>Hint for Task 5.1: Diagnose the athletics results before changing them</summary><div class="hint-body"><ul><li>Start with <code>glimpse()</code> and <code>head()</code>, then compare what R shows with what the file contains.</li><li><code>DNS</code> may be meaningful information rather than a typo.</li><li>A code such as <code>01</code> may be an identifier rather than a quantity. Compare the class R chose with the role of the variable.</li><li>Mixed date formats can obstruct analysis even when a human can read each date. After converting, count the NAs and find which values produced them.</li><li>Do not change an unusual value merely to make a column easier to summarise.</li></ul></div></details><details><summary>Hint for Task 5.2: Make only defensible changes</summary><div class="hint-body"><p>Ask: Do I have evidence that this value is wrong, or only evidence that it is inconvenient? If the original source is needed to decide, flag the issue rather than inventing certainty.</p></div></details></section>
+<section class="phase" id="p6"><div class="phase-banner">PHASE 6: EXTENSION</div><p class="phase-intro">Go beyond the patterns.</p><details><summary>Hint for Task 6.1: Check the structure you expected</summary><div class="hint-body"><pre><code>table(tracking$match_id)
+table(tracking$match_id, tracking$position)</code></pre><p><code>table()</code> counts how often each value occurs. The first line gives rows per match. The second cross-tabulates match by position. Scan the counts for anything a real match would not produce.</p></div></details><details><summary>Hint for Task 6.2: Produce a trust audit</summary><div class="hint-body"><p>Keep the audit short. Strong answers clearly separate checks you actually performed from claims that would require metadata, documentation or the original provider.</p></div></details></section>
+<section class="phase" id="p7"><div class="phase-banner">PHASE 7: DEBRIEF</div><p class="phase-intro">Return to professional responsibility rather than syntax.</p><details><summary>Hint for Task 7.1: Explain why inspection is professional practice</summary><div class="hint-body"><p>Think about what happens when a report, selection decision or intervention is based on a file whose structure or values were never checked.</p></div></details></section>
+</main>
+<footer><div class="inner">B1700 · Week 2 · 2026–27</div></footer>
 </body></html>
