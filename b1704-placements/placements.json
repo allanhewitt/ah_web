@@ -179,6 +179,21 @@
       "deadline": "2026-10-15",
       "nextSteps": "Send a CV and short email outlining your interest to Barry Drust",
       "notes": null
+    },
+    {
+      "id": "dundee-united-football",
+      "organisation": "Dundee United FC",
+      "contactName": "Ross Goodwin",
+      "contactEmail": "ross.goodwin@dundeeunitedfc.co.uk",
+      "sport": "Football",
+      "squad": null,
+      "focus": null,
+      "stage": null,
+      "status": "open",
+      "deliverable": null,
+      "deadline": null,
+      "nextSteps": "Contact Ross Goodwin for an informal discussion",
+      "notes": "Project to be agreed directly with the student"
     }
   ]
 }
