@@ -1,38 +1,321 @@
 <!doctype html>
-<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 3 Hints — Asking Questions and Transforming Data</title><link rel="stylesheet" href="resource.css"></head><body>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1700 Week 3 Hints: Asking Questions and Transforming Data</title>
+<style>
+:root{
+  --blue:#124864;
+  --blue-dark:#0d354a;
+  --soft:#e8f1f5;
+  --grey:#f6f8fa;
+  --green:#e8f4ee;
+  --orange:#fdf2e2;
+  --ink:#17212b;
+  --muted:#5b6770;
+  --line:#d8e0e5;
+  --white:#ffffff;
+  --max:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#fff;
+  line-height:1.58;
+}
+.modulebar{
+  background:var(--blue-dark);
+  color:#fff;
+  padding:.7rem 1rem;
+  font-size:.92rem;
+}
+.modulebar .inner{
+  max-width:var(--max);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+header{
+  background:linear-gradient(180deg,var(--soft),#fff);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--max);
+  margin:auto;
+  padding:2.3rem 1rem 1.8rem;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+h1{
+  margin:.2rem 0 .25rem;
+  color:var(--blue);
+  font-size:clamp(2rem,5vw,3.1rem);
+  line-height:1.08;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:1.08rem;
+  margin:0;
+}
+main{
+  max-width:var(--max);
+  margin:auto;
+  padding:1.5rem 1rem 4rem;
+}
+.callout{
+  border:1px solid #9db8c7;
+  border-left:5px solid var(--blue);
+  border-radius:10px;
+  background:var(--soft);
+  padding:1rem 1.1rem;
+  margin:0 0 1.4rem;
+}
+.callout h2{
+  margin:0 0 .35rem;
+  color:var(--blue);
+  font-size:1rem;
+  letter-spacing:.03em;
+}
+.callout p:last-child{margin-bottom:0}
+.workflow{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1.7rem;
+}
+.workflow h2{
+  color:var(--blue);
+  font-size:1.1rem;
+  margin-top:0;
+}
+.workflow ul{margin-bottom:.2rem}
+.phase{
+  margin-top:2.1rem;
+  scroll-margin-top:1rem;
+}
+.phase-banner{
+  background:var(--blue);
+  color:#fff;
+  border-radius:9px;
+  padding:.7rem 1rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  font-size:.92rem;
+}
+.phase-intro{
+  color:var(--muted);
+  margin:.55rem .15rem 1rem;
+}
+.task{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1rem;
+  background:#fff;
+}
+.task h3{
+  margin:0 0 .65rem;
+  color:var(--blue);
+  font-size:1.18rem;
+}
+.task-label{
+  font-weight:800;
+  color:var(--blue);
+}
+.group{
+  margin:.45rem 0;
+}
+.record{
+  margin:.85rem 0 0;
+  padding:.7rem .85rem;
+  border-left:4px solid var(--blue);
+  background:var(--grey);
+  border-radius:0 7px 7px 0;
+}
+.record strong{
+  color:var(--blue);
+}
+code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:var(--grey);
+  border:1px solid #e1e6ea;
+  padding:.08em .32em;
+  border-radius:4px;
+  font-size:.92em;
+}
+pre{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.9rem 1rem;
+  overflow:auto;
+  line-height:1.45;
+}
+pre code{border:0;padding:0;background:transparent}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:.8rem 0;
+  font-size:.96rem;
+}
+th,td{
+  padding:.55rem .6rem;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{
+  background:var(--grey);
+  color:var(--blue);
+}
+blockquote{
+  margin:.8rem 0;
+  padding:.6rem 1rem;
+  border-left:4px solid #a8bac4;
+  background:var(--grey);
+  font-size:1.05rem;
+}
+.nav{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:0 0 1.6rem;
+}
+.nav a{
+  color:var(--blue);
+  text-decoration:none;
+  border:1px solid #b8c9d2;
+  border-radius:999px;
+  padding:.35rem .65rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+.nav a:hover,.nav a:focus{
+  background:var(--soft);
+  outline:none;
+}
+details{
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:0 0 .8rem;
+  background:#fff;
+  overflow:hidden;
+}
+summary{
+  cursor:pointer;
+  padding:.85rem 1rem;
+  color:var(--blue);
+  font-weight:800;
+  background:var(--grey);
+}
+summary:hover{background:var(--soft)}
+.hint-body{
+  padding:.85rem 1rem 1rem;
+}
+.hint-body p:first-child{margin-top:0}
+.hint-body p:last-child{margin-bottom:0}
+.support-note{
+  background:var(--orange);
+  border:1px solid #e7cfa8;
+  border-radius:10px;
+  padding:.9rem 1rem;
+  margin-bottom:1.4rem;
+}
+footer{
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.85rem;
+  padding:1.3rem 1rem 2rem;
+}
+footer .inner{
+  max-width:var(--max);
+  margin:auto;
+}
+@media (max-width:650px){
+  .header-inner{padding-top:1.7rem}
+  main{padding-top:1rem}
+  .task{padding:.9rem}
+  th,td{padding:.45rem}
+}
+@media print{
+  .modulebar,.nav{display:none}
+  body{font-size:11pt}
+  .task,details{break-inside:avoid}
+  details > *{display:block}
+  summary{list-style:none}
+}
+</style>
+</head>
+<body>
 <div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
-<header class="hero"><div class="wrap"><div class="eyebrow">Week 3 · Hint Sheet</div><h1>Asking Questions and Transforming Data</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header>
-<main class="wrap">
-<section class="intro"><h2>How to use this page</h2><p>Open only the hint for the task your group is working on. Use as little support as you need, then return to the task. Where a <strong>Still stuck?</strong> panel appears, use it only if the first hint is not enough.</p></section>
-<nav class="phase-nav"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
-<section class="phase" id="p1"><div class="phase-head"><h2>PHASE 1 — RETRIEVAL</h2></div><details><summary>Hint for Task 1.1 — Reconnect with the tracking data</summary><div class="hint-body"><p>One row is a player appearance in a match. <code>minutes_played</code> records exposure. A raw count can partly reflect opportunity/time, whereas a rate attempts to standardise for exposure.</p></div></details></section>
-<section class="phase" id="p2"><div class="phase-head"><h2>PHASE 2 — CONSEQUENCE PROBLEM</h2></div><details><summary>Hint for Task 2.1 — Interrogate the coach’s question</summary><div class="hint-body"><p>Ask whether the coach means total activity, typical activity per appearance, or activity relative to playing time. Different definitions can produce different answers without any analyst making a coding error.</p></div></details></section>
-<section class="phase" id="p3"><div class="phase-head"><h2>PHASE 3 — CORE PRACTICAL</h2><p>Reveal syntax only when the group needs it.</p></div>
-<details><summary>Hint for Task 3.1 — Translate the question into operations</summary><div class="hint-body"><p>A useful sequence is: <strong>keep relevant appearances → create an exposure-adjusted measure → compare venues → interpret the measure that matches the question</strong>.</p></div></details>
-<details><summary>Hint for Task 3.2 — Keep only the relevant appearances</summary><div class="hint-body"><pre><code>eligible &lt;- tracking |&gt;
-  filter(minutes_played &gt;= 60)</code></pre><p>The criterion comes directly from the question.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Run the filter by itself first. Then inspect <code>eligible</code> with <code>glimpse()</code> or <code>head()</code> and check that no retained row has fewer than 60 minutes.</p></div></details></div></details>
-<details><summary>Hint for Task 3.3 — Construct the rate measure</summary><div class="hint-body"><pre><code>eligible &lt;- eligible |&gt;
-  mutate(sprints_per_90 = sprints / minutes_played * 90)</code></pre><p>The rate adjusts sprint count for playing time. Because the filter keeps appearances of at least 60 minutes, a zero-minute denominator is not possible here.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Create the new column first, then inspect a few rows showing <code>sprints</code>, <code>minutes_played</code> and <code>sprints_per_90</code>. Ask whether the direction of the adjustment makes sense.</p></div></details></div></details>
-<details><summary>Hint for Task 3.4 — Summarise by venue</summary><div class="hint-body"><pre><code>venue_summary &lt;- eligible |&gt;
-  group_by(venue) |&gt;
+<header><div class="header-inner"><div class="kicker">Week 3 · Hint Sheet</div><h1>Asking Questions and Transforming Data</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header>
+<main>
+<div class="callout"><h2>HOW TO USE THIS PAGE</h2><p>Use this page <strong>only when your group needs help to make progress</strong>. Find the hint for the task you are working on, open only that hint, use as little support as you need, then return to the task sheet.</p><p>The hints show <strong>patterns</strong>. Words such as <code>table</code>, <code>column</code> and <code>value</code> are placeholders: replace them with the real names and values. <code>...</code> means &ldquo;the contents you have already written for this step&rdquo;. The hints do not replace the group's analytical judgement.</p></div>
+<nav class="nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
+<section class="phase" id="p1"><div class="phase-banner">PHASE 1: SET UP AND RE-ESTABLISH TRUST</div><p class="phase-intro">Checks you have already used. Try to write them before opening a hint.</p><details><summary>Hint for Task 1.1: Restart and import</summary><div class="hint-body"><p>Restart R from the <strong>Session</strong> menu. Create the script from <strong>File &gt; New File &gt; R Script</strong> and save it.</p><pre><code>library(tidyverse)
+
+table_name &lt;- read_csv(&quot;data/file_name.csv&quot;)</code></pre><p>You used this pattern in Week 2. One row of <code>tracking</code> needs both a player and a match to identify it.</p></div></details><details><summary>Hint for Task 1.2: Repeat the Week 2 checks from memory</summary><div class="hint-body"><pre><code>glimpse(table)
+nrow(table)
+ncol(table)
+class(table$column)
+sum(is.na(table$column))
+min(table$column)
+max(table$column)</code></pre><p>These are the Week 2 patterns. Replace <code>table</code> and <code>column</code> with real names, and repeat a line for each column you need.</p></div></details><details><summary>Hint for Task 1.3: Count the categories</summary><div class="hint-body"><pre><code>table(tracking$column)</code></pre><p><code>table()</code> counts how often each value occurs. You used it in Week 1 for <code>position</code>.</p></div></details></section>
+<section class="phase" id="p2"><div class="phase-banner">PHASE 2: CORE: ONE QUESTION, STEP BY STEP</div><p class="phase-intro">Same verbs as the demonstration, different columns.</p><details><summary>Hint for Task 2.1: Translate the question into operations</summary><div class="hint-body"><p>A useful structure is: keep the relevant appearances → create a measure that allows for playing time → compare venues → interpret the measure that matches the question.</p></div></details><details><summary>Hint for Task 2.2: Filter, then verify</summary><div class="hint-body"><pre><code>new_table &lt;- table |&gt;
+  filter(column &gt;= value)
+
+nrow(new_table)
+min(new_table$column)</code></pre><p>The condition comes from the wording of the question. Subtract the new row count from the original to find how many rows were removed.</p></div></details><details><summary>Hint for Task 2.3: Derive the measure, then verify</summary><div class="hint-body"><pre><code>new_table &lt;- new_table |&gt;
+  mutate(new_column = column_a / column_b * 90)
+
+head(new_table$new_column)
+min(new_table$new_column)
+max(new_table$new_column)</code></pre><p>Dividing by minutes gives a per-minute rate. Multiplying by 90 expresses it per full match. Your filter has already removed very short appearances, so the denominator cannot be zero here. In other data, check the denominator first.</p></div></details><details><summary>Hint for Task 2.4: Group and summarise</summary><div class="hint-body"><pre><code>table |&gt;
+  group_by(group_column) |&gt;
   summarise(
-    mean_sprints = mean(sprints, na.rm = TRUE),
-    mean_sprints_per_90 = mean(sprints_per_90, na.rm = TRUE),
-    appearances = n()
-  )</code></pre><p>After <code>summarise()</code>, ask again what one row represents.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Build the summary one line at a time: group first, then add one summary measure, then the others. If you get one row per venue, the grain has changed from appearances to venues.</p></div></details></div></details>
-<details><summary>Hint for Task 3.5 — Compare raw and adjusted conclusions</summary><div class="hint-body"><p>Compare direction and magnitude, then ask what the adjusted measure controls for. Do not assume adjustment must change the conclusion to be useful.</p></div></details>
-<details><summary>Hint for Task 3.6 — Build and interpret the complete workflow</summary><div class="hint-body"><pre><code>venue_summary &lt;- tracking |&gt;
-  filter(minutes_played &gt;= 60) |&gt;
-  mutate(sprints_per_90 = sprints / minutes_played * 90) |&gt;
-  group_by(venue) |&gt;
-  summarise(
-    mean_sprints = mean(sprints, na.rm = TRUE),
-    mean_sprints_per_90 = mean(sprints_per_90, na.rm = TRUE),
-    appearances = n()
-  )</code></pre><p>Do not reuse this pipeline mechanically for another problem until you have checked that the question requires the same operations.</p></div></details></section>
-<section class="phase" id="p4"><div class="phase-head"><h2>PHASE 4 — CHECKPOINT</h2></div><details><summary>Hint for Task 4.1 — Checkpoint the transformation workflow</summary><div class="hint-body"><p>Filter, derive, group and summarise are not a mandatory recipe. Each step should be traceable to something in the question.</p></div></details></section>
-<section class="phase" id="p5"><div class="phase-head"><h2>PHASE 5 — TRANSFER</h2><p>Plan before coding.</p></div><details><summary>Hint for Task 5.1 — Plan the athletics workflow</summary><div class="hint-body"><p>Identify the eligibility condition, the grouping variable and the quantity that needs to be averaged before choosing R functions.</p></div></details><details><summary>Hint for Task 5.2 — Implement and inspect the change in grain</summary><div class="hint-body"><p>After grouping and summarising, the observational unit changes. Say explicitly what each row of the new summary represents.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Translate the question literally: first keep athletes meeting the session criterion; then group by training group; then summarise the weekly-load quantity. Inspect the table after each step rather than copying the football pipeline wholesale.</p></div></details></div></details></section>
-<section class="phase" id="p6"><div class="phase-head"><h2>PHASE 6 — EXTENSION</h2></div><details><summary>Hint for Task 6.1 — Operationalise “more intense” in two ways</summary><div class="hint-body"><p>A strong definition names the variable(s), any exposure adjustment, and why that choice is relevant to a specific coaching decision. Two technically defensible definitions can emphasise different aspects of performance.</p></div></details></section>
-<section class="phase" id="p7"><div class="phase-head"><h2>PHASE 7 — DEBRIEF</h2></div><details><summary>Hint for Task 7.1 — Explain the difference</summary><div class="hint-body"><p>Syntax knowledge tells you how to execute an operation; analytical knowledge tells you whether that operation produces evidence relevant to the question.</p></div></details></section>
-<details class="troubleshoot"><summary>If your R code isn’t working</summary><div class="hint-body"><ol><li>Make sure the Week 3 project is open and the setup/import section has run.</li><li>Use <code>names()</code> or <code>glimpse()</code> to check object and variable names.</li><li>Run the workflow one step at a time.</li><li>Inspect the intermediate object after each step.</li><li>Read the first error message carefully; fix that problem before running later lines.</li><li>Check that the result still has the grain you expected.</li></ol></div></details>
-</main><footer>B1700 · Week 3 · 2026–27</footer></body></html>
+    name_one = mean(column_a),
+    name_two = mean(column_b),
+    rows = n()
+  )</code></pre><p><code>n()</code> counts the rows in each group. To add the counts up, store the summary in an object and use <code>sum(summary_table$rows)</code>. After <code>summarise()</code>, ask again what one row represents.</p></div></details><details><summary>Hint for Task 2.5: Interpret</summary><div class="hint-body"><p>Compare direction and size. Do not assume that adjustment must change the conclusion to be useful. Ask what else, apart from work rate, could make raw distance differ between venues.</p></div></details><details><summary>Hint for Task 2.6: One pipeline</summary><div class="hint-body"><pre><code>table |&gt;
+  filter(...) |&gt;
+  mutate(...) |&gt;
+  group_by(...) |&gt;
+  summarise(...)</code></pre><p>Each <code>|&gt;</code> passes the result of one step to the next. Start from <code>tracking</code> and reuse the contents of your earlier steps. The numbers should match Task 2.4 exactly.</p></div></details></section>
+<section class="phase" id="p3"><div class="phase-banner">PHASE 3: CORE: NEW QUESTIONS, SAME VERBS</div><p class="phase-intro">Decide which steps the question needs before choosing functions.</p><details><summary>Hint for Task 3.1: Ratings and missing values</summary><div class="hint-body"><pre><code>summarise(
+  name_one = mean(column, na.rm = TRUE),
+  rows = n(),
+  recorded = sum(!is.na(column))
+)</code></pre><p>A mean of a column that contains <code>NA</code> is <code>NA</code>. You met <code>na.rm</code> in Week 2, Task 3.5. <code>!</code> means &ldquo;not&rdquo;, so <code>!is.na(column)</code> is <code>TRUE</code> where a value was recorded. Ask whether a rating needs converting to a rate at all.</p></div></details><details><summary>Hint for Task 3.2: Combine two conditions</summary><div class="hint-body"><pre><code>table |&gt;
+  filter(column_a != &quot;value&quot; &amp; column_b &gt;= value)</code></pre><p><code>&amp;</code> means both conditions must be true. <code>!=</code> means &ldquo;is not equal to&rdquo;. Text values need quotation marks and must match the stored spelling and capitals exactly. Verify with <code>nrow()</code>, <code>table()</code> and <code>min()</code> before you summarise.</p></div></details><details><summary>Hint for Task 3.3: Group by a different variable</summary><div class="hint-body"><pre><code>... |&gt;
+  group_by(other_column) |&gt;
+  summarise(...) |&gt;
+  arrange(desc(summary_column))</code></pre><p>Only the grouping column changes. <code>mutate()</code> can create two new variables at once, separated by a comma. <code>arrange(desc())</code> orders from largest to smallest. Then ask which positions you would expect to sprint most and run furthest, and compare.</p></div></details><details><summary>Hint for Task 3.4: Does the threshold matter?</summary><div class="hint-body"><p>Change one number in the filter and keep everything else. Compare which venue is higher, how large the gap is, and how many appearances remain in each group.</p></div></details></section>
+<section class="phase" id="p4"><div class="phase-banner">PHASE 4: PLAYERS AND THE WORKFLOW</div><p class="phase-intro">A new grain, then a Week 2 check.</p><details><summary>Hint for Task 4.1: A player-level summary</summary><div class="hint-body"><pre><code>summary_table &lt;- table |&gt;
+  filter(...) |&gt;
+  mutate(...) |&gt;
+  group_by(id_column) |&gt;
+  summarise(rows = n(), name = mean(column)) |&gt;
+  arrange(desc(name))
+
+all(table_a$id_column %in% table_b$id_column)</code></pre><p>Group by the column that identifies a player. Import <code>players.csv</code> with the pattern from Task 1.1. The last line is the Week 2 coverage pattern: run it once in each direction.</p></div></details><details><summary>Hint for Task 4.2: Which steps did each question need?</summary><div class="hint-body"><p>Filter, derive, group and summarise are not a mandatory recipe. A step that is missing from one of your analyses is not a mistake if the question did not need it.</p></div></details></section>
+<section class="phase" id="p5"><div class="phase-banner">PHASE 5: TRANSFER</div><p class="phase-intro">Check first, plan second, code third.</p><details><summary>Hint for Task 5.1: Establish trust first</summary><div class="hint-body"><p>Use the same patterns as Task 1.2 and Task 1.3 on the new table. A useful trust statement has two parts: <strong>Verified</strong> and <strong>Uncertain</strong>.</p></div></details><details><summary>Hint for Task 5.2: Plan, then answer</summary><div class="hint-body"><p>Identify the eligibility condition, the grouping variable and the quantity to be averaged before choosing functions. Ask whether the question needs a derived variable. After grouping and summarising, the grain changes: say what each row of the summary represents.</p></div></details><details><summary>Hint for Task 5.3: Does the eligibility rule matter?</summary><div class="hint-body"><pre><code>table |&gt;
+  filter(column &lt; value)</code></pre><p>Remove the filter line from your pipeline and rerun it. The pattern above shows the rows that the original filter removed. Look at their values, and at how many athletes sit behind each mean.</p></div></details></section>
+<section class="phase" id="p6"><div class="phase-banner">PHASE 6: EXTENSION</div><p class="phase-intro">Go beyond the patterns.</p><details><summary>Hint for Task 6.1: Two ways to calculate a rate</summary><div class="hint-body"><pre><code>summarise(
+  mean_of_rates = mean(rate_column),
+  overall_rate = sum(column_a) / sum(column_b) * 90
+)</code></pre><p>The first gives every appearance equal weight. The second gives every minute equal weight. Ask which appearances count for more in the second, and whether that matches the question.</p></div></details><details><summary>Hint for Task 6.2: Operationalise &ldquo;more intense&rdquo; in two ways</summary><div class="hint-body"><p>A strong definition names the variable or variables, any adjustment for playing time, and why that choice is relevant to a specific coaching decision. Two defensible definitions can emphasise different aspects of performance.</p></div></details></section>
+<section class="phase" id="p7"><div class="phase-banner">PHASE 7: DEBRIEF</div><p class="phase-intro">Focus on the fit between question and method.</p><details><summary>Hint for Task 7.1: Explain the difference</summary><div class="hint-body"><p>Knowing the syntax tells you how to carry out an operation. Analytical knowledge tells you whether that operation produces evidence relevant to the question.</p></div></details></section>
+</main>
+<footer><div class="inner">B1700 · Week 3 · 2026–27</div></footer>
+</body></html>
