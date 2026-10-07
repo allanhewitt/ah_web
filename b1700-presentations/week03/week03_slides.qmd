@@ -128,6 +128,8 @@ max(players$contract_end)            # "2029-06-30"
 
 > **A conversion is not complete until we check what happened to the actual values.**
 
+You will convert another date today.
+
 ------------------------------------------------------------------------
 
 ## Revision 4: how many values are missing?
@@ -531,9 +533,11 @@ The central analytical sequence this week is:
 
 ## Work through, in order
 
--   **CORE**: answer new questions about the Strathclyde FC data with the same verbs
+-   **CORE**: take the demonstration code and change it to answer new questions, with new variables and a second table (`matches`)
 -   **TRANSFER**: athletics training load by group
--   **EXTENSION**: two ways to calculate a rate, and two definitions of "intensity", if time allows
+-   **EXTENSION**: a different threshold, two ways to calculate a rate, and two definitions of "intensity", if time allows
+
+Keep your demonstration script open. Most tasks start from a block of it.
 
 Use the hint sheet if you get stuck.
 
@@ -551,9 +555,11 @@ Use the hint sheet if you get stuck.
 
 Goalkeepers had the highest sprint rate of any position.
 
-Changing the threshold from 60 to 75 minutes reversed the venue conclusion.
+A date filter on the original text column runs, and keeps the wrong matches.
 
-Neither result came with an error message.
+If you reached the extension: a 75-minute threshold reversed the venue conclusion.
+
+None of these came with an error message.
 
 The analyst must still distinguish:
 

@@ -265,14 +265,15 @@ footer .inner{
 <nav class="nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
 <section class="phase" id="p1"><div class="phase-banner">PHASE 1: SET UP AND RE-ESTABLISH TRUST</div><p class="phase-intro">Checks you have already used. Try to write them before opening a hint.</p><details><summary>Hint for Task 1.1: Restart and import</summary><div class="hint-body"><p>Restart R from the <strong>Session</strong> menu. Create the script from <strong>File &gt; New File &gt; R Script</strong> and save it.</p><pre><code>library(tidyverse)
 
-table_name &lt;- read_csv(&quot;data/file_name.csv&quot;)</code></pre><p>You used this pattern in Week 2. One row of <code>tracking</code> needs both a player and a match to identify it.</p></div></details><details><summary>Hint for Task 1.2: Repeat the Week 2 checks from memory</summary><div class="hint-body"><pre><code>glimpse(table)
+table_name &lt;- read_csv(&quot;data/file_name.csv&quot;)</code></pre><p>Use the pattern twice, once for each file. The object name on the left does not have to match the file name.</p></div></details><details><summary>Hint for Task 1.2: Check <code>tracking</code> from memory</summary><div class="hint-body"><pre><code>glimpse(table)
 nrow(table)
 ncol(table)
 class(table$column)
 sum(is.na(table$column))
 min(table$column)
-max(table$column)</code></pre><p>These are the Week 2 patterns. Replace <code>table</code> and <code>column</code> with real names, and repeat a line for each column you need.</p></div></details><details><summary>Hint for Task 1.3: Count the categories</summary><div class="hint-body"><pre><code>table(tracking$column)</code></pre><p><code>table()</code> counts how often each value occurs. You used it in Week 1 for <code>position</code>.</p></div></details></section>
-<section class="phase" id="p2"><div class="phase-banner">PHASE 2: CORE: ONE QUESTION, STEP BY STEP</div><p class="phase-intro">Same verbs as the demonstration, different columns.</p><details><summary>Hint for Task 2.1: Translate the question into operations</summary><div class="hint-body"><p>A useful structure is: keep the relevant appearances → create a measure that allows for playing time → compare venues → interpret the measure that matches the question.</p></div></details><details><summary>Hint for Task 2.2: Filter, then verify</summary><div class="hint-body"><pre><code>new_table &lt;- table |&gt;
+max(table$column)
+table(tracking$column)</code></pre><p>These are the patterns from the revision slides. Replace <code>table</code> and <code>column</code> with real names, and repeat a line for each column you need. The last line uses the function <code>table()</code>, which counts how often each value occurs.</p></div></details></section>
+<section class="phase" id="p2"><div class="phase-banner">PHASE 2: CORE: ADAPT THE DEMONSTRATION</div><p class="phase-intro">Same verbs as the demonstration, different columns.</p><details><summary>Hint for Task 2.1: Translate the question into operations</summary><div class="hint-body"><p>A useful structure is: keep the relevant appearances → create a measure that allows for playing time → compare venues → interpret the measure that matches the question. Compare it with the demonstration: the filter and the grouping are the same, the measure is not.</p></div></details><details><summary>Hint for Task 2.2: Filter, then verify</summary><div class="hint-body"><pre><code>new_table &lt;- table |&gt;
   filter(column &gt;= value)
 
 nrow(new_table)
@@ -292,30 +293,57 @@ max(new_table$new_column)</code></pre><p>Dividing by minutes gives a per-minute 
   mutate(...) |&gt;
   group_by(...) |&gt;
   summarise(...)</code></pre><p>Each <code>|&gt;</code> passes the result of one step to the next. Start from <code>tracking</code> and reuse the contents of your earlier steps. The numbers should match Task 2.4 exactly.</p></div></details></section>
-<section class="phase" id="p3"><div class="phase-banner">PHASE 3: CORE: NEW QUESTIONS, SAME VERBS</div><p class="phase-intro">Decide which steps the question needs before choosing functions.</p><details><summary>Hint for Task 3.1: Ratings and missing values</summary><div class="hint-body"><pre><code>summarise(
+<section class="phase" id="p3"><div class="phase-banner">PHASE 3: CORE: A DIFFERENT TABLE</div><p class="phase-intro">Week 2 checks first, then the same verbs.</p><details><summary>Hint for Task 3.1: Establish trust in <code>matches</code></summary><div class="hint-body"><pre><code>glimpse(table)
+nrow(table)
+ncol(table)
+names(table)
+class(table$column)
+sum(is.na(table$column))
+
+all(table_a$id_column %in% table_b$id_column)</code></pre><p>The same patterns as Task 1.2, on a different table. For the last line, put the table whose IDs you are testing on the left and the reference table on the right. Complete the sentence &ldquo;One row is one ...&rdquo; for the grain.</p></div></details><details><summary>Hint for Task 3.2: Convert and verify the match dates</summary><div class="hint-body"><pre><code>table$new_column &lt;- as.Date(
+  table$column,
+  format = &quot;%d/%m/%Y&quot;
+)
+
+class(table$new_column)
+sum(is.na(table$new_column))
+head(table$new_column)
+min(table$new_column)
+max(table$new_column)</code></pre><p>This is the pattern from the revision slides, with one change: a new name on the left of <code>&lt;-</code> keeps the original column. A <code>Date</code> class and zero missing values are not enough: look at the actual values and the range.</p></div></details><details><summary>Hint for Task 3.3: Derive and compare by venue</summary><div class="hint-body"><pre><code>table |&gt;
+  mutate(new_column = column_a - column_b) |&gt;
+  group_by(group_column) |&gt;
+  summarise(
+    name_one = mean(column_a),
+    name_two = mean(new_column),
+    rows = n()
+  )</code></pre><p>A derived variable does not have to be a rate. Ask whether this question excludes any matches. If it does not, the pipeline needs no <code>filter()</code>. If you want to keep the new column for Task 3.4, store the result of <code>mutate()</code> back into <code>matches</code>.</p></div></details><details><summary>Hint for Task 3.4: Filter on a date</summary><div class="hint-body"><pre><code>new_table &lt;- table |&gt;
+  filter(date_column &lt; as.Date(&quot;2027-01-01&quot;))
+
+nrow(new_table)
+max(new_table$date_column)</code></pre><p>Write the cut-off date as year-month-day inside <code>as.Date()</code>. Use <code>&gt;=</code> for the second period and <code>min()</code> to check it. The two row counts should add up to the number of matches. Text is compared alphabetically, character by character, so the same condition on the original <code>date</code> column runs without an error and keeps the wrong rows.</p></div></details></section>
+<section class="phase" id="p4"><div class="phase-banner">PHASE 4: CORE: NEW QUESTIONS, SAME VERBS</div><p class="phase-intro">Decide which steps the question needs before choosing functions.</p><details><summary>Hint for Task 4.1: Ratings and missing values</summary><div class="hint-body"><pre><code>summarise(
   name_one = mean(column, na.rm = TRUE),
   rows = n(),
   recorded = sum(!is.na(column))
-)</code></pre><p>A mean of a column that contains <code>NA</code> is <code>NA</code>. You met <code>na.rm</code> in Week 2, Task 3.5. <code>!</code> means &ldquo;not&rdquo;, so <code>!is.na(column)</code> is <code>TRUE</code> where a value was recorded. Ask whether a rating needs converting to a rate at all.</p></div></details><details><summary>Hint for Task 3.2: Combine two conditions</summary><div class="hint-body"><pre><code>table |&gt;
-  filter(column_a != &quot;value&quot; &amp; column_b &gt;= value)</code></pre><p><code>&amp;</code> means both conditions must be true. <code>!=</code> means &ldquo;is not equal to&rdquo;. Text values need quotation marks and must match the stored spelling and capitals exactly. Verify with <code>nrow()</code>, <code>table()</code> and <code>min()</code> before you summarise.</p></div></details><details><summary>Hint for Task 3.3: Group by a different variable</summary><div class="hint-body"><pre><code>... |&gt;
+)</code></pre><p>A mean of a column that contains <code>NA</code> is <code>NA</code>. <code>na.rm = TRUE</code> removes the missing values first. <code>!</code> means &ldquo;not&rdquo;, so <code>!is.na(column)</code> is <code>TRUE</code> where a value was recorded. Ask whether a rating needs converting to a rate at all.</p></div></details><details><summary>Hint for Task 4.2: Combine two conditions</summary><div class="hint-body"><pre><code>table |&gt;
+  filter(column_a != &quot;value&quot; &amp; column_b &gt;= value)</code></pre><p><code>&amp;</code> means both conditions must be true. <code>!=</code> means &ldquo;is not equal to&rdquo;. Text values need quotation marks and must match the stored spelling and capitals exactly. Verify with <code>nrow()</code>, <code>table()</code> and <code>min()</code> before you summarise.</p></div></details><details><summary>Hint for Task 4.3: Group by a different variable</summary><div class="hint-body"><pre><code>... |&gt;
   group_by(other_column) |&gt;
   summarise(...) |&gt;
-  arrange(desc(summary_column))</code></pre><p>Only the grouping column changes. <code>mutate()</code> can create two new variables at once, separated by a comma. <code>arrange(desc())</code> orders from largest to smallest. Then ask which positions you would expect to sprint most and run furthest, and compare.</p></div></details><details><summary>Hint for Task 3.4: Does the threshold matter?</summary><div class="hint-body"><p>Change one number in the filter and keep everything else. Compare which venue is higher, how large the gap is, and how many appearances remain in each group.</p></div></details></section>
-<section class="phase" id="p4"><div class="phase-banner">PHASE 4: PLAYERS AND THE WORKFLOW</div><p class="phase-intro">A new grain, then a Week 2 check.</p><details><summary>Hint for Task 4.1: A player-level summary</summary><div class="hint-body"><pre><code>summary_table &lt;- table |&gt;
+  arrange(desc(summary_column))</code></pre><p>Only the grouping column changes. <code>mutate()</code> can create two new variables at once, separated by a comma. <code>arrange(desc())</code> orders from largest to smallest. Then ask which positions you would expect to sprint most and run furthest, and compare.</p></div></details><details><summary>Hint for Task 4.4: A player-level summary</summary><div class="hint-body"><pre><code>summary_table &lt;- table |&gt;
   filter(...) |&gt;
   mutate(...) |&gt;
   group_by(id_column) |&gt;
   summarise(rows = n(), name = mean(column)) |&gt;
   arrange(desc(name))
 
-all(table_a$id_column %in% table_b$id_column)</code></pre><p>Group by the column that identifies a player. Import <code>players.csv</code> with the pattern from Task 1.1. The last line is the Week 2 coverage pattern: run it once in each direction.</p></div></details><details><summary>Hint for Task 4.2: Which steps did each question need?</summary><div class="hint-body"><p>Filter, derive, group and summarise are not a mandatory recipe. A step that is missing from one of your analyses is not a mistake if the question did not need it.</p></div></details></section>
-<section class="phase" id="p5"><div class="phase-banner">PHASE 5: TRANSFER</div><p class="phase-intro">Check first, plan second, code third.</p><details><summary>Hint for Task 5.1: Establish trust first</summary><div class="hint-body"><p>Use the same patterns as Task 1.2 and Task 1.3 on the new table. A useful trust statement has two parts: <strong>Verified</strong> and <strong>Uncertain</strong>.</p></div></details><details><summary>Hint for Task 5.2: Plan, then answer</summary><div class="hint-body"><p>Identify the eligibility condition, the grouping variable and the quantity to be averaged before choosing functions. Ask whether the question needs a derived variable. After grouping and summarising, the grain changes: say what each row of the summary represents.</p></div></details><details><summary>Hint for Task 5.3: Does the eligibility rule matter?</summary><div class="hint-body"><pre><code>table |&gt;
+nrow(summary_table)</code></pre><p>Group by the column that identifies a player. Compare the number of rows with the size of the squad you saw in the revision slides.</p></div></details></section>
+<section class="phase" id="p5"><div class="phase-banner">PHASE 5: TRANSFER</div><p class="phase-intro">Check first, plan second, code third.</p><details><summary>Hint for Task 5.1: Establish trust first</summary><div class="hint-body"><p>Use the same patterns as Task 1.2 on the new table. A useful trust statement has two parts: <strong>Verified</strong> and <strong>Uncertain</strong>.</p></div></details><details><summary>Hint for Task 5.2: Plan, then answer</summary><div class="hint-body"><p>Identify the eligibility condition, the grouping variable and the quantity to be averaged before choosing functions. Ask whether the question needs a derived variable. After grouping and summarising, the grain changes: say what each row of the summary represents.</p></div></details><details><summary>Hint for Task 5.3: Does the eligibility rule matter?</summary><div class="hint-body"><pre><code>table |&gt;
   filter(column &lt; value)</code></pre><p>Remove the filter line from your pipeline and rerun it. The pattern above shows the rows that the original filter removed. Look at their values, and at how many athletes sit behind each mean.</p></div></details></section>
-<section class="phase" id="p6"><div class="phase-banner">PHASE 6: EXTENSION</div><p class="phase-intro">Go beyond the patterns.</p><details><summary>Hint for Task 6.1: Two ways to calculate a rate</summary><div class="hint-body"><pre><code>summarise(
+<section class="phase" id="p6"><div class="phase-banner">PHASE 6: EXTENSION</div><p class="phase-intro">Go beyond the patterns.</p><details><summary>Hint for Task 6.1: Does the threshold matter?</summary><div class="hint-body"><p>Change one number in the filter and keep everything else. Compare which venue is higher, how large the gap is, and how many appearances remain in each group.</p></div></details><details><summary>Hint for Task 6.2: Two ways to calculate a rate</summary><div class="hint-body"><pre><code>summarise(
   mean_of_rates = mean(rate_column),
   overall_rate = sum(column_a) / sum(column_b) * 90
-)</code></pre><p>The first gives every appearance equal weight. The second gives every minute equal weight. Ask which appearances count for more in the second, and whether that matches the question.</p></div></details><details><summary>Hint for Task 6.2: Operationalise &ldquo;more intense&rdquo; in two ways</summary><div class="hint-body"><p>A strong definition names the variable or variables, any adjustment for playing time, and why that choice is relevant to a specific coaching decision. Two defensible definitions can emphasise different aspects of performance.</p></div></details></section>
-<section class="phase" id="p7"><div class="phase-banner">PHASE 7: DEBRIEF</div><p class="phase-intro">Focus on the fit between question and method.</p><details><summary>Hint for Task 7.1: Explain the difference</summary><div class="hint-body"><p>Knowing the syntax tells you how to carry out an operation. Analytical knowledge tells you whether that operation produces evidence relevant to the question.</p></div></details></section>
+)</code></pre><p>The first gives every appearance equal weight. The second gives every minute equal weight. Ask which appearances count for more in the second, and whether that matches the question.</p></div></details><details><summary>Hint for Task 6.3: Operationalise &ldquo;more intense&rdquo; in two ways</summary><div class="hint-body"><p>A strong definition names the variable or variables, any adjustment for playing time, and why that choice is relevant to a specific coaching decision. Two defensible definitions can emphasise different aspects of performance.</p></div></details></section>
+<section class="phase" id="p7"><div class="phase-banner">PHASE 7: DEBRIEF</div><p class="phase-intro">Focus on the fit between question and method.</p><details><summary>Hint for Task 7.1: Which steps did each question need?</summary><div class="hint-body"><p>Filter, derive, group and summarise are not a mandatory recipe. A step that is missing from one of your analyses is not a mistake if the question did not need it. Look again at Task 3.3 and Task 4.1.</p></div></details><details><summary>Hint for Task 7.2: Explain the difference</summary><div class="hint-body"><p>Knowing the syntax tells you how to carry out an operation. Analytical knowledge tells you whether that operation produces evidence relevant to the question.</p></div></details></section>
 </main>
 <footer><div class="inner">B1700 · Week 3 · 2026–27</div></footer>
 </body></html>
