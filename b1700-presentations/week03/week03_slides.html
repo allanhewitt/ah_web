@@ -1214,11 +1214,254 @@ margin-right: 0; }
 <h1>Introduction</h1>
 
 </section>
-<section id="retrieval" class="slide level2">
-<h2>Retrieval</h2>
-<p>What does one row in <code>tracking</code> represent?</p>
-<p>Which variable tells us playing exposure?</p>
-<p>Why might a raw count and an exposure-adjusted rate answer different questions?</p>
+<section id="before-we-start" class="slide level2">
+<h2>Before we start</h2>
+</section></section>
+<section>
+<section id="revision-week-2" class="title-slide slide level1 center">
+<h1>Revision: Week 2</h1>
+
+</section>
+<section id="set-up-your-workspace" class="slide level2">
+<h2>Set up your workspace</h2>
+<ol type="1">
+<li><strong>Download</strong> the Week 3 project (<code>week_three_r_project.zip</code>)</li>
+<li><strong>Decompress</strong> it (Extract All on Windows; double-click on a Mac)</li>
+<li><strong>Open</strong> <code>week_three.Rproj</code> in RStudio</li>
+<li>Check that the Files pane shows the <code>data</code> folder</li>
+<li><strong>Create a new script</strong>: File &gt; New File &gt; R Script, and save it</li>
+<li>Type the commands as we go, and add your own comments (lines starting with <code>#</code>)</li>
+</ol>
+</section>
+<section id="last-week-establishing-trust" class="slide level2">
+<h2>Last week: establishing trust</h2>
+<blockquote>
+<p><strong>Did the data enter R correctly, and should we trust what came in?</strong></p>
+</blockquote>
+<p>Our workflow was:</p>
+<blockquote>
+<p><strong>IMPORT → INSPECT → CHECK → VERIFY → STATE WHAT REMAINS UNCERTAIN</strong></p>
+</blockquote>
+<p>Each step used a small number of functions.</p>
+<p>On the revision slides that follow, try to write the code <strong>before</strong> it appears.</p>
+</section>
+<section id="revision-1-import-and-inspect" class="slide level2">
+<h2>Revision 1: import and inspect</h2>
+<p>Import <code>players.csv</code> and <code>player_match_tracking.csv</code> from the <code>data</code> folder, then take a first look at <code>players</code>.</p>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href aria-label="1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href aria-label="2"></a></span>
+<span id="cb1-3"><a href aria-label="3"></a>players  <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/players.csv&quot;</span>)</span>
+<span id="cb1-4"><a href aria-label="4"></a>tracking <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/player_match_tracking.csv&quot;</span>)</span>
+<span id="cb1-5"><a href aria-label="5"></a></span>
+<span id="cb1-6"><a href aria-label="6"></a><span class="fu">glimpse</span>(players)     <span class="co"># every column, its type and its first values</span></span>
+<span id="cb1-7"><a href aria-label="7"></a><span class="fu">head</span>(players)        <span class="co"># the first six rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>What does one row represent in <code>players</code>? In <code>tracking</code>?</p>
+<p>That is the <strong>grain</strong> of each table.</p>
+</div>
+</section>
+<section id="revision-2-is-this-the-table-we-expected" class="slide level2">
+<h2>Revision 2: is this the table we expected?</h2>
+<p>Find the number of rows and columns in <code>players</code>, then ask R how it has stored <code>squad_number</code> and <code>contract_end</code>.</p>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href aria-label="1"></a><span class="fu">nrow</span>(players)                   <span class="co"># 20</span></span>
+<span id="cb2-2"><a href aria-label="2"></a><span class="fu">ncol</span>(players)                   <span class="co"># 8</span></span>
+<span id="cb2-3"><a href aria-label="3"></a><span class="fu">names</span>(players)</span>
+<span id="cb2-4"><a href aria-label="4"></a></span>
+<span id="cb2-5"><a href aria-label="5"></a><span class="fu">class</span>(players<span class="sc">$</span>squad_number)     <span class="co"># &quot;numeric&quot;</span></span>
+<span id="cb2-6"><a href aria-label="6"></a><span class="fu">class</span>(players<span class="sc">$</span>contract_end)     <span class="co"># &quot;character&quot;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>squad_number</code> is stored as a number but it labels a player.</p>
+<p><code>contract_end</code> is a date but it is stored as text.</p>
+<blockquote>
+<p><strong>R knows the representation. The analyst has to understand the meaning.</strong></p>
+</blockquote>
+</div>
+</section>
+<section id="revision-3-dates-need-an-explicit-format" class="slide level2">
+<h2>Revision 3: dates need an explicit format</h2>
+<p><code>contract_end</code> is text in <code>DD/MM/YYYY</code> layout. Convert it to a date, then check that the conversion worked.</p>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href aria-label="1"></a>players<span class="sc">$</span>contract_end <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(</span>
+<span id="cb3-2"><a href aria-label="2"></a>  players<span class="sc">$</span>contract_end,</span>
+<span id="cb3-3"><a href aria-label="3"></a>  <span class="at">format =</span> <span class="st">&quot;%d/%m/%Y&quot;</span></span>
+<span id="cb3-4"><a href aria-label="4"></a>)</span>
+<span id="cb3-5"><a href aria-label="5"></a></span>
+<span id="cb3-6"><a href aria-label="6"></a><span class="fu">class</span>(players<span class="sc">$</span>contract_end)          <span class="co"># &quot;Date&quot;</span></span>
+<span id="cb3-7"><a href aria-label="7"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(players<span class="sc">$</span>contract_end))     <span class="co"># 0: nothing failed to convert</span></span>
+<span id="cb3-8"><a href aria-label="8"></a><span class="fu">min</span>(players<span class="sc">$</span>contract_end)            <span class="co"># &quot;2025-06-30&quot;</span></span>
+<span id="cb3-9"><a href aria-label="9"></a><span class="fu">max</span>(players<span class="sc">$</span>contract_end)            <span class="co"># &quot;2029-06-30&quot;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<blockquote>
+<p><strong>A conversion is not complete until we check what happened to the actual values.</strong></p>
+</blockquote>
+</div>
+</section>
+<section id="revision-4-how-many-values-are-missing" class="slide level2">
+<h2>Revision 4: how many values are missing?</h2>
+<p>Count the missing values in <code>match_rating</code> in the <code>tracking</code> table.</p>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href aria-label="1"></a><span class="fu">is.na</span>(tracking<span class="sc">$</span>match_rating)         <span class="co"># one TRUE or FALSE per row</span></span>
+<span id="cb4-2"><a href aria-label="2"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(tracking<span class="sc">$</span>match_rating))    <span class="co"># 34</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>NA</code> is how R marks a value that was never recorded</li>
+<li><code>is.na()</code> asks of every row: is this value missing? It answers <code>TRUE</code> or <code>FALSE</code></li>
+<li><code>sum()</code> counts how many of those answers are <code>TRUE</code></li>
+</ul>
+<p>So 34 of the 476 appearances have no rating. The other 442 do.</p>
+</div>
+</section>
+<section id="revision-4-what-missing-values-do-to-a-summary" class="slide level2">
+<h2>Revision 4: what missing values do to a summary</h2>
+<p>Find the smallest and largest <code>match_rating</code>.</p>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href aria-label="1"></a><span class="fu">min</span>(tracking<span class="sc">$</span>match_rating)                   <span class="co"># NA</span></span>
+<span id="cb5-2"><a href aria-label="2"></a><span class="fu">min</span>(tracking<span class="sc">$</span>match_rating, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)     <span class="co"># 1</span></span>
+<span id="cb5-3"><a href aria-label="3"></a><span class="fu">max</span>(tracking<span class="sc">$</span>match_rating, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)     <span class="co"># 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong>Why <code>NA</code>?</strong> R cannot know whether one of the 34 missing ratings would have been the smallest, so it refuses to guess</li>
+<li><strong><code>na.rm = TRUE</code></strong> means “remove the missing values first”: the answer comes from the 442 recorded ratings only</li>
+<li><code>max()</code> and <code>mean()</code> behave in the same way</li>
+</ul>
+<p>You will need <code>na.rm = TRUE</code> again today.</p>
+</div>
+</section>
+<section id="revision-4-missing-is-not-the-same-as-implausible" class="slide level2">
+<h2>Revision 4: missing is not the same as implausible</h2>
+<p>These are two different questions about a variable:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 33%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Check</th>
+<th><code>match_rating</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Missing:</strong> was a value recorded at all?</td>
+<td><code>sum(is.na())</code></td>
+<td>34 values were not recorded</td>
+</tr>
+<tr class="even">
+<td><strong>Implausible:</strong> is a recorded value hard to believe?</td>
+<td><code>min()</code> and <code>max()</code></td>
+<td>1 to 5: believable for a rating</td>
+</tr>
+</tbody>
+</table>
+<p>A variable can have missing values and still be plausible, as here.</p>
+<p>A variable can also be complete and still contain values that deserve investigation.</p>
+<blockquote>
+<p><strong>Run both checks. Neither one answers the other.</strong></p>
+</blockquote>
+</section>
+<section id="revision-5-do-the-identifiers-connect" class="slide level2">
+<h2>Revision 5: do the identifiers connect?</h2>
+<p>Each row in <code>tracking</code> is one player in one match. It names the player with <code>player_id</code>.</p>
+<p>The <code>players</code> table is our reference list: who exists in the squad.</p>
+<blockquote>
+<p><strong>Does every <code>player_id</code> used in <code>tracking</code> appear in <code>players</code>?</strong></p>
+</blockquote>
+<p>Why it matters:</p>
+<ul>
+<li>if an ID has no match, any analysis by player is built on rows we cannot explain;</li>
+<li>today you will group by <code>player_id</code>;</li>
+<li>in Week 5 you will join these two tables.</li>
+</ul>
+</section>
+<section id="revision-5-in-on-a-small-example" class="slide level2">
+<h2>Revision 5: <code>%in%</code> on a small example</h2>
+<p><code>c()</code> combines values. Here it holds two IDs: one real, one invented.</p>
+<p>Predict the result, then run it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href aria-label="1"></a><span class="fu">c</span>(<span class="st">&quot;P001&quot;</span>, <span class="st">&quot;P021&quot;</span>) <span class="sc">%in%</span> players<span class="sc">$</span>player_id</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href aria-label="1"></a><span class="cn">TRUE</span> <span class="cn">FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>For each value on the <strong>left</strong>: is it found on the <strong>right</strong>?</li>
+<li><code>P001</code> is in the squad list. <code>P021</code> is not: there are only 20 players.</li>
+<li>There is one answer for every value on the left.</li>
+</ul>
+</div>
+</section>
+<section id="revision-5-every-row-of-tracking" class="slide level2">
+<h2>Revision 5: every row of <code>tracking</code></h2>
+<p>Now ask the same question of every <code>player_id</code> in <code>tracking</code>, and collapse the answers into one.</p>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href aria-label="1"></a>tracking<span class="sc">$</span>player_id <span class="sc">%in%</span> players<span class="sc">$</span>player_id         <span class="co"># 476 answers, one per row</span></span>
+<span id="cb8-2"><a href aria-label="2"></a></span>
+<span id="cb8-3"><a href aria-label="3"></a><span class="fu">all</span>(tracking<span class="sc">$</span>player_id <span class="sc">%in%</span> players<span class="sc">$</span>player_id)    <span class="co"># TRUE</span></span>
+<span id="cb8-4"><a href aria-label="4"></a><span class="fu">sum</span>(tracking<span class="sc">$</span>player_id <span class="sc">%in%</span> players<span class="sc">$</span>player_id)    <span class="co"># 476</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>all()</code> is <code>TRUE</code> only if every single answer is <code>TRUE</code></li>
+<li><code>sum()</code> counts how many answers are <code>TRUE</code>: all 476 rows have a matching player</li>
+</ul>
+<p>This is the same idea as <code>sum(is.na())</code>: a column of <code>TRUE</code> and <code>FALSE</code>, counted.</p>
+</div>
+</section>
+<section id="revision-5-does-the-direction-matter" class="slide level2">
+<h2>Revision 5: does the direction matter?</h2>
+<p>Now reverse the check: does every player in <code>players</code> appear in <code>tracking</code>?</p>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href aria-label="1"></a><span class="fu">all</span>(players<span class="sc">$</span>player_id <span class="sc">%in%</span> tracking<span class="sc">$</span>player_id)    <span class="co"># TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The two directions ask different questions:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 65%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Check</th>
+<th>A <code>FALSE</code> would mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tracking</code> IDs in <code>players</code></td>
+<td>a tracking row for a player we have no record of</td>
+</tr>
+<tr class="even">
+<td><code>players</code> IDs in <code>tracking</code></td>
+<td>a squad player who never appears in the tracking data</td>
+</tr>
+</tbody>
+</table>
+<p>The first would be a problem for any join. The second might be legitimate.</p>
+</div>
+</section>
+<section id="revision-5-reading-the-result" class="slide level2">
+<h2>Revision 5: reading the result</h2>
+<p><code>TRUE</code> tells us that every ID in <code>tracking</code> has a match in the reference table.</p>
+<p>It does <strong>not</strong> tell us that:</p>
+<ul>
+<li>the IDs point to the right player;</li>
+<li>the measurements attached to them are accurate.</li>
+</ul>
+<p><code>FALSE</code> tells us something is unmatched. We would find which values failed before deciding whether the data are wrong.</p>
+<blockquote>
+<p><strong>One <code>TRUE</code> or <code>FALSE</code> per row is also how <code>filter()</code> decides which rows to keep. We use that next.</strong></p>
+</blockquote>
+</section>
+<section id="what-week-2-gives-us-today" class="slide level2">
+<h2>What Week 2 gives us today</h2>
+<p>Last week these functions told us whether to trust an import:</p>
+<p><code>glimpse()</code> · <code>head()</code> · <code>nrow()</code> · <code>class()</code> · <code>sum(is.na())</code> · <code>min()</code> · <code>max()</code> · <code>%in%</code></p>
+<p>Today the same functions tell us whether a <strong>transformation</strong> did what we intended.</p>
+<blockquote>
+<p><strong>Last week’s checks are how we verify this week’s transformations.</strong></p>
+</blockquote>
+</section>
+<section id="new-this-week" class="slide level2">
+<h2>New this week</h2>
+</section></section>
+<section>
+<section id="asking-questions-and-transforming-data" class="title-slide slide level1 center">
+<h1>Asking questions and transforming data</h1>
+
 </section>
 <section id="central-question" class="slide level2">
 <h2>Central question</h2>
@@ -1257,88 +1500,141 @@ margin-right: 0; }
 <p>Not every question needs every step.</p>
 <p>But each step should exist because the question requires it.</p>
 </section>
-<section id="pipes-express-the-sequence" class="slide level2">
-<h2>Pipes express the sequence</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href aria-label="1"></a>tracking <span class="sc">|&gt;</span></span>
-<span id="cb1-2"><a href aria-label="2"></a>  <span class="fu">filter</span>(minutes_played <span class="sc">&gt;=</span> <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Read it as:</p>
-<blockquote>
-<p>take tracking → keep the observations relevant to the question</p>
-</blockquote>
-<p>The pipe is useful because the code can follow the analytical logic.</p>
+<section id="a-new-way-to-write-code-the-pipe" class="slide level2">
+<h2>A new way to write code: the pipe</h2>
+<p>So far we have written one function at a time:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href aria-label="1"></a><span class="fu">nrow</span>(tracking)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The pipe <code>|&gt;</code> passes what is on its left into the function on its right:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href aria-label="1"></a>tracking <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href aria-label="2"></a>  <span class="fu">nrow</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Both lines give the same answer.</p>
+<p>Read <code>|&gt;</code> as <strong>“and then”</strong>: take <code>tracking</code>, and then count its rows.</p>
+<p>The pipe is useful because the code can follow the analytical logic, one step per line.</p>
 </section>
 <section id="step-1-filter-the-relevant-observations" class="slide level2">
 <h2>Step 1: filter the relevant observations</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href aria-label="1"></a><span class="fu">filter</span>(minutes_played <span class="sc">&gt;=</span> <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The condition comes from the question.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href aria-label="1"></a>eligible <span class="ot">&lt;-</span> tracking <span class="sc">|&gt;</span>              <span class="co"># store the result as a new object</span></span>
+<span id="cb12-2"><a href aria-label="2"></a>  <span class="fu">filter</span>(minutes_played <span class="sc">&gt;=</span> <span class="dv">60</span>)       <span class="co"># keep rows where this is TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>filter()</code> keeps rows; it never changes columns</li>
+<li>The condition comes from the question: “at least 60 minutes”</li>
+<li><code>tracking</code> itself is unchanged</li>
+</ul>
 <p>Change the question and the filter may need to change.</p>
+</section>
+<section id="verify-the-filter" class="slide level2">
+<h2>Verify the filter</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href aria-label="1"></a><span class="fu">nrow</span>(tracking)                    <span class="co"># rows before</span></span>
+<span id="cb13-2"><a href aria-label="2"></a><span class="fu">nrow</span>(eligible)                    <span class="co"># rows after</span></span>
+<span id="cb13-3"><a href aria-label="3"></a><span class="fu">min</span>(eligible<span class="sc">$</span>minutes_played)      <span class="co"># shortest appearance kept</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<blockquote>
+<p><strong>A filter is not complete until we check which rows it kept.</strong></p>
+</blockquote>
+<p>Code that runs without an error may still have kept the wrong rows.</p>
 </section>
 <section id="step-2-derive-the-measure-the-question-needs" class="slide level2">
 <h2>Step 2: derive the measure the question needs</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href aria-label="1"></a><span class="fu">mutate</span>(</span>
-<span id="cb3-2"><a href aria-label="2"></a>  <span class="at">sprints_per_90 =</span> sprints <span class="sc">/</span> minutes_played <span class="sc">*</span> <span class="dv">90</span></span>
-<span id="cb3-3"><a href aria-label="3"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Raw sprint count and sprint rate answer different questions.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href aria-label="1"></a>eligible <span class="ot">&lt;-</span> eligible <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href aria-label="2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-3"><a href aria-label="3"></a>    <span class="at">sprints_per_90 =</span> sprints <span class="sc">/</span> minutes_played <span class="sc">*</span> <span class="dv">90</span>   <span class="co"># new column = calculation</span></span>
+<span id="cb14-4"><a href aria-label="4"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>mutate()</code> adds a column; it never removes rows</li>
+<li>Sprints per minute, multiplied by 90, gives sprints per full match</li>
+<li>The name on the left of <code>=</code> is ours to choose</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href aria-label="1"></a><span class="fu">head</span>(eligible<span class="sc">$</span>sprints_per_90)     <span class="co"># do the values look right?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote>
 <p><strong>A derived variable embodies an analytical decision.</strong></p>
 </blockquote>
 </section>
-<section id="step-3-group-and-summarise" class="slide level2">
-<h2>Step 3: group and summarise</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href aria-label="1"></a>analysis <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href aria-label="2"></a>  <span class="fu">group_by</span>(venue) <span class="sc">|&gt;</span></span>
-<span id="cb4-3"><a href aria-label="3"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb4-4"><a href aria-label="4"></a>    <span class="at">mean_sprints =</span> <span class="fu">mean</span>(sprints, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb4-5"><a href aria-label="5"></a>    <span class="at">mean_sprints_per_90 =</span> <span class="fu">mean</span>(sprints_per_90, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb4-6"><a href aria-label="6"></a>    <span class="at">appearances =</span> <span class="fu">n</span>()</span>
-<span id="cb4-7"><a href aria-label="7"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The grain changes:</p>
-<p><strong>player appearances → venues</strong></p>
+<section id="step-3-what-are-we-asking" class="slide level2">
+<h2>Step 3: what are we asking?</h2>
+<p>Each row of <code>eligible</code> is still one player appearance.</p>
+<p>The question compares two venues.</p>
+<p>So we need <strong>one row per venue</strong>, holding a typical value for each.</p>
+<blockquote>
+<p><strong>Split the rows into groups, then reduce each group to a summary.</strong></p>
+</blockquote>
 </section>
-<section id="the-key-comparison" class="slide level2">
-<h2>The key comparison</h2>
+<section id="step-3-how-r-answers" class="slide level2">
+<h2>Step 3: how R answers</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href aria-label="1"></a>eligible <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href aria-label="2"></a>  <span class="fu">group_by</span>(venue) <span class="sc">|&gt;</span>                             <span class="co"># split rows by venue</span></span>
+<span id="cb16-3"><a href aria-label="3"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-4"><a href aria-label="4"></a>    <span class="at">mean_sprints =</span> <span class="fu">mean</span>(sprints),                <span class="co"># typical raw count</span></span>
+<span id="cb16-5"><a href aria-label="5"></a>    <span class="at">mean_sprints_per_90 =</span> <span class="fu">mean</span>(sprints_per_90),  <span class="co"># typical rate</span></span>
+<span id="cb16-6"><a href aria-label="6"></a>    <span class="at">appearances =</span> <span class="fu">n</span>()                            <span class="co"># rows in each group</span></span>
+<span id="cb16-7"><a href aria-label="7"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>group_by()</code> changes nothing visible; it marks the groups</li>
+<li><code>summarise()</code> returns one row per group</li>
+<li><code>n()</code> counts the rows in each group</li>
+</ul>
+</section>
+<section id="step-3-reading-the-result" class="slide level2">
+<h2>Step 3: reading the result</h2>
+<p>The grain has changed:</p>
+<p><strong>player appearances → venues</strong></p>
 <p>Compare the home/away conclusion using:</p>
 <ul>
 <li>mean raw sprints;</li>
 <li>mean sprints per 90.</li>
 </ul>
-<p>If the conclusion changes after adjustment, explain why.</p>
-<p>If it does not change, explain what the adjusted measure still adds.</p>
+<p>Do the two measures agree?</p>
 <h3 id="which-measure-best-matches-the-wording-at-a-higher-rate">Which measure best matches the wording “at a higher rate”?</h3>
 </section>
-<section id="supporting-tools" class="slide level2">
-<h2>Supporting tools</h2>
-<p>You will also encounter useful functions such as:</p>
-<p><code>select()</code> · <code>rename()</code> · <code>arrange()</code></p>
-<p>They can make a table easier to work with or read.</p>
-<p>But the central analytical sequence this week is:</p>
-<blockquote>
-<p><strong>filter → derive → group → summarise</strong></p>
-</blockquote>
+<section id="one-pipeline" class="slide level2">
+<h2>One pipeline</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href aria-label="1"></a>tracking <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href aria-label="2"></a>  <span class="fu">filter</span>(minutes_played <span class="sc">&gt;=</span> <span class="dv">60</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href aria-label="3"></a>  <span class="fu">mutate</span>(<span class="at">sprints_per_90 =</span> sprints <span class="sc">/</span> minutes_played <span class="sc">*</span> <span class="dv">90</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href aria-label="4"></a>  <span class="fu">group_by</span>(venue) <span class="sc">|&gt;</span></span>
+<span id="cb17-5"><a href aria-label="5"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb17-6"><a href aria-label="6"></a>    <span class="at">mean_sprints =</span> <span class="fu">mean</span>(sprints),</span>
+<span id="cb17-7"><a href aria-label="7"></a>    <span class="at">mean_sprints_per_90 =</span> <span class="fu">mean</span>(sprints_per_90),</span>
+<span id="cb17-8"><a href aria-label="8"></a>    <span class="at">appearances =</span> <span class="fu">n</span>()</span>
+<span id="cb17-9"><a href aria-label="9"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The same four steps, with nothing stored in between.</p>
+<p>Read it aloud: take <code>tracking</code>, <strong>and then</strong> filter, <strong>and then</strong> derive, <strong>and then</strong> group, <strong>and then</strong> summarise.</p>
 </section>
 <section id="conditions-express-the-question" class="slide level2">
 <h2>Conditions express the question</h2>
 <p>Common conditions include:</p>
 <p><code>==</code> · <code>!=</code> · <code>&gt;</code> · <code>&gt;=</code> · <code>&lt;</code> · <code>&lt;=</code></p>
 <p>Combine them when needed:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href aria-label="1"></a>tracking <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href aria-label="2"></a>  <span class="fu">filter</span>(venue <span class="sc">==</span> <span class="st">&quot;Home&quot;</span> <span class="sc">&amp;</span> minutes_played <span class="sc">&gt;=</span> <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>&amp;</code> means both conditions must be true.</p>
 <p><code>|</code> means at least one condition must be true.</p>
-<p>The symbols are not the point. The logic is.</p>
+<p>Text values need quotation marks and must match the data exactly.</p>
+</section>
+<section id="supporting-tools" class="slide level2">
+<h2>Supporting tools</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href aria-label="1"></a>tracking <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href aria-label="2"></a>  <span class="fu">select</span>(player_id, venue, sprints) <span class="sc">|&gt;</span>   <span class="co"># keep only these columns</span></span>
+<span id="cb19-3"><a href aria-label="3"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sprints))                 <span class="co"># order from largest to smallest</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>select()</code> and <code>arrange()</code> make a table easier to read.</p>
+<p>They do not change what the analysis means.</p>
+<p>The central analytical sequence this week is:</p>
+<blockquote>
+<p><strong>filter → derive → group → summarise</strong></p>
+</blockquote>
 </section>
 <section id="part-two" class="slide level2">
 <h2>PART TWO</h2>
 </section></section>
 <section>
-<section id="pick-up-your-task-sheet" class="title-slide slide level1 center">
-<h1>Pick up your task sheet</h1>
+<section id="open-the-week-three-task-sheet" class="title-slide slide level1 center">
+<h1>Open the Week Three Task Sheet</h1>
 
 </section>
 <section id="work-through-in-order" class="slide level2">
 <h2>Work through, in order</h2>
 <ul>
-<li><strong>CORE</strong>: translate one question into a transformation workflow (<code>week03_session.R</code>)</li>
+<li><strong>CORE</strong>: answer new questions about the Strathclyde FC data with the same verbs</li>
 <li><strong>TRANSFER</strong>: athletics training load by group</li>
-<li><strong>CHALLENGE</strong>: two operational definitions of “intensity,” if time allows</li>
+<li><strong>EXTENSION</strong>: two ways to calculate a rate, and two definitions of “intensity”, if time allows</li>
 </ul>
 <p>Use the hint sheet if you get stuck.</p>
 <p><strong>Slides are paused until we regroup.</strong></p>
@@ -1350,6 +1646,18 @@ margin-right: 0; }
 <section id="regroup-whole-group-debrief" class="title-slide slide level1 center">
 <h1>Regroup: whole-group debrief</h1>
 
+</section>
+<section id="what-did-your-checks-reveal" class="slide level2">
+<h2>What did your checks reveal?</h2>
+<p>Goalkeepers had the highest sprint rate of any position.</p>
+<p>Changing the threshold from 60 to 75 minutes reversed the venue conclusion.</p>
+<p>Neither result came with an error message.</p>
+<p>The analyst must still distinguish:</p>
+<blockquote>
+<p><strong>unusual value vs representation problem vs possible data-quality problem</strong></p>
+</blockquote>
+<p>Today we identify concerns.</p>
+<p>Week 4 asks how to intervene.</p>
 </section>
 <section id="transfer-means-recognising-structure" class="slide level2">
 <h2>Transfer means recognising structure</h2>
