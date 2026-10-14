@@ -495,6 +495,33 @@ After cleaning:
 
 ------------------------------------------------------------------------
 
+## A value we keep still needs handling
+
+If the 130-minute session is plausible, it is still extreme. What do we do with it?
+
+| Option | What it does | Cost |
+|---------------|------------------------------|--------------------------|
+| **Report both ways** | result with and without the value | two answers to explain |
+| **Robust summary** | report the median, which barely moves | says less about extremes |
+| **Winsorise** | pull extremes in to a percentile | alters real observations |
+| **Transform** | analyse on another scale, e.g. log | harder to interpret |
+
+``` r
+x <- sessions_clean$duration_min
+mean(x, na.rm = TRUE);        median(x, na.rm = TRUE)         # 60.6  57
+mean(x[x != 130], na.rm = TRUE);  median(x[x != 130], na.rm = TRUE)   # 58.5  55.5
+```
+
+In the raw data, the 1050 moved the mean from 60.6 to 88.1 but the median only from 57 to 60.
+
+> **Whichever we choose, we say so, and show the conclusion survives.**
+
+::: notes
+Link back to the three kinds of odd value. Once a value is classed as plausible, the choice is about how to summarise, not whether to delete. The raw figures (88.1 mean, 60 median) include the 1050 value. Winsorising and transforming are named so students recognise them; we do not practise them today.
+:::
+
+------------------------------------------------------------------------
+
 ## PART ONE (continued)
 
 # Missing values that remain
