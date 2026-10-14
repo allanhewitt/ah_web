@@ -122,17 +122,18 @@ A repeated `player_id` is expected: players attend many sessions.
 
 ------------------------------------------------------------------------
 
-## Diagnose 1: look before you touch
+## Diagnose the table: look before you touch
 
 ``` r
 library(tidyverse)
 
-# trim_ws = FALSE keeps surrounding spaces visible, so we can diagnose them
 sessions <- read_csv("data/week04_demo_sessions.csv", trim_ws = FALSE)
 
 glimpse(sessions)
 nrow(sessions)                  # 37
 ```
+
+`trim_ws` stands for "trim white space". By default `read_csv()` strips spaces from the start and end of text values. We switch that off with `trim_ws = FALSE`, so that `"gym "` and `"gym"` stay visibly different and we can diagnose them before cleaning.
 
 Nothing has been changed yet.
 
@@ -140,7 +141,7 @@ Every later check will be compared with these starting numbers.
 
 ------------------------------------------------------------------------
 
-## Diagnose 2: missing and implausible are not the same
+## Diagnose missing and implausible data
 
 ``` r
 sum(is.na(sessions$duration_min))          # 1
@@ -152,7 +153,7 @@ range(sessions$rpe, na.rm = TRUE)          # 1 99
 
 **Missing** means no value is recorded.
 
-`rpe = 99` is recorded, but the scale runs from 1 to 10, so 99 may be a code for "not recorded".
+`rpe = 99` is recorded, but the scale runs from 1 to 10, so 99 may be a **sentinel**: a placeholder code, such as 99 or -99, that stands for "not recorded".
 
 `duration_min = 1050` is present, but is 17.5 hours of training.
 
@@ -160,12 +161,12 @@ range(sessions$rpe, na.rm = TRUE)          # 1 99
 
 ------------------------------------------------------------------------
 
-## Diagnose 2: ask before you act
+## Diagnose implausible data: ask before you act
 
 For each unusual value, ask:
 
 -   could this value be real?
--   is it a known sentinel?
+-   is it a known sentinel (a placeholder code for "not recorded")?
 -   can it be corrected from the source?
 -   should it be represented as missing while we investigate?
 
@@ -173,7 +174,7 @@ Recorded values and missing values are different problems, and they need differe
 
 ------------------------------------------------------------------------
 
-## Why is the value missing?
+## Diagnose missing data: why is the value missing?
 
 The reason matters, because it affects what we can safely do.
 
@@ -188,7 +189,7 @@ A missing value is not automatically wrong, and there is no single fix that is r
 
 ------------------------------------------------------------------------
 
-## Diagnose 3: duplicates depend on grain
+## Diagnose duplicates: they depend on grain
 
 In this table:
 
@@ -206,7 +207,7 @@ Which row is it, and how would we decide that it is a genuine duplicate?
 
 ------------------------------------------------------------------------
 
-## Diagnose 4: inconsistent labels split one category into several
+## Diagnose labels: one category, many labels
 
 ``` r
 table(sessions$session_type)
@@ -650,7 +651,16 @@ sessions_imputed <- sessions_clean |>
 
 -   The overall mean pulls recovery towards the other groups.
 -   Using the median of the row's own type keeps the groups apart.
--   Every imputed value is a guess. S012 and S020 now look like ordinary sessions, and because each sits exactly at the centre of its type, the spread within gym and recovery sessions is slightly smaller (gym 3.1 to 3.0, recovery 2.9 to 2.7).
+
+------------------------------------------------------------------------
+
+## Every imputed value is a guess
+
+S012 and S020 now look like ordinary sessions.
+
+Because each imputed value sits exactly at the centre of its type, the spread within gym and recovery sessions becomes slightly smaller (gym 3.1 to 3.0, recovery 2.9 to 2.7).
+
+The data now look a little more certain than they are.
 
 > **Imputing replaces missing evidence with an assumption. State the assumption.**
 
@@ -663,20 +673,24 @@ sessions_imputed <- sessions_clean |>
 | `duration_min` | 2 of 36 | possible | few values; a typical value for the session type is a reasonable stand-in |
 | `rpe` | 5 of 36 | leave as `NA` | a rating from 1 to 10 should be a whole number; an imputed 5.1 is not a possible rating, and 5 of 36 is a lot to invent |
 
-Questions to ask before imputing:
-
--   Does the analysis need a complete column?
--   How much is missing? What would a stand-in mean here?
--   Does the stand-in make sense for this type of variable?
--   Have I marked it, and can I report how many values are imputed?
-
 ::: notes
 Check the numbers: 2 of 36 durations, 5 of 36 rpe values. Imputation by the mean is the simplest method, not the best. Model-based and multiple imputation exist and are covered in more advanced modules; today the skill is deciding whether to impute, and recording it.
 :::
 
 ------------------------------------------------------------------------
 
-## Record the decision
+## Questions to ask before imputing
+
+-   Does the analysis need a complete column?
+-   How much is missing? What would a stand-in mean here?
+-   Does the stand-in make sense for this type of variable?
+-   Have I marked it, and can I report how many values are imputed?
+
+> **Imputing is a choice we make and record, not something R requires.**
+
+------------------------------------------------------------------------
+
+## Record the decision: what we changed
 
 Every intervention needs a reason and a check:
 
@@ -684,9 +698,16 @@ Every intervention needs a reason and a check:
 |------------------------|-------------------|-------------------------------|
 | `duration_min = 1050` | set to `NA` (more than 180) | range now 21 to 130 |
 | `rpe = 99` | set to `NA` (outside 1 to 10) | range now 1 to 8 |
-| duration of 130 | keep; flagged; plausible | still present, flag recorded |
 | ten session labels | trim, lower case, map `rec` | three labels |
 | repeated row | `distinct()` | 37 rows to 36 |
+
+------------------------------------------------------------------------
+
+## Record the decision: what we kept or filled
+
+| Issue | Decision | Verified by |
+|------------------------|-------------------|-------------------------------|
+| duration of 130 | keep; flagged; plausible | still present, flag recorded |
 | 2 missing durations | impute with median of own session type; mark with `duration_imputed` | 2 rows flagged, group means checked |
 | 5 missing `rpe` | leave as `NA` | still 5, reported |
 
