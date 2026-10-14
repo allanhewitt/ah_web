@@ -20,10 +20,6 @@ execute:
 
 ![](roadmap_week04.svg){width="100%"}
 
-Today:
-
-# CLEAN
-
 ------------------------------------------------------------------------
 
 ## PART ONE
@@ -60,7 +56,8 @@ We were **identifying concerns**.
 
 ## Central question
 
-# What is genuinely wrong, and what change is defensible?
+What is genuinely wrong, and what change is defensible?
+
 
 ::: why
 **Cleaning changes evidence.**
@@ -94,7 +91,7 @@ Begin by identifying what the problem actually is.
 
 ![](five_problems.svg){.nostretch fig-align="center" width="100%"}
 
-We will diagnose each of these today. The fixes come after the evidence.
+We'll diagnose each of these today. Fixes come after we look for evidence.
 
 ------------------------------------------------------------------------
 
@@ -115,8 +112,6 @@ Strathclyde FC **training sessions**.
 A repeated `player_id` is expected: players attend many sessions.
 
 ------------------------------------------------------------------------
-
-## PART ONE (continued)
 
 # DIAGNOSE
 
@@ -223,8 +218,6 @@ Three kinds of session. **Ten** labels.
 Anything we group by `session_type` would produce ten groups.
 
 ------------------------------------------------------------------------
-
-## PART ONE (continued)
 
 # FLAG
 
@@ -349,8 +342,6 @@ We cannot tell which kind S035 is from the numbers alone.
 
 ------------------------------------------------------------------------
 
-## PART ONE (continued)
-
 # DECIDE, then CLEAN
 
 ------------------------------------------------------------------------
@@ -450,8 +441,6 @@ sessions_clean <- sessions |>
 Each line exists because of a decision we can explain.
 
 ------------------------------------------------------------------------
-
-## PART ONE (continued)
 
 # VERIFY
 
@@ -570,8 +559,6 @@ Link back to the three kinds of odd value. Once a value is classed as plausible,
 :::
 
 ------------------------------------------------------------------------
-
-## PART ONE (continued)
 
 # Missing values that remain
 
