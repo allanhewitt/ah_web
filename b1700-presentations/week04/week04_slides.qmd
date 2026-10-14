@@ -322,7 +322,7 @@ hist(sessions$duration_min)
 boxplot(sessions$duration_min, horizontal = TRUE)
 ```
 
-![](inspect_raw.svg){width="82%"}
+![](inspect_raw.svg){.nostretch fig-align="center" width="82%"}
 
 The histogram shows one session far to the right of all the others. The boxplot draws the IQR rule: the 1050 and the 130 both fall beyond the whiskers.
 
@@ -497,7 +497,7 @@ Answer: the axis now runs to about 130 rather than 1050, so the box and whiskers
 boxplot(sessions_clean$duration_min, horizontal = TRUE)
 ```
 
-![](inspect_clean.svg){width="82%"}
+![](inspect_clean.svg){.nostretch fig-align="center" width="82%"}
 
 The 130 is still marked. It is a plausible value that we kept, and the flag still records it.
 
