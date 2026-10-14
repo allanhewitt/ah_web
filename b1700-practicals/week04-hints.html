@@ -1,42 +1,420 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 4 Hints — Diagnosing and Cleaning Data</title><link rel="stylesheet" href="resource.css"></head><body><div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div><header class="hero"><div class="wrap"><div class="eyebrow">Week 4 · Hint Sheet</div><h1>Diagnosing and Cleaning Data</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header><main class="wrap"><section class="intro"><h2>How to use this page</h2><p>Open only the hint for the task your group is working on. Use the <strong>Still stuck?</strong> layer only if the first hint is not enough.</p></section><nav class="phase-nav"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
-<section class="phase" id="p1"><div class="phase-head"><h2>PHASE 1 — RETRIEVAL</h2></div><details><summary>Hint for Task 1.1 — Classify five data problems</summary><div class="hint-body"><p>Ask whether the issue is representation, missingness, plausibility, duplication relative to grain, or table shape. Then ask whether the evidence available is sufficient to justify a change.</p></div></details></section>
-<section class="phase" id="p2"><div class="phase-head"><h2>PHASE 2 — CONSEQUENCE PROBLEM</h2></div><details><summary>Hint for Task 2.1 — Judge an automatic replacement</summary><div class="hint-body"><p>Replacing missing values with a mean removes <code>NA</code>s but also inserts estimated/constructed evidence. Whether that is defensible depends on the purpose, missingness mechanism and downstream analysis.</p></div></details></section>
-<section class="phase" id="p3"><div class="phase-head"><h2>PHASE 3 — CORE PRACTICAL</h2><p>Use syntax support only after diagnosis.</p></div><details><summary>Hint for Task 3.1 — Diagnose missingness and implausible distance values</summary><div class="hint-body"><pre><code>sum(is.na(dirty$distance_km))
-sum(is.na(dirty$match_rating))
-min(dirty$distance_km, na.rm = TRUE)
-max(dirty$distance_km, na.rm = TRUE)</code></pre><p>A value can be present and still be invalid or implausible.</p></div></details><details><summary>Hint for Task 3.2 — Diagnose duplicates relative to grain</summary><div class="hint-body"><pre><code>sum(duplicated(dirty))
-dirty_distinct &lt;- dirty |&gt; distinct()</code></pre><p>A repeated player ID is expected across matches; an exact repeated player-match observation may represent duplicated evidence.</p></div></details><details><summary>Hint for Task 3.3 — Standardise position labels</summary><div class="hint-body"><pre><code>dirty &lt;- dirty |&gt;
-  mutate(
-    position = str_trim(position),
-    position = str_to_lower(position)
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1700 Week 4 Hints: Dealing with Messy Data</title>
+<style>
+:root{
+  --blue:#124864;
+  --blue-dark:#0d354a;
+  --soft:#e8f1f5;
+  --grey:#f6f8fa;
+  --green:#e8f4ee;
+  --orange:#fdf2e2;
+  --ink:#17212b;
+  --muted:#5b6770;
+  --line:#d8e0e5;
+  --white:#ffffff;
+  --max:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#fff;
+  line-height:1.58;
+}
+.modulebar{
+  background:var(--blue-dark);
+  color:#fff;
+  padding:.7rem 1rem;
+  font-size:.92rem;
+}
+.modulebar .inner{
+  max-width:var(--max);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+header{
+  background:linear-gradient(180deg,var(--soft),#fff);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--max);
+  margin:auto;
+  padding:2.3rem 1rem 1.8rem;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+h1{
+  margin:.2rem 0 .25rem;
+  color:var(--blue);
+  font-size:clamp(2rem,5vw,3.1rem);
+  line-height:1.08;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:1.08rem;
+  margin:0;
+}
+main{
+  max-width:var(--max);
+  margin:auto;
+  padding:1.5rem 1rem 4rem;
+}
+.callout{
+  border:1px solid #9db8c7;
+  border-left:5px solid var(--blue);
+  border-radius:10px;
+  background:var(--soft);
+  padding:1rem 1.1rem;
+  margin:0 0 1.4rem;
+}
+.callout h2{
+  margin:0 0 .35rem;
+  color:var(--blue);
+  font-size:1rem;
+  letter-spacing:.03em;
+}
+.callout p:last-child{margin-bottom:0}
+.workflow{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1.7rem;
+}
+.workflow h2{
+  color:var(--blue);
+  font-size:1.1rem;
+  margin-top:0;
+}
+.workflow ul{margin-bottom:.2rem}
+.phase{
+  margin-top:2.1rem;
+  scroll-margin-top:1rem;
+}
+.phase-banner{
+  background:var(--blue);
+  color:#fff;
+  border-radius:9px;
+  padding:.7rem 1rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  font-size:.92rem;
+}
+.phase-intro{
+  color:var(--muted);
+  margin:.55rem .15rem 1rem;
+}
+.task{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1rem;
+  background:#fff;
+}
+.task h3{
+  margin:0 0 .65rem;
+  color:var(--blue);
+  font-size:1.18rem;
+}
+.task-label{
+  font-weight:800;
+  color:var(--blue);
+}
+.group{
+  margin:.45rem 0;
+}
+.record{
+  margin:.85rem 0 0;
+  padding:.7rem .85rem;
+  border-left:4px solid var(--blue);
+  background:var(--grey);
+  border-radius:0 7px 7px 0;
+}
+.record strong{
+  color:var(--blue);
+}
+code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:var(--grey);
+  border:1px solid #e1e6ea;
+  padding:.08em .32em;
+  border-radius:4px;
+  font-size:.92em;
+}
+pre{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.9rem 1rem;
+  overflow:auto;
+  line-height:1.45;
+}
+pre code{border:0;padding:0;background:transparent}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:.8rem 0;
+  font-size:.96rem;
+}
+th,td{
+  padding:.55rem .6rem;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{
+  background:var(--grey);
+  color:var(--blue);
+}
+blockquote{
+  margin:.8rem 0;
+  padding:.6rem 1rem;
+  border-left:4px solid #a8bac4;
+  background:var(--grey);
+  font-size:1.05rem;
+}
+.nav{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:0 0 1.6rem;
+}
+.nav a{
+  color:var(--blue);
+  text-decoration:none;
+  border:1px solid #b8c9d2;
+  border-radius:999px;
+  padding:.35rem .65rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+.nav a:hover,.nav a:focus{
+  background:var(--soft);
+  outline:none;
+}
+details{
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:0 0 .8rem;
+  background:#fff;
+  overflow:hidden;
+}
+summary{
+  cursor:pointer;
+  padding:.85rem 1rem;
+  color:var(--blue);
+  font-weight:800;
+  background:var(--grey);
+}
+summary:hover{background:var(--soft)}
+.hint-body{
+  padding:.85rem 1rem 1rem;
+}
+.hint-body p:first-child{margin-top:0}
+.hint-body p:last-child{margin-bottom:0}
+.support-note{
+  background:var(--orange);
+  border:1px solid #e7cfa8;
+  border-radius:10px;
+  padding:.9rem 1rem;
+  margin-bottom:1.4rem;
+}
+footer{
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.85rem;
+  padding:1.3rem 1rem 2rem;
+}
+footer .inner{
+  max-width:var(--max);
+  margin:auto;
+}
+@media (max-width:650px){
+  .header-inner{padding-top:1.7rem}
+  main{padding-top:1rem}
+  .task{padding:.9rem}
+  th,td{padding:.45rem}
+}
+@media print{
+  .modulebar,.nav{display:none}
+  body{font-size:11pt}
+  .task,details{break-inside:avoid}
+  details > *{display:block}
+  summary{list-style:none}
+}
+</style>
+</head>
+<body>
+<div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
+<header><div class="header-inner"><div class="kicker">Week 4 · Hint Sheet</div><h1>Dealing with Messy Data</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header>
+<main>
+<div class="callout"><h2>HOW TO USE THIS PAGE</h2><p>Use this page <strong>only when your group needs help to make progress</strong>. Find the hint for the task you are working on, open only that hint, use as little support as you need, then return to the task sheet.</p><p>The hints show <strong>patterns</strong>. Words such as <code>table</code>, <code>column</code> and <code>value</code> are placeholders: replace them with the real names and values. <code>...</code> means &ldquo;the contents you have already written for this step&rdquo;. A <strong>sanity check</strong> gives a number you can compare with your own, so that you know you are on the right track. The hints do not replace the group&rsquo;s analytical judgement.</p></div>
+<nav class="nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a><a href="#p8">Phase 8</a><a href="#p9">Phase 9</a><a href="#mistakes">Common mistakes</a></nav>
+<section class="phase" id="p1"><div class="phase-banner">PHASE 1: CORE: REVISIT WEEKS 1 AND 2</div><p class="phase-intro">Checks you have already used. Try to write them before opening a hint.</p><details><summary>Hint for Task 1.1: Restart and import</summary><div class="hint-body"><p>Restart R from the <strong>Session</strong> menu. Create the script from <strong>File &gt; New File &gt; R Script</strong> and save it.</p><pre><code>library(tidyverse)
+
+table_name &lt;- read_csv(&quot;data/file_name.csv&quot;)</code></pre><p>Use the pattern three times. The object name on the left does not have to match the file name. For the grain, finish the sentence &ldquo;One row is one &hellip;&rdquo; for each table.</p></div></details><details><summary>Hint for Task 1.2: Check <code>tracking</code> from memory</summary><div class="hint-body"><pre><code>glimpse(table)
+nrow(table)
+ncol(table)
+class(table$column)
+sum(is.na(table$column))
+min(table$column)
+max(table$column)
+table(table$column)</code></pre><p>The last line uses the function <code>table()</code> to count how often each value occurs. Repeat a line for each column you need.</p><p><strong>Sanity check:</strong> <code>tracking</code> has 476 rows and 8 columns, and <code>match_rating</code> has 34 missing values.</p></div></details><details><summary>Hint for Task 1.3: Spot representation problems</summary><div class="hint-body"><pre><code>class(table$column)
+head(table$column)</code></pre><p>Ask what you would be unable to do with each column in its current form. For example, could you ask R for matches played after a given date if the date is stored as text?</p></div></details></section>
+<section class="phase" id="p2"><div class="phase-banner">PHASE 2: CORE: REVISIT WEEK 3</div><p class="phase-intro">Same verbs as Week 3.</p><details><summary>Hint for Task 2.1: Filter and derive</summary><div class="hint-body"><pre><code>new_table &lt;- table |&gt;
+  filter(column &gt;= value) |&gt;
+  mutate(new_column = column_a / column_b * 90)
+
+nrow(new_table)
+min(new_table$column)
+min(new_table$new_column)
+max(new_table$new_column)</code></pre><p><strong>Sanity check:</strong> 388 rows remain, the smallest <code>minutes_played</code> is at least 60, and distance per 90 sits between roughly 3.5 and 14 km.</p></div></details><details><summary>Hint for Task 2.2: Group, summarise and arrange</summary><div class="hint-body"><pre><code>new_table |&gt;
+  group_by(group_column) |&gt;
+  summarise(
+    name_one = mean(column),
+    rows = n()
   ) |&gt;
+  arrange(desc(name_one))</code></pre><p>Ask which position you would expect to run furthest and which least, and compare. Then explain anything that does not fit. What does a goalkeeper do in a match?</p></div></details><details><summary>Hint for Task 2.3: Convert and verify the match dates</summary><div class="hint-body"><pre><code>table$new_column &lt;- as.Date(
+  table$column,
+  format = &quot;%d/%m/%Y&quot;
+)
+
+class(table$new_column)
+sum(is.na(table$new_column))
+min(table$new_column)
+max(table$new_column)</code></pre><p>A new name on the left of <code>&lt;-</code> keeps the original column. A <code>Date</code> class and zero missing values are not enough: look at the actual values and the range.</p></div></details></section>
+<section class="phase" id="p3"><div class="phase-banner">PHASE 3: CORE: DIAGNOSE THE MESSY EXTRACT</div><p class="phase-intro">Nothing changes in this phase.</p><details><summary>Hint for Task 3.1: Missing and implausible values</summary><div class="hint-body"><pre><code>dirty &lt;- read_csv(&quot;data/file_name.csv&quot;, trim_ws = FALSE)
+
+sum(is.na(table$column))
+range(table$column, na.rm = TRUE)
+
+table |&gt;
+  filter(column &lt; value | column &gt; value)</code></pre><p>The <code>|</code> means &ldquo;or&rdquo;. Choose the limits from what is believable for one appearance, then look at the rows that come back and decide whether each is impossible, unusual but plausible, or unknown.</p><p><strong>Sanity check:</strong> 5 missing values in <code>distance_km</code>, 4 in <code>match_rating</code>, and a range of <code>distance_km</code> from &minus;99 to 200.5.</p><p><strong>Watch for:</strong> <code>NA</code> is not the only kind of missing value. A number can stand in for &ldquo;not recorded&rdquo;.</p></div></details><details><summary>Hint for Task 3.2: Duplicates relative to grain</summary><div class="hint-body"><pre><code>sum(duplicated(table))
+table[duplicated(table), ]
+
+sum(duplicated(table[, c(&quot;column_a&quot;, &quot;column_b&quot;)]))
+n_distinct(table$column_a)</code></pre><p>The first line counts rows that exactly repeat an earlier row. The third line counts rows that repeat only the pair of identifying columns. If the two counts are equal, no pair of rows disagrees about the same appearance. <code>duplicated()</code> marks the second and later copies, so use the second line to see them.</p><p><strong>Sanity check:</strong> 3 exact duplicates, and the same number when you check only the match and player together. There are 15 distinct players in 43 rows, which is expected.</p></div></details><details><summary>Hint for Task 3.3: Inconsistent labels</summary><div class="hint-body"><pre><code>table(table$column)
+unique(table$column)
+n_distinct(table$column)
+
+table |&gt;
+  mutate(new_column = str_to_lower(str_trim(column))) |&gt;
+  count(new_column)</code></pre><p><code>str_trim()</code> removes spaces from both ends. <code>str_to_lower()</code> makes everything lower case. Neither of them can turn an abbreviation into a full label: that needs a mapping that you write.</p><p><strong>Sanity check:</strong> 10 distinct labels for 3 positions. After trimming and lower case there are still 6 labels.</p></div></details><details><summary>Hint for Task 3.4: Flag candidates</summary><div class="hint-body"><pre><code>lower &lt;- quantile(table$column, 0.25, na.rm = TRUE) -
+  1.5 * IQR(table$column, na.rm = TRUE)
+upper &lt;- quantile(table$column, 0.75, na.rm = TRUE) +
+  1.5 * IQR(table$column, na.rm = TRUE)
+
+flagged &lt;- table |&gt;
   mutate(
-    position = case_when(
-      position == "fwd" ~ "forward",
-      position == "def" ~ "defender",
-      position == "mf"  ~ "midfielder",
-      TRUE ~ position
-    )
-  )</code></pre><p>Trimming/case normalisation and abbreviation mapping are two different operations.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Check <code>sort(unique(dirty$position))</code> before any change, after trimming/lowercasing, and after abbreviation mapping. This makes each intervention visible.</p></div></details></div></details><details><summary>Hint for Task 3.4 — Represent clearly impossible distances as missing</summary><div class="hint-body"><pre><code>dirty &lt;- dirty |&gt;
+    iqr_flag = column &lt; lower | column &gt; upper,
+    z = (column - mean(column, na.rm = TRUE)) /
+      sd(column, na.rm = TRUE),
+    z_flag = abs(z) &gt; 3
+  )
+
+flagged |&gt;
+  filter(iqr_flag | z_flag)</code></pre><p>This is the demonstration block with the table and column changed. <code>filter(iqr_flag | z_flag)</code> works because a flag is already <code>TRUE</code> or <code>FALSE</code>. Rows where the column is missing give <code>NA</code> flags and do not appear.</p><p><strong>Sanity check:</strong> The fences are about 4.24 and 13.16. The IQR rule flags 4 rows: the &minus;99 values (one of them repeated) and 200.5. The z-score rule flags only 200.5.</p><p><strong>Observation:</strong> the extreme values inflate the mean and the standard deviation, so the z-score of &minus;99 is only about &minus;2.4. The extreme values have hidden one another.</p></div></details><details><summary>Hint for Task 3.5: Look at it</summary><div class="hint-body"><pre><code>hist(table$column)
+boxplot(table$column, horizontal = TRUE)</code></pre><p>These are quick inspection plots, not presentation graphics. In the boxplot, the box holds the middle half of the values and the dots beyond the whiskers are the values the IQR rule flags.</p><p><strong>Sanity check:</strong> The two extreme values stretch the axis so far that the box shrinks to a thin strip. A plot shows how far a value sits from the rest, but not whether it is wrong.</p></div></details></section>
+<section class="phase" id="p4"><div class="phase-banner">PHASE 4: CORE: DECIDE, CLEAN, VERIFY</div><p class="phase-intro">Every line of cleaning code should correspond to a row of your decision table.</p><details><summary>Hint for Task 4.1: Decision table</summary><div class="hint-body"><p>Use one row per issue: the sentinel value, the implausible high value, the missing distances, the missing ratings, the position labels and the duplicates.</p><p>Three questions help with each: <em>Could the value be real?</em> <em>Can it be corrected from a source we have?</em> <em>What would we lose or invent by changing it?</em> A missing rating, for example, is not a missing distance: ask whether anything you plan to do needs the rating.</p></div></details><details><summary>Hint for Task 4.2: Clean</summary><div class="hint-body"><pre><code>new_table &lt;- table |&gt;
   mutate(
-    distance_km = if_else(
-      distance_km &lt; 0 | distance_km &gt; 20,
+    column = str_to_lower(str_trim(column)),
+    column = case_when(
+      column == &quot;short&quot; ~ &quot;long&quot;,
+      column == &quot;short_two&quot; ~ &quot;long_two&quot;,
+      TRUE ~ column
+    ),
+    other_column = if_else(
+      other_column &lt; value | other_column &gt; value,
       NA_real_,
-      distance_km
+      other_column
     )
-  )</code></pre><p>The 20 km threshold is a contextual teaching rule for this football-appearance dataset, not a universal constant.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>First write the rule in words. Then identify which rows satisfy it before changing anything. After recoding, rerun the range check and missing-value count.</p></div></details></div></details><details><summary>Hint for Task 3.5 — Remove only defensible exact duplicates</summary><div class="hint-body"><p><code>distinct()</code> removes exact duplicate rows. Use it only after you have established that exact duplication is inconsistent with the intended grain.</p></div></details><details><summary>Hint for Task 3.6 — Verify the cleaning intervention</summary><div class="hint-body"><pre><code>sum(is.na(dirty$distance_km))
-min(dirty$distance_km, na.rm = TRUE)
-max(dirty$distance_km, na.rm = TRUE)
-sum(duplicated(dirty))
-sort(unique(dirty$position))
-nrow(dirty)</code></pre><p>Re-run the checks that identified the problem; do not rely on the absence of an R error.</p></div></details><details><summary>Hint for Task 3.7 — Reshape the training-load table</summary><div class="hint-body"><pre><code>training_long &lt;- training_wide |&gt;
+  ) |&gt;
+  distinct()</code></pre><p><code>TRUE ~ column</code> keeps every label that is not mentioned above it. <code>NA_real_</code> is a missing number. You may use one <code>mutate()</code> or several: what matters is that each line implements a decision.</p><p><strong>Sanity check:</strong> <code>dirty_clean</code> has 40 rows, 7 missing distances (the 4 original ones that remain after the duplicate is removed, plus the three impossible values: &minus;99 twice and 200.5) and 3 position labels.</p></div></details><details><summary>Hint for Task 4.3: Verify, then flag again</summary><div class="hint-body"><pre><code>nrow(new_table)
+colSums(is.na(new_table))
+range(new_table$column, na.rm = TRUE)
+sum(duplicated(new_table))
+table(new_table$column)
+boxplot(new_table$column, horizontal = TRUE)</code></pre><p><code>colSums(is.na(table))</code> gives the missing values in every column at once. Compare each result with the numbers you recorded in Phase 3: some should have changed, and some should not.</p><p><strong>Sanity check:</strong> The range of <code>distance_km</code> is now 4.69 to 11.62. The new fences are about 5.27 and 12.51, and one row is flagged: player P015 in match M009 with 4.69 km.</p><p>To decide whether that flag matters, look at <code>minutes_played</code> for the row and calculate the distance per 90 minutes. Then compare it with the rest of the table. Decide, and record the decision either way.</p></div></details><details><summary>Hint for Task 4.4: Does cleaning change the answer?</summary><div class="hint-body"><pre><code>table_labels &lt;- ... # your pipeline without the distance line
+
+table_labels |&gt;
+  group_by(group_column) |&gt;
+  summarise(
+    mean_value = mean(column, na.rm = TRUE),
+    rows = n()
+  )</code></pre><p>Do the same for <code>dirty_clean</code> and put the two tables side by side.</p><p><strong>Sanity check:</strong> Defender is the same in both (about 8.56). Forward and midfielder change dramatically: the forward mean falls from about 15.7 to 7.87, and the midfielder mean rises from about &minus;0.49 to 9.36.</p><p>A negative mean distance is impossible. Ask what produced it, and why nothing in R warned you.</p></div></details><details><summary>Hint for Task 4.5: What would dropping cost?</summary><div class="hint-body"><pre><code>nrow(table)
+nrow(na.omit(table))
+nrow(drop_na(table, column))
+
+table |&gt;
+  filter(is.na(column_a) | is.na(column_b))</code></pre><p><code>na.omit()</code> removes a row if <em>any</em> column is missing. <code>drop_na(table, column)</code> removes a row only if that one column is missing. Use the last pattern to see the rows that each choice would remove.</p><p><strong>Sanity check:</strong> <code>dirty_clean</code> has 40 rows. <code>na.omit()</code> leaves 29 and dropping only on distance leaves 33. Seven rows lack a distance and four lack a rating, and none lack both.</p></div></details><details><summary>Hint for Task 4.6: Impute, mark and compare</summary><div class="hint-body"><pre><code>table_imputed &lt;- table |&gt;
+  group_by(group_column) |&gt;
+  mutate(
+    flag_column = is.na(column),
+    column = if_else(is.na(column), median(column, na.rm = TRUE), column)
+  ) |&gt;
+  ungroup()
+
+overall &lt;- median(table$column, na.rm = TRUE)
+table |&gt; mutate(column = replace_na(column, overall))</code></pre><p>Inside a grouped <code>mutate()</code>, <code>median()</code> is worked out for each group, so each missing value receives the median of its own group. <code>ungroup()</code> returns the table to normal. Build the first version with <code>group_by(...) |&gt; summarise(...)</code> and <code>na.rm = TRUE</code>.</p><p><strong>Sanity check:</strong> Seven rows are marked as imputed. The position medians are about 8.40 (defender), 8.24 (forward) and 9.71 (midfielder). The three versions give a defender mean of about 8.56 or 8.55, a forward mean of 7.87, 8.04 or 7.96, and a midfielder mean of 9.36, 9.17 or 9.44.</p><p><strong>Observation:</strong> the differences between the versions are small compared with the spread of the data, but all three forwards and all three midfielders now share the same imputed value. Imputing one number for several rows makes the data look more certain than it is. For the rating, ask what a typical rating would mean for a performance you do not have a record of.</p></div></details></section>
+<section class="phase" id="p5"><div class="phase-banner">PHASE 5: CORE: RESHAPE</div><p class="phase-intro">Change the shape without losing track of the grain.</p><details><summary>Hint for Task 5.1: Wide to long</summary><div class="hint-body"><pre><code>new_table &lt;- table |&gt;
   pivot_longer(
-    cols = starts_with("week_"),
-    names_to = "week",
-    values_to = "training_load"
-  )</code></pre><p><code>pivot_longer()</code> changes the table’s grain; state that change explicitly.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Before reshaping, one row is a player with several week columns. After reshaping, expect several rows per player—one for each player-week observation.</p></div></details></div></details></section>
-<section class="phase" id="p4"><div class="phase-head"><h2>PHASE 4 — CHECKPOINT</h2></div><details><summary>Hint for Task 4.1 — Checkpoint the cleaning workflow</summary><div class="hint-body"><p><code>na.omit()</code> drops incomplete rows; <code>replace_na()</code> inserts replacement values. They alter evidence in different ways and require analytical justification.</p></div></details></section>
-<section class="phase" id="p5"><div class="phase-head"><h2>PHASE 5 — TRANSFER</h2></div><details><summary>Hint for Task 5.1 — Build a decision table for rugby wellness</summary><div class="hint-body"><p>Repeated IDs may be legitimate depending on grain. A 95-minute appearance may reflect extra time. A value of 999 may be a sentinel or a genuine data-entry error. “Unusual” is not itself a cleaning rule.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Work issue by issue. For each one, separate four questions: what is unusual, why it matters, whether you have enough evidence to change it, and what check would confirm the intervention worked.</p></div></details></div></details></section>
-<section class="phase" id="p6"><div class="phase-head"><h2>PHASE 6 — EXTENSION</h2></div><details><summary>Hint for Task 6.1 — Write a cleaning decision log</summary><div class="hint-body"><p>Useful additional evidence could include competition rules, data dictionaries, collection-system documentation or confirmation from the data provider.</p></div></details></section>
-<section class="phase" id="p7"><div class="phase-head"><h2>PHASE 7 — DEBRIEF</h2></div><details><summary>Hint for Task 7.1 — Explain why cleaning decisions must be auditable</summary><div class="hint-body"><p>A defensible workflow allows another analyst to see what was changed, why it was changed, and whether the intervention produced the intended result.</p></div></details></section>
-<details class="troubleshoot"><summary>If your R code isn’t working</summary><div class="hint-body"><ol><li>Check that the Week 4 project and setup section have run.</li><li>Inspect the current object before changing it.</li><li>Run one cleaning operation at a time.</li><li>Check variable names and classes with <code>names()</code> and <code>glimpse()</code>.</li><li>Re-run the diagnostic that motivated the change.</li><li>If the code runs but the evidence no longer makes sense, stop and revisit the cleaning decision.</li></ol></div></details></main><footer>B1700 · Week 4 · 2026–27</footer></body></html>
+    cols = starts_with(&quot;prefix&quot;),
+    names_to = &quot;new_name_column&quot;,
+    values_to = &quot;new_value_column&quot;
+  )
+
+nrow(table)
+nrow(new_table)</code></pre><p>The columns that start with the shared prefix become rows. The names of those columns go into the first new column, and their values go into the second. Everything else stays and is repeated.</p><p><strong>Sanity check:</strong> 20 rows become 160, and the long table has three columns.</p></div></details><details><summary>Hint for Task 5.2: Use the long table</summary><div class="hint-body"><pre><code>new_table |&gt;
+  group_by(week) |&gt;
+  summarise(mean_load = mean(load_au), rows = n())</code></pre><p>Replace the column names with the ones you chose in Task 5.1. For the flags, use the same block as before on the new value column. The question to ask of an empty result is whether it means the data are clean, or only that no value is extreme relative to the others.</p><p><strong>Sanity check:</strong> Week 2 has the lowest mean, and no value is flagged: the fences are about 5.3 and 54.5, and the loads lie between 18.1 and 41.9.</p></div></details></section>
+<section class="phase" id="p6"><div class="phase-banner">PHASE 6: AUDIT: JUDGE A COLLEAGUE’S SCRIPT</div><p class="phase-intro">Check what the script does, not what the note says it does.</p><details><summary>Hint for Task 6.1: What does each step actually do?</summary><div class="hint-body"><pre><code>raw &lt;- read_csv(&quot;data/week04_dirty_tracking_extract.csv&quot;)
+nrow(raw)
+
+step_1 &lt;- raw |&gt; na.omit()
+nrow(step_1)
+
+step_2 &lt;- step_1 |&gt; distinct(column, .keep_all = TRUE)
+nrow(step_2)</code></pre><p>Build the pipeline up one step at a time and store each result. To see which rows a step removed, look at the rows that satisfy the opposite condition. For <code>na.omit()</code>, for example, look at the rows with a missing value in any column.</p><pre><code>raw |&gt;
+  filter(is.na(column_a) | is.na(column_b))</code></pre><p>For <code>distinct()</code> on a single column, pick a player who appears several times and look at that player&rsquo;s rows before and after.</p><p><strong>Sanity check:</strong> The row counts are 43, 34, 14 and 13.</p></div></details><details><summary>Hint for Task 6.2: Verdict</summary><div class="hint-body"><p>Work through these questions for the colleague&rsquo;s script:</p><ul><li><strong>Grain:</strong> what should one row represent? What does one row represent in <code>clean</code>?</li><li><strong>Rows lost:</strong> how many, and were they all rows with a problem? Is a row with a missing rating but a valid distance a row with a problem for a question about distance?</li><li><strong>Values changed:</strong> which impossible values were handled by a rule, and which only by chance? Check whether 200.5 is still in the table at each step, and why it is, or is not.</li><li><strong>Labels:</strong> print the distinct positions in <code>clean</code>.</li><li><strong>Verification:</strong> what in the script shows the result was checked?</li></ul><p><strong>Sanity check:</strong> The colleague&rsquo;s table has 13 rows (30 of the original 43 are gone) and four position labels. Compare the number of defenders, forwards and midfielders with your own table.</p></div></details></section>
+<section class="phase" id="p7"><div class="phase-banner">PHASE 7: TRANSFER</div><p class="phase-intro">The same process on a small table.</p><details><summary>Hint for Task 7.1: Decision table first</summary><div class="hint-body"><p>Use the same structure as Task 4.1. Look at the data before you fill the table in: print the whole table, as it has only ten rows.</p><p><strong>Sanity check:</strong> There are 10 rows, 5 distinct position labels for 2 positions, one exact duplicate and 2 missing wellness values.</p><p>Ask whether 95 minutes is possible in this sport, whether 999 is on the wellness scale, and what you would need to know before changing either.</p></div></details><details><summary>Hint for Task 7.2: Clean, flag and compare</summary><div class="hint-body"><p>Reuse your Task 4.2 pattern for the labels and duplicates, and your Task 3.4 block for the flags. Apply the flag block to one column at a time.</p><p><strong>Sanity check:</strong> After cleaning there are 9 rows and 2 positions. The IQR rule flags 999 in <code>wellness</code>. In <code>minutes</code> it flags 55, and not 95.</p><p>A flag that catches something harmless and misses something suspicious is a good reminder that the rule knows nothing about rugby. After cleaning, three of the nine <code>wellness</code> values are missing: ask what an imputed value would then be built from. The 999, once treated as missing, takes the &ldquo;back&rdquo; mean from an impossible value to a believable one.</p></div></details></section>
+<section class="phase" id="p8"><div class="phase-banner">PHASE 8: EXTENSION</div><p class="phase-intro">Go beyond the patterns.</p><details><summary>Hint for Task 8.1: How much could the missing values matter?</summary><div class="hint-body"><pre><code>lowest &lt;- min(clean_table$column, na.rm = TRUE)
+highest &lt;- max(clean_table$column, na.rm = TRUE)
+
+clean_table |&gt;
+  mutate(column = replace_na(column, lowest)) |&gt;
+  group_by(group_column) |&gt;
+  summarise(mean_low = mean(column))</code></pre><p>Repeat with <code>highest</code>, then put the two tables and your Task 4.6 result side by side. Neither extreme is realistic: together they show the range that the missing values allow.</p><p><strong>Sanity check:</strong> The valid distances run from 4.69 to 11.62. The possible mean for forwards runs from about 7.07 to 8.80, for midfielders from about 8.28 to 9.88 and for defenders from about 8.30 to 8.76.</p><p><strong>Observation:</strong> the position with the most missing values has the widest range. Compare the forward range with the defender range and decide whether the ranking is safe.</p></div></details><details><summary>Hint for Task 8.2: A reusable flagging function</summary><div class="hint-body"><pre><code>flag_outliers &lt;- function(data, column) {
+  stopifnot(column %in% names(data), is.numeric(data[[column]]))
+  x &lt;- data[[column]]
+  ...
+  data
+}
+
+flag_outliers(table, &quot;column&quot;)</code></pre><p><code>data[[column]]</code> picks a column using its name as text. <code>stopifnot()</code> stops with an error if any condition inside it is not <code>TRUE</code>. Build the body from your flagging block, replacing <code>table$column</code> with <code>x</code>, and add the three columns to <code>data</code> with <code>data$new_name &lt;- ...</code>.</p><p><strong>Sanity check:</strong> On <code>distance_km</code> it should flag 4 rows by IQR and 1 by z-score. On <code>duration_min</code> in the demonstration table it should flag two sessions by IQR and one by z-score.</p></div></details><details><summary>Hint for Task 8.3: Decision log for ambiguous values</summary><div class="hint-body"><p>For each value, a good log has: what we know, what we do not know, the source we would check, the action in the meantime (for example, keep the value but mark it) and the effect on the analysis if we are wrong.</p></div></details></section>
+<section class="phase" id="p9"><div class="phase-banner">PHASE 9: DEBRIEF</div><p class="phase-intro">Focus on the fit between evidence and action.</p><details><summary>Hint for Task 9.1: Flag or change?</summary><div class="hint-body"><p>Think about the values that were flagged and then handled by a rule you had justified, the value that the z-score rule missed, and a flagged value that turned out to be plausible. A flag recommends a closer look.</p></div></details><details><summary>Hint for Task 9.2: Why must cleaning be auditable?</summary><div class="hint-body"><p>Think about what a reader of the colleague&rsquo;s script could and could not reconstruct from the handover note, and what your own decision table and verification add.</p></div></details></section>
+<section class="phase" id="mistakes"><div class="phase-banner">COMMON MISTAKES</div><p class="phase-intro">Check this list if a result looks wrong.</p>
+<details><summary>My cleaned table has the wrong number of rows</summary><div class="hint-body"><p>Check the order of your steps. Dropping rows with <code>na.omit()</code> or <code>filter()</code> before you have decided what the rows mean can remove evidence that you needed. Compare <code>nrow()</code> before and after each step.</p></div></details>
+<details><summary>The position labels are still not consistent</summary><div class="hint-body"><p>Trimming and lower case do not turn <code>fwd</code> into <code>forward</code>. After standardising, print the distinct labels and map each remaining abbreviation yourself. Do the trimming and lower-casing <em>before</em> the mapping, otherwise the mapping will not match.</p></div></details>
+<details><summary>I changed <code>dirty</code> and cannot get the original back</summary><div class="hint-body"><p>Run the import line again. In future, store cleaned results in a new object so that the original stays available for comparison.</p></div></details>
+<details><summary>I imputed and the impossible values are still in my table</summary><div class="hint-body"><p>Order matters. Convert the impossible values to <code>NA</code> first, then decide what to do with the missing values. If you impute before you convert, the sentinel values are treated as real data and they pull the group median and mean.</p></div></details>
+<details><summary>My mean is <code>NA</code></summary><div class="hint-body"><p>A mean of a column with a missing value is missing. Add <code>na.rm = TRUE</code>, and then count how many values the mean is actually based on.</p></div></details>
+<details><summary>I set values to missing but the range still shows them</summary><div class="hint-body"><p>Check that you stored the result of the pipeline in an object and that you are checking that object. Check that your condition covers both sides, for example both a negative and a very high value.</p></div></details>
+<details><summary><code>if_else()</code> gives an error about types</summary><div class="hint-body"><p>The replacement has to be the same type as the column. Use <code>NA_real_</code> for a missing number and <code>NA_character_</code> for missing text.</p></div></details>
+<details><summary>The flag found nothing, so the data must be clean</summary><div class="hint-body"><p>Not necessarily. A flag compares a value with the rest of the column, so it cannot find problems that affect most of the column, and it cannot judge values that are unusual only because of what the numbers mean. Impossible values can also hide one another.</p></div></details>
+</section>
+</main>
+<footer><div class="inner">B1700 · Week 4 · 2026–27</div></footer>
+</body></html>

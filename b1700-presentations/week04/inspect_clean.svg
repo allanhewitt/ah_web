@@ -1,0 +1,26 @@
+<svg viewBox="0 0 1400 260" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <rect width="1400" height="260" fill="#ffffff"/>
+  <text x="700" y="36" font-size="24" font-weight="700" text-anchor="middle" fill="#16191C">boxplot(sessions_clean$duration_min)</text>
+  <rect x="60" y="60" width="1280" height="110" fill="none" stroke="#16191C" stroke-width="1.3"/>
+  <line x1="60" y1="170" x2="1340" y2="170" stroke="#16191C" stroke-width="1.3"/>
+  <line x1="123.0" y1="170" x2="123.0" y2="178" stroke="#16191C" stroke-width="1.3"/>
+  <text x="123.0" y="200" font-size="18" font-weight="400" text-anchor="middle" fill="#16191C">20</text>
+  <line x1="332.8" y1="170" x2="332.8" y2="178" stroke="#16191C" stroke-width="1.3"/>
+  <text x="332.8" y="200" font-size="18" font-weight="400" text-anchor="middle" fill="#16191C">40</text>
+  <line x1="542.6" y1="170" x2="542.6" y2="178" stroke="#16191C" stroke-width="1.3"/>
+  <text x="542.6" y="200" font-size="18" font-weight="400" text-anchor="middle" fill="#16191C">60</text>
+  <line x1="752.5" y1="170" x2="752.5" y2="178" stroke="#16191C" stroke-width="1.3"/>
+  <text x="752.5" y="200" font-size="18" font-weight="400" text-anchor="middle" fill="#16191C">80</text>
+  <line x1="962.3" y1="170" x2="962.3" y2="178" stroke="#16191C" stroke-width="1.3"/>
+  <text x="962.3" y="200" font-size="18" font-weight="400" text-anchor="middle" fill="#16191C">100</text>
+  <line x1="1172.1" y1="170" x2="1172.1" y2="178" stroke="#16191C" stroke-width="1.3"/>
+  <text x="1172.1" y="200" font-size="18" font-weight="400" text-anchor="middle" fill="#16191C">120</text>
+  <text x="700.0" y="232" font-size="20" font-weight="400" text-anchor="middle" fill="#16191C">duration_min</text>
+  <line x1="133.4" y1="115.0" x2="437.7" y2="115.0" stroke="#16191C" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <line x1="721.0" y1="115.0" x2="836.4" y2="115.0" stroke="#16191C" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <line x1="133.4" y1="103.0" x2="133.4" y2="127.0" stroke="#16191C" stroke-width="1.3"/>
+  <line x1="836.4" y1="103.0" x2="836.4" y2="127.0" stroke="#16191C" stroke-width="1.3"/>
+  <rect x="437.7" y="91.0" width="283.3" height="48" fill="#DCE6F2" stroke="#16191C" stroke-width="1.3"/>
+  <line x1="511.1" y1="91.0" x2="511.1" y2="139.0" stroke="#16191C" stroke-width="3.5"/>
+  <circle cx="1277.0" cy="115.0" r="5.5" fill="#C0392B"/>
+</svg>
