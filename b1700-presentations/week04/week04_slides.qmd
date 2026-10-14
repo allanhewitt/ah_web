@@ -90,11 +90,11 @@ Begin by identifying what the problem actually is.
 
 ------------------------------------------------------------------------
 
-## Four recurring problem structures
+## Five recurring problems
 
-![](four_problems.svg){width="100%"}
+![](five_problems.svg){.nostretch fig-align="center" width="100%"}
 
-The functions matter because they help us address these problems.
+We will diagnose each of these today. The fixes come after the evidence.
 
 ------------------------------------------------------------------------
 
@@ -315,6 +315,25 @@ The 1050 inflates the standard deviation to about 167 minutes, so the 130 has a 
 
 ------------------------------------------------------------------------
 
+## Look at it: a picture shows what a table hides
+
+``` r
+hist(sessions$duration_min)
+boxplot(sessions$duration_min, horizontal = TRUE)
+```
+
+![](inspect_raw.svg){width="82%"}
+
+The histogram shows one session far to the right of all the others. The boxplot draws the IQR rule: the 1050 and the 130 both fall beyond the whiskers.
+
+A picture shows how far a value sits from the rest. It does not tell us whether the value is wrong.
+
+::: notes
+These are quick inspection plots, not presentation graphics; polished charts come later in the module. The red points in the boxplot are exactly the two sessions the IQR rule flagged (S012 and S035). The z-score rule missed S035; the picture makes the disagreement easy to see.
+:::
+
+------------------------------------------------------------------------
+
 ## Three kinds of odd value, three responses
 
 | What the value turns out to be | Example | Sensible response |
@@ -454,6 +473,35 @@ sum(duplicated(sessions_clean))                        # 0
 Missing values went **up** (1 to 2, and 3 to 5): that is what we intended.
 
 The maximum is now 130, because we chose to keep that session.
+
+------------------------------------------------------------------------
+
+## Predict before we run it: the boxplot after cleaning
+
+We have set the 1050 to `NA`. The 130 is still in the data.
+
+1.  How will the scale of the boxplot change?
+2.  How many points will the boxplot mark as outliers?
+
+Write your prediction as a comment in your script.
+
+::: notes
+Answer: the axis now runs to about 130 rather than 1050, so the box and whiskers are readable. One point is still marked: the 130, which we chose to keep. Cleaning removed the impossible value, not the unusual one.
+:::
+
+------------------------------------------------------------------------
+
+## The same boxplot, after cleaning
+
+``` r
+boxplot(sessions_clean$duration_min, horizontal = TRUE)
+```
+
+![](inspect_clean.svg){width="82%"}
+
+The 130 is still marked. It is a plausible value that we kept, and the flag still records it.
+
+> **Plotting before and after is a check on the cleaning, as well as on the data.**
 
 ------------------------------------------------------------------------
 
