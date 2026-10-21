@@ -1,8 +1,307 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 5 Task — Connecting Data Sources</title><link rel="stylesheet" href="resource.css"></head><body><div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div><header class="hero"><div class="wrap"><div class="eyebrow">Week 5 · Task Sheet</div><h1>Connecting Data Sources</h1><p class="subtitle">Group Task Sheet · Core → Transfer → Extension</p></div></header><main class="wrap"><section class="why"><h2>Why this matters</h2><p><strong>Central question:</strong> What if the evidence we need is spread across different tables?</p><p>Incorrect joins can lose observations, duplicate observations or silently change the grain. Relationships between datasets are part of the analysis.</p></section><section class="intro"><h2>How to work this week</h2><p>Work through this page in order as a small group. Use the Week 5 RStudio project and keep notes in <code>week05_session.R</code>. Predict what a join should do before running it, then verify afterwards.</p><p>If your group gets stuck, open the Week 5 Hints and reveal only the support you need.</p></section><nav class="phase-nav"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
-<section class="phase" id="p1"><div class="phase-head"><h2>PHASE 1 — RETRIEVAL</h2><p>Predict the relationship before using a join function.</p></div><div class="task"><h3>Task 1.1 — Recall grain and preservation</h3><p><strong>As a group, without running code:</strong> What does one row in <code>players</code> represent? What does one row in <code>tracking</code> represent? Is <code>player_id</code> unique in both tables? What should happen to the number of tracking rows if player information is added correctly while preserving every tracking observation?</p><div class="record"><strong>Record:</strong> Write four short answers in the Phase 1 workspace.</div></div></section>
-<section class="phase" id="p2"><div class="phase-head"><h2>PHASE 2 — CONSEQUENCE PROBLEM</h2><p>A join running successfully does not prove that the relationship is correct.</p></div><div class="task"><h3>Task 2.1 — Interpret an unexpected row loss</h3><p>A join runs without an R error. The resulting table contains fewer rows than the table you started with.</p><p><strong>As a group:</strong> Is that necessarily a problem? What would you need to know before deciding?</p><div class="record"><strong>Record:</strong> Write a short response using grain, key and preservation logic.</div></div></section>
-<section class="phase" id="p3"><div class="phase-head"><h2>PHASE 3 — CORE PRACTICAL</h2><p>Connect data while protecting the intended grain and observations.</p></div><div class="task"><h3>Task 3.1 — Predict the small join</h3><p>Inspect <code>week05_join_demo_events.csv</code> and <code>week05_join_demo_player_info.csv</code>.</p><p><strong>As a group:</strong> Identify the intended key, state the grain of the events table and predict which record will fail to match.</p><div class="record"><strong>Record:</strong> Record the key, grain and prediction before joining.</div></div><div class="task"><h3>Task 3.2 — Use a left join with an explicit expectation</h3><p><strong>As a group:</strong> Use a left join with events on the left. Before running it, state which observations should be preserved and the row count you expect. Verify the result afterwards.</p><div class="record"><strong>Record:</strong> Keep the expected and observed row counts.</div></div><div class="task"><h3>Task 3.3 — Diagnose and repair the unmatched key</h3><p><strong>As a group:</strong> Identify the unmatched record, diagnose the identifier inconsistency, repair it, and verify that the left join now behaves as expected.</p><div class="record"><strong>Record:</strong> Record the mismatch, repair and verification evidence.</div></div><div class="task"><h3>Task 3.4 — Contrast with an inner join</h3><p><strong>As a group:</strong> Compare the result with an inner join. Explain which observation would disappear and why that may or may not be appropriate for a particular analytical question.</p><div class="record"><strong>Record:</strong> Write a preservation-based explanation, not just a definition of inner join.</div></div><div class="task"><h3>Task 3.5 — Plan the full running-case joins</h3><p>The project contains <code>players</code>, <code>matches</code> and <code>tracking</code>.</p><p><strong>As a group:</strong> State the grain and expected row count before adding <code>player_name</code> and match result to tracking. Join only the lookup fields needed so duplicate context columns do not obscure the relationship.</p><div class="record"><strong>Record:</strong> Write the expected grain and row count before joining.</div></div><div class="task"><h3>Task 3.6 — Verify the joined analytical table</h3><p><strong>As a group:</strong> Verify the joined table using row count and missing joined fields. Confirm that one row still represents one player appearance in one match.</p><div class="record"><strong>Record:</strong> Keep the verification evidence and final grain statement.</div></div><div class="task"><h3>Task 3.7 — Use the relationship to answer a real question</h3><p><strong>As a group:</strong> Answer one question that genuinely requires information from more than one original table.</p><div class="record"><strong>Record:</strong> Write the question, analysis and a short interpretation.</div></div></section>
-<section class="phase" id="p4"><div class="phase-head"><h2>PHASE 4 — CHECKPOINT</h2><p>Treat expectation and verification as part of every join.</p></div><div class="task"><h3>Task 4.1 — Checkpoint the join workflow</h3><p><strong>QUESTION → TABLES → GRAIN → KEY → EXPECTATION → JOIN → VERIFY → ANALYSE</strong></p><p><strong>As a group:</strong> Explain why “the join ran” is not adequate verification.</p><div class="record"><strong>Record:</strong> Write one sentence identifying what a join can silently change.</div></div></section>
-<section class="phase" id="p5"><div class="phase-head"><h2>PHASE 5 — TRANSFER</h2><p>Apply the same preservation logic when key names differ.</p></div><div class="task"><h3>Task 5.1 — Identify the transfer key</h3><p>Open <code>week05_transfer_squad.csv</code> and <code>week05_transfer_testing.csv</code>.</p><p><strong>As a group:</strong> Identify the key and the different key names used in the two files.</p><div class="record"><strong>Record:</strong> Record the key relationship.</div></div><div class="task"><h3>Task 5.2 — Predict what must be preserved</h3><p>A performance lead wants sprint and jump results alongside athlete name and squad while preserving every recorded testing observation.</p><p><strong>As a group:</strong> State the grain of testing and predict the row count that should be preserved.</p><div class="record"><strong>Record:</strong> Record the grain and expected row count.</div></div><div class="task"><h3>Task 5.3 — Join using the required preservation logic</h3><p><strong>As a group:</strong> Join the files so that every testing observation is preserved while athlete context is added.</p><div class="record"><strong>Record:</strong> Keep the joined table.</div></div><div class="task"><h3>Task 5.4 — Diagnose unmatched records</h3><p><strong>As a group:</strong> Diagnose unmatched records in the relevant direction rather than assuming that missing joined fields are acceptable.</p><div class="record"><strong>Record:</strong> Record any unmatched identifiers.</div></div><div class="task"><h3>Task 5.5 — Verify the transfer join</h3><p><strong>As a group:</strong> Verify the final row count and missing joined fields, then decide whether the result is plausible.</p><div class="record"><strong>Record:</strong> Write a short verification statement.</div></div></section>
-<section class="phase" id="p6"><div class="phase-head"><h2>PHASE 6 — EXTENSION</h2><p>Explore how a many-to-one assumption can fail when time enters the relationship.</p></div><div class="task"><h3>Task 6.1 — Predict row multiplication from role history</h3><p>Open <code>week05_challenge_roles_history.csv</code>. The same athlete can appear more than once because roles are recorded by season. The testing table uses <code>athlete_code</code>; the history table uses <code>athlete_id</code>. Treat these as the same athlete key.</p><p><strong>As a group:</strong> Predict what could happen if current testing is joined to role history using athlete identity alone, without season. What happens to grain and row count? How would you redesign the data or key before joining?</p><div class="record"><strong>Record:</strong> Write the predicted failure mode and your redesign.</div></div></section>
-<section class="phase" id="p7"><div class="phase-head"><h2>PHASE 7 — DEBRIEF</h2><p>Make the assumptions encoded by a join explicit.</p></div><div class="task"><h3>Task 7.1 — Explain what a join assumes</h3><p><strong>As a group:</strong> A join is not merely a technical way to add columns. What assumptions about identity, preservation and relationships does it encode?</p><div class="record"><strong>Record:</strong> Write one or two sentences capturing those assumptions.</div></div></section><section class="assessment"><strong>Assessment One connection:</strong> deliberate <code>left_join()</code>, diagnostic <code>anti_join()</code>, understanding <code>inner_join()</code> and verification of grain/row count are core.</section></main><footer>B1700 · Week 5 · 2026–27</footer></body></html>
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1700 Week 5 Task: Connecting Data Sources</title>
+<style>
+:root{
+  --blue:#124864;
+  --blue-dark:#0d354a;
+  --soft:#e8f1f5;
+  --grey:#f6f8fa;
+  --green:#e8f4ee;
+  --orange:#fdf2e2;
+  --ink:#17212b;
+  --muted:#5b6770;
+  --line:#d8e0e5;
+  --white:#ffffff;
+  --max:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#fff;
+  line-height:1.58;
+}
+.modulebar{
+  background:var(--blue-dark);
+  color:#fff;
+  padding:.7rem 1rem;
+  font-size:.92rem;
+}
+.modulebar .inner{
+  max-width:var(--max);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+header{
+  background:linear-gradient(180deg,var(--soft),#fff);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--max);
+  margin:auto;
+  padding:2.3rem 1rem 1.8rem;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+h1{
+  margin:.2rem 0 .25rem;
+  color:var(--blue);
+  font-size:clamp(2rem,5vw,3.1rem);
+  line-height:1.08;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:1.08rem;
+  margin:0;
+}
+main{
+  max-width:var(--max);
+  margin:auto;
+  padding:1.5rem 1rem 4rem;
+}
+.callout{
+  border:1px solid #9db8c7;
+  border-left:5px solid var(--blue);
+  border-radius:10px;
+  background:var(--soft);
+  padding:1rem 1.1rem;
+  margin:0 0 1.4rem;
+}
+.callout h2{
+  margin:0 0 .35rem;
+  color:var(--blue);
+  font-size:1rem;
+  letter-spacing:.03em;
+}
+.callout p:last-child{margin-bottom:0}
+.workflow{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1.7rem;
+}
+.workflow h2{
+  color:var(--blue);
+  font-size:1.1rem;
+  margin-top:0;
+}
+.workflow ul{margin-bottom:.2rem}
+.phase{
+  margin-top:2.1rem;
+  scroll-margin-top:1rem;
+}
+.phase-banner{
+  background:var(--blue);
+  color:#fff;
+  border-radius:9px;
+  padding:.7rem 1rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  font-size:.92rem;
+}
+.phase-intro{
+  color:var(--muted);
+  margin:.55rem .15rem 1rem;
+}
+.task{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1rem;
+  background:#fff;
+}
+.task h3{
+  margin:0 0 .65rem;
+  color:var(--blue);
+  font-size:1.18rem;
+}
+.task-label{
+  font-weight:800;
+  color:var(--blue);
+}
+.group{
+  margin:.45rem 0;
+}
+.record{
+  margin:.85rem 0 0;
+  padding:.7rem .85rem;
+  border-left:4px solid var(--blue);
+  background:var(--grey);
+  border-radius:0 7px 7px 0;
+}
+.record strong{
+  color:var(--blue);
+}
+code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:var(--grey);
+  border:1px solid #e1e6ea;
+  padding:.08em .32em;
+  border-radius:4px;
+  font-size:.92em;
+}
+pre{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.9rem 1rem;
+  overflow:auto;
+  line-height:1.45;
+}
+pre code{border:0;padding:0;background:transparent}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:.8rem 0;
+  font-size:.96rem;
+}
+th,td{
+  padding:.55rem .6rem;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{
+  background:var(--grey);
+  color:var(--blue);
+}
+blockquote{
+  margin:.8rem 0;
+  padding:.6rem 1rem;
+  border-left:4px solid #a8bac4;
+  background:var(--grey);
+  font-size:1.05rem;
+}
+.nav{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:0 0 1.6rem;
+}
+.nav a{
+  color:var(--blue);
+  text-decoration:none;
+  border:1px solid #b8c9d2;
+  border-radius:999px;
+  padding:.35rem .65rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+.nav a:hover,.nav a:focus{
+  background:var(--soft);
+  outline:none;
+}
+details{
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:0 0 .8rem;
+  background:#fff;
+  overflow:hidden;
+}
+summary{
+  cursor:pointer;
+  padding:.85rem 1rem;
+  color:var(--blue);
+  font-weight:800;
+  background:var(--grey);
+}
+summary:hover{background:var(--soft)}
+.hint-body{
+  padding:.85rem 1rem 1rem;
+}
+.hint-body p:first-child{margin-top:0}
+.hint-body p:last-child{margin-bottom:0}
+.support-note{
+  background:var(--orange);
+  border:1px solid #e7cfa8;
+  border-radius:10px;
+  padding:.9rem 1rem;
+  margin-bottom:1.4rem;
+}
+footer{
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.85rem;
+  padding:1.3rem 1rem 2rem;
+}
+footer .inner{
+  max-width:var(--max);
+  margin:auto;
+}
+@media (max-width:650px){
+  .header-inner{padding-top:1.7rem}
+  main{padding-top:1rem}
+  .task{padding:.9rem}
+  th,td{padding:.45rem}
+}
+@media print{
+  .modulebar,.nav{display:none}
+  body{font-size:11pt}
+  .task,details{break-inside:avoid}
+  details > *{display:block}
+  summary{list-style:none}
+}
+</style>
+</head>
+<body>
+<div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
+<header><div class="header-inner"><div class="kicker">Week 5 · Task Sheet</div><h1>Connecting Data Sources</h1><p class="subtitle">Pair Task Sheet · Core → Audit → Transfer → Extension</p></div></header>
+<main>
+<div class="callout"><h2>WHY THIS MATTERS</h2><p><strong>Central question:</strong> What if the evidence we need is spread across different tables?</p><p><strong>A join is part of the analysis.</strong> It can run without an error and still lose observations, duplicate them or change what one row represents, so every join needs an expectation before it and a check after it: <strong>QUESTION → TABLES → GRAIN → KEY → EXPECTATION → JOIN → VERIFY → ANALYSE</strong>.</p></div>
+<div class="workflow"><h2>How to work this week</h2><p>In the demonstration you joined training sessions to a squad register, found two sessions that did not match, repaired one and checked the result. You then saw a join multiply rows when a third table had several rows for each player, and fixed it. Here you apply the same moves to different tables, and you judge somebody else’s join.</p><p>This week also revisits Weeks 1 to 4. Phase 1 uses the tracking table and the checks and verbs you already know, and separates numbers that measure from numbers that label, because every join is verified with the same checks and a key is only ever matched, never averaged.</p><p>Work through this page <strong>in order as a pair</strong>, in your own script (<code>week05_session.R</code> has a heading for each task). Keep brief comments as you go, so that your script records both what you ran and what you concluded. Most tasks start from a block in <code>week05_demo.R</code>.</p><p><strong>Predict before you run.</strong> Write the number of rows you expect before every join and compare it with the result. Keep each imported table exactly as imported, and put joined results in new objects.</p><p>If your pair gets stuck, open the <strong>Week 5 Hint Sheet</strong> and use the hint for the relevant task. Use as little support as you need, then return to the task. Phases 1 to 4 are the main work of the session. Phase 5 asks you to transfer the process to different tables, including one in which a join multiplies rows, and Phase 6 is for pairs who want to go further.</p><p>Use one RStudio project for the pair and swap the person typing at the start of each phase. Both of you should be able to explain your decisions.</p></div>
+<nav class="nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
+<section class="phase" id="p1"><div class="phase-banner">PHASE 1: CORE: REVISIT WEEKS 1 TO 4</div><p class="phase-intro">Import and check tables before you join anything.</p>
+<article class="task"><h3>Task 1.1: Restart and import</h3><p>Use <strong>Session &gt; Restart R</strong> so that nothing from the demonstration is left in memory. Check that <code>week_five.Rproj</code> is the open project. Start a new script, save it, and load the tidyverse. Keep <code>week05_demo.R</code> open in another tab: most tasks start from a block of it.</p><p class="group"><strong>As a pair:</strong> Import three files from the <code>data</code> folder: <code>player_match_tracking.csv</code> into <code>tracking</code>, <code>match_results.csv</code> into <code>matches</code> and <code>players.csv</code> into <code>players</code>. (The small tables and the athlete files are imported later.)</p><p class="record"><strong>Record:</strong> A comment for each table saying what one row represents.</p></article>
+<article class="task"><h3>Task 1.2: Check <code>tracking</code> from memory</h3><p class="group"><strong>As a pair:</strong> Without looking at an earlier script, write the code that gives you: a first look at <code>tracking</code>; its number of rows and columns; the number of missing values in <code>match_rating</code>; the smallest and largest value of <code>minutes_played</code> and <code>distance_km</code>; the number of exact duplicate rows; and a count of the rows for each <code>position</code>.</p><p class="record"><strong>Record:</strong> Each result as a comment beside the line that produced it, and one sentence on anything that would need attention before analysis.</p></article>
+<article class="task"><h3>Task 1.3: Choose the measure</h3><p class="group"><strong>As a pair:</strong> Among appearances of at least 60 minutes, store the filtered table in <code>tracking_60</code>. For each position, find the number of appearances, the number of those that have a rating, and the mean <code>match_rating</code>. Order the table from the highest mean to the lowest.</p><p class="record"><strong>Record:</strong> The table as comments, what one row of it now represents, and one sentence on what the number of rated appearances tells you about how far to trust each mean.</p></article>
+<article class="task"><h3>Task 1.4: Numbers that measure and numbers that label</h3><p class="group"><strong>As a pair:</strong> In <code>players</code>, <code>squad_number</code> is stored as a number, but it labels a player. Check its class and calculate its mean. Then make a copy of <code>players</code> called <code>players_checked</code> in which <code>squad_number</code> is a factor, using <code>as.factor()</code>, check the class again and try the mean again. Say which of <code>age</code>, <code>height_cm</code>, <code>squad_number</code> and <code>player_id</code> it makes sense to average, and why.</p><p class="record"><strong>Record:</strong> The two classes, the two means (including what R printed the second time), and one sentence that separates measurements from labels.</p></article>
+</section>
+<section class="phase" id="p2"><div class="phase-banner">PHASE 2: CORE: CONNECT A SMALL PAIR</div><p class="phase-intro">Two small tables, one key and one record that will not match.</p>
+<article class="task"><h3>Task 2.1: Predict before you join</h3><p class="group"><strong>As a pair:</strong> Import <code>week05_task_events.csv</code> into <code>events</code> and <code>week05_task_player_info.csv</code> into <code>player_info</code>, with <code>trim_ws = FALSE</code>. State what one row represents in each table and identify the key. Check whether the key is unique in each table. Then predict how many rows a left join with <code>events</code> on the left will give, and how many of them will have a missing <code>player_name</code>.</p><p class="record"><strong>Record:</strong> The grain of each table, the key, the uniqueness result and your predictions, written as comments <strong>before</strong> you join.</p></article>
+<article class="task"><h3>Task 2.2: Join and diagnose</h3><p class="group"><strong>As a pair:</strong> Add <code>player_info</code> to <code>events</code> with a left join, keeping every event. Compare the number of rows and the number of missing names with your predictions. Then use <code>anti_join()</code> in both directions to find the keys that do not match, and look at them closely.</p><p class="record"><strong>Record:</strong> Expected and observed counts, the unmatched ID in each direction, and what is different about the two keys.</p></article>
+<article class="task"><h3>Task 2.3: Decide, repair and verify</h3><p class="group"><strong>As a pair:</strong> Decide how to treat the unmatched event: repair the key, leave it, or investigate first, and give a reason. Implement your decision in a new table called <code>events_fixed</code>, leaving <code>events</code> unchanged. Join again and verify the result: the number of rows, the number of missing names, and both <code>anti_join()</code> directions.</p><p class="record"><strong>Record:</strong> Your decision and its reason, the verification evidence, and one sentence on whether the repair was defensible.</p></article>
+<article class="task"><h3>Task 2.4: Contrast with an inner join</h3><p class="group"><strong>As a pair:</strong> Run <code>inner_join()</code> on the original <code>events</code> and <code>player_info</code>. Compare the number of rows with the left join and count the shot events before and after. Which event disappeared?</p><p class="record"><strong>Record:</strong> The counts, the event that was lost, and what a count of shots per player would have reported without any message to say that an event was missing.</p></article>
+</section>
+<section class="phase" id="p3"><div class="phase-banner">PHASE 3: CORE: CONNECT THE RUNNING CASE</div><p class="phase-intro">The same moves on the three Strathclyde FC tables.</p>
+<article class="task"><h3>Task 3.1: Grain, keys and unmatched records</h3><p class="group"><strong>As a pair:</strong> State what one row represents in <code>tracking</code>, <code>players</code> and <code>matches</code>. Check that <code>player_id</code> is unique in <code>players</code> and that <code>match_id</code> is unique in <code>matches</code>. Use <code>anti_join()</code> in both directions between <code>tracking</code> and <code>players</code>, and between <code>tracking</code> and <code>matches</code>. Count how many distinct players and matches <code>tracking</code> contains.</p><p class="record"><strong>Record:</strong> The three grains, the two uniqueness results, all four <code>anti_join()</code> results (including the empty ones) and what they tell you. An empty result is a result.</p></article>
+<article class="task"><h3>Task 3.2: Predict, then join everything</h3><p class="group"><strong>As a pair:</strong> Predict the number of rows and columns you will get if you add every column of <code>players</code> to <code>tracking</code> with a left join on <code>player_id</code>. Then do it and store the result in <code>track_players</code>. Look at the column names: what has happened to <code>position</code>? Check whether the two copies of it agree.</p><p class="record"><strong>Record:</strong> Your prediction, the result, what you noticed in the column names, and whether the copies agree.</p></article>
+<article class="task"><h3>Task 3.3: Join only what you need</h3><p class="group"><strong>As a pair:</strong> Build <code>tracking_joined</code>, which adds only <code>player_name</code> from <code>players</code> and only <code>result</code> from <code>matches</code> to <code>tracking</code>, keeping every appearance. Verify it: the numbers of rows and columns, the missing <code>player_name</code> and <code>result</code> values, and whether any player appears twice in the same match.</p><p class="record"><strong>Record:</strong> Expected and observed counts, a final statement of what one row represents, and one sentence on why it is better to select the lookup columns before joining.</p></article>
+<article class="task"><h3>Task 3.4: Answer a question with two tables</h3><p class="group"><strong>As a pair:</strong> Among appearances of at least 60 minutes in <code>tracking_joined</code>, calculate the mean <code>match_rating</code> for each match result, with the number of appearances and the number of rated appearances behind each mean. Then count the missing <code>match_rating</code> values in <code>tracking_joined</code> and compare them with Task 1.2.</p><p class="record"><strong>Record:</strong> The table, one sentence on what you can and cannot conclude from it, and one sentence on what the join did to the missing ratings.</p></article>
+</section>
+<section class="phase" id="p4"><div class="phase-banner">PHASE 4: AUDIT: JUDGE A COLLEAGUE’S JOIN</div><p class="phase-intro">Somebody else joined the same two small tables. Do not assume that the handover note is accurate.</p>
+<article class="task"><h3>Task 4.1: What does each step actually do?</h3><p class="group"><strong>As a pair:</strong> Open <code>colleague_join.R</code> (read it, but do not edit it). Run the pipeline one step at a time, in your own script, and find the number of rows after each step. For each step, find out which rows it removed or changed.</p><p class="record"><strong>Record:</strong> A table with one row per step: <strong>Step | Rows after | What was removed or changed | Was it justified?</strong></p></article>
+<article class="task"><h3>Task 4.2: Verdict</h3><p class="group"><strong>As a pair:</strong> The handover note makes three claims: that every event was matched to a player, that no rows were lost, and that the table is ready to count shots per player. Check each claim against your own results from Phase 2. Then compare the colleague’s shots per player with the shots recorded in <code>events</code>.</p><p class="record"><strong>Record:</strong> A verdict on each claim, two other problems you found, and the changes that would make the script defensible.</p></article>
+</section>
+<section class="phase" id="p5"><div class="phase-banner">PHASE 5: TRANSFER</div><p class="phase-intro">Different tables, different key names and the same judgement process.</p>
+<article class="task"><h3>Task 5.1: Plan the join first</h3><p class="group"><strong>As a pair:</strong> Import <code>week05_transfer_squad.csv</code> into <code>squad</code> and <code>week05_transfer_testing.csv</code> into <code>testing</code>, with <code>trim_ws = FALSE</code>. A performance lead wants the sprint and jump results alongside each athlete’s name and squad, <strong>without losing any recorded test result</strong>. Before writing any join code, build a plan table with the columns <strong>Question | Grain of each table | Key (and its name in each table) | Which observations must survive | Expected row count | How will I verify?</strong></p><p class="record"><strong>Record:</strong> The plan table, kept in your script as comments and filled in before you join.</p></article>
+<article class="task"><h3>Task 5.2: Join, diagnose and verify</h3><p class="group"><strong>As a pair:</strong> Implement your plan and store the result in <code>testing_squad</code>. Use <code>anti_join()</code> in both directions, verify the row count and the missing joined fields, and compare with what <code>inner_join()</code> would have returned.</p><p class="record"><strong>Record:</strong> The verification evidence, the unmatched ID in each direction, and what an inner join would have lost.</p></article>
+<article class="task"><h3>Task 5.3: Decide and report</h3><p class="group"><strong>As a pair:</strong> Calculate the mean <code>sprint_20m</code> and the mean <code>jump_cm</code> for each squad in <code>testing_squad</code>, with the number of athletes. One athlete has no squad information. Decide what you will do with that row, and write the sentence that you would put in a report to the performance lead.</p><p class="record"><strong>Record:</strong> The table, your decision with a reason, and the report sentence.</p></article>
+<article class="task"><h3>Task 5.4: When one athlete has several rows</h3><p class="group"><strong>As a pair:</strong> Import <code>week05_transfer_roles_history.csv</code> into <code>roles_history</code>: it records the role of each athlete in each season. Treat <code>athlete_code</code> in <code>testing</code> and <code>athlete_id</code> in <code>roles_history</code> as the same key. Check whether the key is unique in <code>roles_history</code>, and predict the number of rows you get if you add the role to <code>testing</code> by athlete alone. Run it and find the athlete who changed the count. Then reduce <code>roles_history</code> to one row per athlete, using the role for the current season (2026-27), join again and verify the result.</p><p class="record"><strong>Record:</strong> Your prediction, the result, the cause, the corrected join with its verification, and one sentence on why choosing the season is a decision about meaning and not only about code.</p></article>
+</section>
+<section class="phase" id="p6"><div class="phase-banner">PHASE 6: EXTENSION</div><p class="phase-intro">Make the assumptions behind a join explicit.</p>
+<article class="task"><h3>Task 6.1: How far could the unmatched athlete change the answer?</h3><p class="group"><strong>As a pair:</strong> In Task 5.3, athlete A09 had no squad. Calculate the difference between the Senior and Development squads in the mean jump (Senior minus Development) and in the mean sprint time (Development minus Senior) in three cases: with A09 left out, with A09 placed in Development, and with A09 placed in Senior. Work on copies of <code>testing_squad</code> and leave the original unchanged.</p><p class="record"><strong>Record:</strong> The six differences in a small table, and one sentence on whether the squad comparison could change once A09’s squad is known.</p></article>
+<article class="task"><h3>Task 6.2: A reusable check</h3><p class="group"><strong>As a pair:</strong> Write a function <code>check_join(before, after, column)</code> that returns a one-row table with the number of rows before, the number of rows after, and the number of missing values in <code>column</code> of the joined table. Use <code>stopifnot()</code> so that it stops with an error if <code>column</code> is not in <code>after</code>. Test it on a join from Phase 2, Phase 3 and Phase 5, and check that it fails sensibly when you give it a column name that does not exist.</p><p class="record"><strong>Record:</strong> The function, its results on the three joins, and what the failed test printed.</p></article>
+<article class="task"><h3>Task 6.3: Decision log for unmatched records</h3><p class="group"><strong>As a pair:</strong> The athlete who has a test result but no squad record could be a trialist, or could be a mistake in the athlete code. The athlete in the squad with no test result could be injured, absent or not yet tested. Explain what additional information you would seek before changing anything.</p><p class="record"><strong>Record:</strong> A short decision log for the two athletes: what you know, what you do not know, who you would ask, and what you would do in the meantime.</p></article>
+</section>
+<section class="phase" id="p7"><div class="phase-banner">PHASE 7: DEBRIEF</div><p class="phase-intro">Connect careful joining with professional accountability.</p>
+<article class="task"><h3>Task 7.1: What does a join assume?</h3><p class="group"><strong>As a pair:</strong> A join is not merely a technical way to add columns. What does a left join assume about identity, preservation and relationships? Give one example from today where an assumption held and one where it failed.</p><p class="record"><strong>Record:</strong> Two or three sentences.</p></article>
+<article class="task"><h3>Task 7.2: Can somebody else check your work?</h3><p class="group"><strong>As a pair:</strong> Why should an analyst be able to show somebody who did not write the code what was expected, what was checked and what was decided? Use what you found in the colleague’s script to support your answer.</p><p class="record"><strong>Record:</strong> One or two sentences focused on evidence and reproducibility.</p></article>
+</section>
+<div class="support-note"><strong>Assessment One connection:</strong> describing how tables relate, using <code>anti_join()</code> to find unmatched keys, choosing <code>left_join()</code> so that the right rows survive, understanding what <code>inner_join()</code> would discard, and verifying the row count while keeping unmatched records visible as missing values are core. A join is also a check on whether two files agree about their keys. <code>right_join()</code> and <code>pivot_wider()</code> are extension.</div>
+</main>
+<footer><div class="inner">B1700 · Week 5 · 2026–27</div></footer>
+</body></html>

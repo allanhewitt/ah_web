@@ -1,27 +1,435 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 5 Hints — Connecting Data Sources</title><link rel="stylesheet" href="resource.css"></head><body><div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div><header class="hero"><div class="wrap"><div class="eyebrow">Week 5 · Hint Sheet</div><h1>Connecting Data Sources</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header><main class="wrap"><section class="intro"><h2>How to use this page</h2><p>Open only the hint for the task your group is working on. Use the <strong>Still stuck?</strong> layer only if the first hint is not enough.</p></section><nav class="phase-nav"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
-<section class="phase" id="p1"><div class="phase-head"><h2>PHASE 1 — RETRIEVAL</h2></div><details><summary>Hint for Task 1.1 — Recall grain and preservation</summary><div class="hint-body"><p><code>players</code> has one row per player; <code>tracking</code> has one row per player appearance. A player ID can therefore repeat legitimately in tracking.</p></div></details></section>
-<section class="phase" id="p2"><div class="phase-head"><h2>PHASE 2 — CONSEQUENCE PROBLEM</h2></div><details><summary>Hint for Task 2.1 — Interpret an unexpected row loss</summary><div class="hint-body"><p>Ask which table was meant to define the observations, what join type was used, and whether unmatched records were supposed to survive.</p></div></details></section>
-<section class="phase" id="p3"><div class="phase-head"><h2>PHASE 3 — CORE PRACTICAL</h2><p>Predict first; verify after.</p></div><details><summary>Hint for Task 3.1 — Predict the small join</summary><div class="hint-body"><p>Look for a field that should represent the same identity in both tables. State the events-table grain before inspecting matches.</p></div></details><details><summary>Hint for Task 3.2 — Use a left join with an explicit expectation</summary><div class="hint-body"><pre><code>joined &lt;- events |&gt;
-  left_join(player_info, by = "player_id")</code></pre><p>A left join preserves every row on the left and adds matching information where available.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Before running the join, write down <code>nrow(events)</code>. After the join, compare the row count. If the left-side grain is meant to be preserved, that expectation should guide your interpretation.</p></div></details></div></details><details><summary>Hint for Task 3.3 — Diagnose and repair the unmatched key</summary><div class="hint-body"><pre><code>events |&gt;
-  anti_join(player_info, by = "player_id")</code></pre><p>If the mismatch is merely text representation, reuse Week 4 string-standardisation tools, then rerun the diagnostic.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Inspect the unmatched identifier alongside the values in the lookup table. Look for differences in case, spaces or formatting before changing either dataset.</p></div></details></div></details><details><summary>Hint for Task 3.4 — Contrast with an inner join</summary><div class="hint-body"><pre><code>events |&gt;
-  inner_join(player_info, by = "player_id")</code></pre><p>An inner join keeps matched observations only. Judge that loss against the analytical question.</p></div></details><details><summary>Hint for Task 3.5 — Plan the full running-case joins</summary><div class="hint-body"><pre><code>analysis_data &lt;- tracking |&gt;
-  left_join(
-    players |&gt; select(player_id, player_name),
-    by = "player_id"
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1700 Week 5 Hints: Connecting Data Sources</title>
+<style>
+:root{
+  --blue:#124864;
+  --blue-dark:#0d354a;
+  --soft:#e8f1f5;
+  --grey:#f6f8fa;
+  --green:#e8f4ee;
+  --orange:#fdf2e2;
+  --ink:#17212b;
+  --muted:#5b6770;
+  --line:#d8e0e5;
+  --white:#ffffff;
+  --max:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#fff;
+  line-height:1.58;
+}
+.modulebar{
+  background:var(--blue-dark);
+  color:#fff;
+  padding:.7rem 1rem;
+  font-size:.92rem;
+}
+.modulebar .inner{
+  max-width:var(--max);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+header{
+  background:linear-gradient(180deg,var(--soft),#fff);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--max);
+  margin:auto;
+  padding:2.3rem 1rem 1.8rem;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+h1{
+  margin:.2rem 0 .25rem;
+  color:var(--blue);
+  font-size:clamp(2rem,5vw,3.1rem);
+  line-height:1.08;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:1.08rem;
+  margin:0;
+}
+main{
+  max-width:var(--max);
+  margin:auto;
+  padding:1.5rem 1rem 4rem;
+}
+.callout{
+  border:1px solid #9db8c7;
+  border-left:5px solid var(--blue);
+  border-radius:10px;
+  background:var(--soft);
+  padding:1rem 1.1rem;
+  margin:0 0 1.4rem;
+}
+.callout h2{
+  margin:0 0 .35rem;
+  color:var(--blue);
+  font-size:1rem;
+  letter-spacing:.03em;
+}
+.callout p:last-child{margin-bottom:0}
+.workflow{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1.7rem;
+}
+.workflow h2{
+  color:var(--blue);
+  font-size:1.1rem;
+  margin-top:0;
+}
+.workflow ul{margin-bottom:.2rem}
+.phase{
+  margin-top:2.1rem;
+  scroll-margin-top:1rem;
+}
+.phase-banner{
+  background:var(--blue);
+  color:#fff;
+  border-radius:9px;
+  padding:.7rem 1rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  font-size:.92rem;
+}
+.phase-intro{
+  color:var(--muted);
+  margin:.55rem .15rem 1rem;
+}
+.task{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1rem;
+  background:#fff;
+}
+.task h3{
+  margin:0 0 .65rem;
+  color:var(--blue);
+  font-size:1.18rem;
+}
+.task-label{
+  font-weight:800;
+  color:var(--blue);
+}
+.group{
+  margin:.45rem 0;
+}
+.record{
+  margin:.85rem 0 0;
+  padding:.7rem .85rem;
+  border-left:4px solid var(--blue);
+  background:var(--grey);
+  border-radius:0 7px 7px 0;
+}
+.record strong{
+  color:var(--blue);
+}
+code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:var(--grey);
+  border:1px solid #e1e6ea;
+  padding:.08em .32em;
+  border-radius:4px;
+  font-size:.92em;
+}
+pre{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.9rem 1rem;
+  overflow:auto;
+  line-height:1.45;
+}
+pre code{border:0;padding:0;background:transparent}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:.8rem 0;
+  font-size:.96rem;
+}
+th,td{
+  padding:.55rem .6rem;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{
+  background:var(--grey);
+  color:var(--blue);
+}
+blockquote{
+  margin:.8rem 0;
+  padding:.6rem 1rem;
+  border-left:4px solid #a8bac4;
+  background:var(--grey);
+  font-size:1.05rem;
+}
+.nav{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:0 0 1.6rem;
+}
+.nav a{
+  color:var(--blue);
+  text-decoration:none;
+  border:1px solid #b8c9d2;
+  border-radius:999px;
+  padding:.35rem .65rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+.nav a:hover,.nav a:focus{
+  background:var(--soft);
+  outline:none;
+}
+details{
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:0 0 .8rem;
+  background:#fff;
+  overflow:hidden;
+}
+summary{
+  cursor:pointer;
+  padding:.85rem 1rem;
+  color:var(--blue);
+  font-weight:800;
+  background:var(--grey);
+}
+summary:hover{background:var(--soft)}
+.hint-body{
+  padding:.85rem 1rem 1rem;
+}
+.hint-body p:first-child{margin-top:0}
+.hint-body p:last-child{margin-bottom:0}
+.support-note{
+  background:var(--orange);
+  border:1px solid #e7cfa8;
+  border-radius:10px;
+  padding:.9rem 1rem;
+  margin-bottom:1.4rem;
+}
+footer{
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.85rem;
+  padding:1.3rem 1rem 2rem;
+}
+footer .inner{
+  max-width:var(--max);
+  margin:auto;
+}
+@media (max-width:650px){
+  .header-inner{padding-top:1.7rem}
+  main{padding-top:1rem}
+  .task{padding:.9rem}
+  th,td{padding:.45rem}
+}
+@media print{
+  .modulebar,.nav{display:none}
+  body{font-size:11pt}
+  .task,details{break-inside:avoid}
+  details > *{display:block}
+  summary{list-style:none}
+}
+</style>
+</head>
+<body>
+<div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
+<header><div class="header-inner"><div class="kicker">Week 5 · Hint Sheet</div><h1>Connecting Data Sources</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header>
+<main>
+<div class="callout"><h2>HOW TO USE THIS PAGE</h2><p>Use this page <strong>only when your pair needs help to make progress</strong>. Find the hint for the task you are working on, open only that hint, use as little support as you need, then return to the task sheet.</p><p>The hints show <strong>patterns</strong>. Words such as <code>table</code>, <code>column</code> and <code>key</code> are placeholders: replace them with the real names and values. A <strong>sanity check</strong> gives a number you can compare with your own, so that you know you are on the right track. The hints do not replace your analytical judgement.</p></div>
+<nav class="nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a><a href="#mistakes">Common mistakes</a></nav>
+<section class="phase" id="p1"><div class="phase-banner">PHASE 1: CORE: REVISIT WEEKS 1 TO 4</div><p class="phase-intro">Checks and verbs you have already used. Try to write them before opening a hint.</p>
+<details><summary>Hint for Task 1.1: Restart and import</summary><div class="hint-body"><p>Restart R from the <strong>Session</strong> menu. Create the script from <strong>File &gt; New File &gt; R Script</strong> and save it.</p><pre><code>library(tidyverse)
+
+table_name &lt;- read_csv("data/file_name.csv")</code></pre><p>Use the pattern three times. The object name on the left does not have to match the file name. For the grain, finish the sentence “One row is one …” for each table.</p></div></details>
+<details><summary>Hint for Task 1.2: Check <code>tracking</code> from memory</summary><div class="hint-body"><pre><code>glimpse(table)
+dim(table)
+sum(is.na(table$column))
+range(table$column)
+sum(duplicated(table))
+table(table$column)</code></pre><p><code>dim()</code> gives the rows and then the columns. <code>range()</code> gives the smallest and largest value. <code>duplicated()</code> marks a row that repeats an earlier row exactly. Repeat a line for each column you need.</p><p><strong>Sanity check:</strong> <code>tracking</code> has 476 rows and 8 columns, and <code>match_rating</code> has 34 missing values. <code>minutes_played</code> runs from 14 to 90 and <code>distance_km</code> from 2.29 to 13.18. There are no exact duplicates. The positions have 166 defenders, 165 midfielders, 97 forwards and 48 goalkeepers.</p></div></details>
+<details><summary>Hint for Task 1.3: Choose the measure</summary><div class="hint-body"><pre><code>new_table &lt;- table |&gt;
+  filter(column &gt;= value)
+
+new_table |&gt;
+  group_by(group_column) |&gt;
+  summarise(
+    appearances = n(),
+    rated = sum(!is.na(rating_column)),
+    mean_rating = mean(rating_column, na.rm = TRUE)
   ) |&gt;
-  left_join(
-    matches |&gt; select(match_id, result),
-    by = "match_id"
-  )</code></pre><p>Selecting only needed lookup fields keeps the join logic visible.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Build one join at a time. After the player join, verify row count and missing <code>player_name</code>; only then add the match join and repeat the verification.</p></div></details></div></details><details><summary>Hint for Task 3.6 — Verify the joined analytical table</summary><div class="hint-body"><pre><code>nrow(tracking)
-nrow(analysis_data)
-sum(is.na(analysis_data$player_name))
-sum(is.na(analysis_data$result))</code></pre><p>Then ask again what one row represents.</p></div></details><details><summary>Hint for Task 3.7 — Use the relationship to answer a real question</summary><div class="hint-body"><p>Choose a question that genuinely combines context from a lookup table with performance observations—for example, one requiring player name or match result alongside tracking measures.</p></div></details></section>
-<section class="phase" id="p4"><div class="phase-head"><h2>PHASE 4 — CHECKPOINT</h2></div><details><summary>Hint for Task 4.1 — Checkpoint the join workflow</summary><div class="hint-body"><p>A join can silently drop rows, multiply rows or change the observational unit. Verification should test the specific outcome you predicted.</p></div></details></section>
-<section class="phase" id="p5"><div class="phase-head"><h2>PHASE 5 — TRANSFER</h2></div><details><summary>Hint for Task 5.1 — Identify the transfer key</summary><div class="hint-body"><pre><code>testing |&gt;
-  left_join(
-    squad,
-    by = c("athlete_code" = "athlete_id")
-  )</code></pre><p>The names differ, but the variables can still represent the same identifier.</p></div></details><details><summary>Hint for Task 5.2 — Predict what must be preserved</summary><div class="hint-body"><p>If testing observations define the analytical grain, testing should be on the left of a preserving join.</p></div></details><details><summary>Hint for Task 5.3 — Join using the required preservation logic</summary><div class="hint-body"><p>Use a left join from testing to squad context.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Write the key mapping explicitly as <code>by = c("athlete_code" = "athlete_id")</code>. Then compare the joined row count with the original testing row count.</p></div></details></div></details><details><summary>Hint for Task 5.4 — Diagnose unmatched records</summary><div class="hint-body"><p>Use <code>anti_join()</code> in the direction that asks “which testing observations found no squad match?”</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Keep testing on the left and use the same key mapping as the join. The output should contain only testing rows whose identifier did not match the squad table.</p></div></details></div></details><details><summary>Hint for Task 5.5 — Verify the transfer join</summary><div class="hint-body"><p>Compare expected and observed row counts and inspect missing added fields. A plausible result is one consistent with the grain and known matching structure.</p></div></details></section>
-<section class="phase" id="p6"><div class="phase-head"><h2>PHASE 6 — EXTENSION</h2></div><details><summary>Hint for Task 6.1 — Predict row multiplication from role history</summary><div class="hint-body"><p>If an athlete has two seasonal role records, a join on athlete alone can create two rows from one testing observation. A defensible key may need both athlete identity and season, or a deliberately selected “current role” table.</p></div></details></section>
-<section class="phase" id="p7"><div class="phase-head"><h2>PHASE 7 — DEBRIEF</h2></div><details><summary>Hint for Task 7.1 — Explain what a join assumes</summary><div class="hint-body"><p>Every join asserts that particular fields identify corresponding entities and that a particular set of observations should be preserved. Those are analytical assumptions, not merely syntax.</p></div></details></section>
-<details class="troubleshoot"><summary>If your R code isn’t working</summary><div class="hint-body"><ol><li>Check the Week 5 project and setup objects exist.</li><li>Use <code>names()</code>, <code>glimpse()</code> and <code>nrow()</code> before joining.</li><li>Confirm the key columns contain the identities you think they contain.</li><li>Run one join at a time.</li><li>Use <code>anti_join()</code> to diagnose unmatched keys.</li><li>After every join, check row count, missing joined fields and grain.</li></ol></div></details></main><footer>B1700 · Week 5 · 2026–27</footer></body></html>
+  arrange(desc(mean_rating))</code></pre><p><code>!is.na(x)</code> is <code>TRUE</code> where a value is present, and <code>sum()</code> counts the <code>TRUE</code> values. Without <code>na.rm = TRUE</code> the mean of a column that contains a missing value is itself missing.</p><p><strong>Sanity check:</strong> 388 rows remain. Midfielder has 139 appearances, 125 of them rated, with a mean of about 3.18. Goalkeeper has 37, 36 and about 3.03; Forward 75, 69 and about 2.94; Defender 137, 127 and about 2.86.</p><p><strong>Observation:</strong> the order rests on differences of a few tenths, and on between 36 and 127 ratings in each position. The number of ratings behind a mean is part of the result.</p></div></details>
+<details><summary>Hint for Task 1.4: Numbers that measure and numbers that label</summary><div class="hint-body"><pre><code>class(table$column)
+mean(table$column)
+
+table_checked &lt;- table
+table_checked$column &lt;- as.factor(table_checked$column)
+
+class(table_checked$column)
+mean(table_checked$column)</code></pre><p><code>as.factor()</code> tells R that the values are categories. Because you changed a copy, the original table is unchanged. A mean needs numbers that measure something, so R will not average categories: it returns <code>NA</code> with a warning.</p><p><strong>Sanity check:</strong> the first class is <code>numeric</code> and the first mean is 15.4. The second class is <code>factor</code>, and the second mean is <code>NA</code> with the warning “argument is not numeric or logical: returning NA”.</p><p><strong>Observation:</strong> R could calculate 15.4, but it means nothing: shirt 30 is not twice shirt 15. <code>age</code> and <code>height_cm</code> measure something, so a mean is meaningful. <code>squad_number</code> and <code>player_id</code> label a player. A label is matched exactly, never averaged.</p></div></details>
+</section>
+<section class="phase" id="p2"><div class="phase-banner">PHASE 2: CORE: CONNECT A SMALL PAIR</div><p class="phase-intro">Predict first, join second, and keep the evidence.</p>
+<details><summary>Hint for Task 2.1: Predict before you join</summary><div class="hint-body"><pre><code>events &lt;- read_csv("data/file_name.csv", trim_ws = FALSE)
+
+events
+sum(duplicated(events$column))
+nrow(events)</code></pre><p>Print each table and read it. For the key, ask which column identifies the same player in both tables, and whether any value repeats. Write your predictions as comments before you run any join.</p><p><strong>Sanity check:</strong> each table has 9 rows, and the key has no repeated value in either.</p><p><strong>Watch for:</strong> two values that look alike to you can be different values to R. Compare the keys one character at a time.</p></div></details>
+<details><summary>Hint for Task 2.2: Join and diagnose</summary><div class="hint-body"><pre><code>joined &lt;- table_a |&gt;
+  left_join(table_b, by = "key")
+
+nrow(joined)
+sum(is.na(joined$column))
+
+table_a |&gt; anti_join(table_b, by = "key")
+table_b |&gt; anti_join(table_a, by = "key")</code></pre><p><code>anti_join(x, y)</code> returns the rows of <code>x</code> that found no match in <code>y</code>, so the direction matters. Run it both ways, and put the two unmatched values next to each other.</p><p><strong>Sanity check:</strong> 9 rows and 1 missing name. The first <code>anti_join()</code> returns the shot in match M023, and the two keys differ in one character.</p></div></details>
+<details><summary>Hint for Task 2.3: Decide, repair and verify</summary><div class="hint-body"><p>Text can differ in spaces, in case or in spelling. <code>str_trim()</code> removes spaces from both ends, and <code>str_to_upper()</code> and <code>str_to_lower()</code> change the case of every letter.</p><pre><code>table_fixed &lt;- table |&gt;
+  mutate(key = str_to_upper(key))
+
+joined_fixed &lt;- table_fixed |&gt;
+  left_join(other, by = "key")
+
+nrow(joined_fixed)
+sum(is.na(joined_fixed$column))
+table_fixed |&gt; anti_join(other, by = "key")
+other |&gt; anti_join(table_fixed, by = "key")</code></pre><p>Write the repair into a new table so that the original stays available for comparison.</p><p><strong>Sanity check:</strong> after the repair there are 9 rows, no missing names, and both <code>anti_join()</code> results are empty.</p><p><strong>Observation:</strong> a repair is defensible when the evidence shows that both values refer to the same entity. Here the two keys differ only in case, and the register has a player with that number. If the keys had differed in a digit, you could not have known which player was meant.</p></div></details>
+<details><summary>Hint for Task 2.4: Contrast with an inner join</summary><div class="hint-body"><pre><code>inner &lt;- table_a |&gt;
+  inner_join(table_b, by = "key")
+
+nrow(inner)
+count(table_a, column)
+count(inner, column)</code></pre><p>Count the events of one type in each table and compare the two counts.</p><p><strong>Sanity check:</strong> the inner join has 8 rows. There are 4 shots in <code>events</code> and 3 after the inner join.</p><p><strong>Observation:</strong> no error appeared, and there is no missing value left to count. An inner join does not announce what it has dropped.</p></div></details>
+</section>
+<section class="phase" id="p3"><div class="phase-banner">PHASE 3: CORE: CONNECT THE RUNNING CASE</div><p class="phase-intro">Every check from Phase 2 applies again, with larger tables.</p>
+<details><summary>Hint for Task 3.1: Grain, keys and unmatched records</summary><div class="hint-body"><pre><code>sum(duplicated(lookup$key))
+n_distinct(big$key)
+
+big |&gt; anti_join(lookup, by = "key")
+lookup |&gt; anti_join(big, by = "key")</code></pre><p>Do the uniqueness check on the table you are joining <strong>to</strong>. Repeat the <code>anti_join()</code> pair for the second lookup table, so that you have four results in all.</p><p><strong>Sanity check:</strong> no repeated key in either lookup table. Each of the four <code>anti_join()</code> results has 0 rows. <code>tracking</code> has 20 distinct players and 34 distinct matches.</p><p><strong>Watch for:</strong> an empty result looks like nothing happened. It means that every key found its partner, and that is what you need to record.</p></div></details>
+<details><summary>Hint for Task 3.2: Predict, then join everything</summary><div class="hint-body"><pre><code>track_players &lt;- tracking |&gt;
+  left_join(players, by = "player_id")
+
+dim(track_players)
+names(track_players)
+sum(track_players$position.x != track_players$position.y)</code></pre><p>When both tables have a column with the same name, R keeps both and adds <code>.x</code> to the name from the left table and <code>.y</code> to the one from the right table. Count the rows where the two copies differ.</p><p><strong>Sanity check:</strong> 476 rows and 15 columns. The names include <code>position.x</code> and <code>position.y</code>, and no row has two different values.</p><p><strong>Observation:</strong> the copies agree here, but nothing in R checked that for you.</p></div></details>
+<details><summary>Hint for Task 3.3: Join only what you need</summary><div class="hint-body"><pre><code>tracking_joined &lt;- tracking |&gt;
+  left_join(players |&gt; select(player_id, player_name), by = "player_id") |&gt;
+  left_join(matches |&gt; select(match_id, result), by = "match_id")
+
+dim(tracking_joined)
+sum(is.na(tracking_joined$player_name))
+sum(is.na(tracking_joined$result))
+sum(duplicated(tracking_joined[, c("match_id", "player_id")]))</code></pre><p><code>select()</code> inside the join keeps the key and the one column you want. The two joins use different keys. The last line counts how many pairs of player and match occur more than once.</p><p><strong>Sanity check:</strong> 476 rows and 10 columns, with no missing <code>player_name</code>, no missing <code>result</code>, and no repeated pair of player and match.</p></div></details>
+<details><summary>Hint for Task 3.4: Answer a question with two tables</summary><div class="hint-body"><pre><code>tracking_joined |&gt;
+  filter(minutes_played &gt;= 60) |&gt;
+  group_by(result) |&gt;
+  summarise(
+    appearances = n(),
+    rated = sum(!is.na(match_rating)),
+    mean_rating = mean(match_rating, na.rm = TRUE)
+  )
+
+sum(is.na(tracking_joined$match_rating))</code></pre><p><strong>Sanity check:</strong> Win has 204 appearances, 188 rated, with a mean of about 3.09. Draw has 79, 73 and about 3.04. Loss has 105, 96 and about 2.81. There are still 34 missing ratings.</p><p><strong>Observation:</strong> the differences are small, and a rating is probably given by somebody who knows the result. This is an association: it does not show that ratings change results, or that results change ratings. Week 6 returns to this.</p></div></details>
+</section>
+<section class="phase" id="p4"><div class="phase-banner">PHASE 4: AUDIT: JUDGE A COLLEAGUE’S JOIN</div><p class="phase-intro">Check what the script does, not what the note says it does.</p>
+<details><summary>Hint for Task 4.1: What does each step actually do?</summary><div class="hint-body"><pre><code>events &lt;- read_csv("data/week05_task_events.csv")
+nrow(events)
+
+step_1 &lt;- inner_join(events, player_info, by = "player_id")
+nrow(step_1)
+
+step_2 &lt;- step_1 |&gt; filter(event_type == "Shot")
+nrow(step_2)</code></pre><p>Build the pipeline up one step at a time and store each result. To see which rows a join removed, use <code>anti_join()</code> on the table before the join.</p><pre><code>events |&gt; anti_join(player_info, by = "player_id")</code></pre><p><strong>Sanity check:</strong> the row counts are 9, 8, 3 and 3.</p></div></details>
+<details><summary>Hint for Task 4.2: Verdict</summary><div class="hint-body"><p>Work through these questions for the colleague’s script:</p><ul><li><strong>Matching:</strong> which events found no player? How would you find out from the script alone?</li><li><strong>Rows lost:</strong> how many, and which join type decided that?</li><li><strong>Shots:</strong> how many shot events are in <code>events</code>? How many players does the colleague’s table show?</li><li><strong>Verification:</strong> what in the script shows that the join was checked?</li></ul><p><strong>Sanity check:</strong> the colleague’s table lists 3 players with one shot each. The events table records 4 shots.</p></div></details>
+</section>
+<section class="phase" id="p5"><div class="phase-banner">PHASE 5: TRANSFER</div><p class="phase-intro">The same process, with different key names.</p>
+<details><summary>Hint for Task 5.1: Plan the join first</summary><div class="hint-body"><p>Use one row for each part of the question: what must survive, which table is on the left, and what you expect. Look at both tables before you fill it in: each has only a few rows.</p><p><strong>Sanity check:</strong> each table has 8 rows. The key is <code>athlete_id</code> in <code>squad</code> and <code>athlete_code</code> in <code>testing</code>. If every test result must survive, the expected row count is the number of rows in <code>testing</code>.</p><p><strong>Watch for:</strong> “without losing any recorded test result” tells you which table must be on the left.</p></div></details>
+<details><summary>Hint for Task 5.2: Join, diagnose and verify</summary><div class="hint-body"><pre><code>testing_squad &lt;- testing |&gt;
+  left_join(squad, by = c("athlete_code" = "athlete_id"))
+
+nrow(testing_squad)
+sum(is.na(testing_squad$athlete_name))
+
+testing |&gt; anti_join(squad, by = c("athlete_code" = "athlete_id"))
+squad |&gt; anti_join(testing, by = c("athlete_id" = "athlete_code"))</code></pre><p>In <code>by = c("a" = "b")</code>, the name on the left belongs to the first table and the name on the right to the second. When you swap the tables, swap the names too.</p><p><strong>Sanity check:</strong> 8 rows and 1 missing athlete name. <code>A09</code> has no squad record and <code>A08</code> has no test result. An inner join returns 7 rows.</p></div></details>
+<details><summary>Hint for Task 5.3: Decide and report</summary><div class="hint-body"><pre><code>testing_squad |&gt;
+  group_by(squad) |&gt;
+  summarise(
+    athletes = n(),
+    mean_sprint = mean(sprint_20m),
+    mean_jump = mean(jump_cm)
+  )</code></pre><p>An unmatched row has <code>NA</code> in the squad column, and <code>group_by()</code> treats <code>NA</code> as a group of its own.</p><p><strong>Sanity check:</strong> Development has 3 athletes, with a mean sprint of about 3.297 and a mean jump of about 37.3. Senior has 4, with about 3.215 and 39.5. The unmatched group has 1 athlete with 3.20 and 43.</p><p><strong>Observation:</strong> the unmatched athlete has the longest jump in the file. Think about which statements about the whole testing group are still true if that row is dropped.</p></div></details>
+<details><summary>Hint for Task 5.4: When one athlete has several rows</summary><div class="hint-body"><pre><code>roles_history &lt;- read_csv("data/file_name.csv")
+
+sum(duplicated(roles_history$athlete_id))
+
+testing |&gt;
+  left_join(roles_history, by = c("athlete_code" = "athlete_id")) |&gt;
+  count(athlete_code) |&gt;
+  filter(n &gt; 1)
+
+current &lt;- roles_history |&gt; filter(season == "2026-27")</code></pre><p>Find the athlete who appears more than once, then look at that athlete’s rows in <code>roles_history</code>. Fix the join by reducing <code>roles_history</code> to one row per athlete before you join, as you did with the wellness table in the demonstration, and verify the row count again.</p><p><strong>Sanity check:</strong> <code>athlete_id</code> repeats once in <code>roles_history</code>. The first join returns 9 rows and <code>A01</code> occurs twice. After the fix <code>current</code> has 8 rows, the second join has 8 rows, and <code>A09</code> has a missing role.</p><p><strong>Observation:</strong> the testing table has no season column, so the code cannot choose the season for you. Choosing the current one is a decision about what the question means.</p></div></details>
+</section>
+<section class="phase" id="p6"><div class="phase-banner">PHASE 6: EXTENSION</div><p class="phase-intro">Go beyond the patterns.</p>
+<details><summary>Hint for Task 6.1: How far could the unmatched athlete change the answer?</summary><div class="hint-body"><pre><code>scenario &lt;- testing_squad |&gt;
+  mutate(squad = replace_na(squad, "Development"))
+
+scenario |&gt;
+  group_by(squad) |&gt;
+  summarise(mean_sprint = mean(sprint_20m), mean_jump = mean(jump_cm))</code></pre><p>Repeat for the second case with the other squad name. For the case in which A09 is left out, use <code>filter(!is.na(squad))</code> on a copy. Then subtract the squad means, taking care over which squad is subtracted from which.</p><p><strong>Sanity check:</strong> the jump difference (Senior minus Development) is about 2.17 cm with A09 left out, 0.75 cm with A09 in Development and 2.87 cm with A09 in Senior. The sprint difference (Development minus Senior) is about 0.082 s with A09 left out, 0.058 s with A09 in Development and 0.085 s with A09 in Senior.</p><p><strong>Observation:</strong> the jump difference of 2.17 cm could be as small as 0.75 cm or as large as 2.87 cm once A09’s squad is known. Writing down the range is more honest than choosing one value.</p></div></details>
+<details><summary>Hint for Task 6.2: A reusable check</summary><div class="hint-body"><pre><code>check_join &lt;- function(before, after, column) {
+  stopifnot(column %in% names(after))
+  tibble(
+    rows_before = nrow(before),
+    rows_after = nrow(after),
+    missing = sum(is.na(after[[column]]))
+  )
+}
+
+check_join(table_a, joined, "column_name")</code></pre><p><code>after[[column]]</code> picks a column using its name as text. <code>stopifnot()</code> stops with an error if the condition inside it is not <code>TRUE</code>.</p><p><strong>Sanity check:</strong> the first join of events and player info (before the repair) gives 9, 9 and 1. The running-case table gives 476, 476 and 0 for <code>player_name</code>. The testing and squad join gives 8, 8 and 1.</p></div></details>
+<details><summary>Hint for Task 6.3: Decision log for unmatched records</summary><div class="hint-body"><p>For each athlete, a good log has: what we know, what we do not know, the source we would check (the testing coordinator, the club’s registration list), the action in the meantime (for example, keep the row and mark it) and the effect on the analysis if we are wrong.</p></div></details>
+</section>
+<section class="phase" id="p7"><div class="phase-banner">PHASE 7: DEBRIEF</div><p class="phase-intro">Focus on the fit between evidence and action.</p>
+<details><summary>Hint for Task 7.1: What does a join assume?</summary><div class="hint-body"><p>Think about identity (does the key identify the same entity in both tables, and exactly?), preservation (which rows must survive?) and relationships (can one row on the left match several rows on the right?). Look for one assumption that held, and the one that failed in the small pair or in the role history.</p></div></details>
+<details><summary>Hint for Task 7.2: Can somebody else check your work?</summary><div class="hint-body"><p>Think about what a reader of the colleague’s script could and could not reconstruct from the handover note, and what your own expected counts, anti-join results and decision records add.</p></div></details>
+</section>
+<section class="phase" id="mistakes"><div class="phase-banner">COMMON MISTAKES</div><p class="phase-intro">Check this list if a result looks wrong.</p>
+<details><summary>My joined table has more rows than I started with</summary><div class="hint-body"><p>The key is probably repeated in the table you joined <strong>to</strong>. Check <code>sum(duplicated(lookup$key))</code>. If one row on the left matches several on the right, the left row is repeated once for each match.</p></div></details>
+<details><summary>My joined table has fewer rows than I started with</summary><div class="hint-body"><p>Check the join type. <code>inner_join()</code> keeps only matches, and a <code>filter()</code> after the join can also remove rows. Use <code>anti_join()</code> to see which rows disappeared.</p></div></details>
+<details><summary>All the new columns are <code>NA</code></summary><div class="hint-body"><p>The keys probably never match. Check that the two columns have the same class with <code>class()</code>, and print a few values from each. If the key names differ, use <code>by = c("left_name" = "right_name")</code>.</p></div></details>
+<details><summary>R says the join columns must be present</summary><div class="hint-body"><p>A name in <code>by</code> does not exist in one of the tables. Print <code>names()</code> for both tables and check the spelling and the order of the two names.</p></div></details>
+<details><summary>The keys look identical but do not match</summary><div class="hint-body"><p>Look for spaces, a different case or a different spelling. <code>nchar()</code> shows whether two values have the same length. Read the files with <code>trim_ws = FALSE</code> while you diagnose, and repair into a new table.</p></div></details>
+<details><summary><code>anti_join()</code> returns nothing</summary><div class="hint-body"><p>Check which way round you wrote it, then run it in the other direction. An empty result is a valid result: it means that every key on the left found a match.</p></div></details>
+<details><summary>I have <code>position.x</code> and <code>position.y</code></summary><div class="hint-body"><p>Both tables contain a column with that name. Select only the columns you need from the lookup table before joining, or keep both and compare them.</p></div></details>
+<details><summary>My mean is <code>NA</code> after joining</summary><div class="hint-body"><p>A missing joined value or a missing original value has reached the calculation. Count the missing values and find out why before you add <code>na.rm = TRUE</code>.</p></div></details>
+<details><summary>R warns about a many-to-many relationship</summary><div class="hint-body"><p>Several rows on the left match several rows on the right, so the join multiplies rows. Find the key that repeats in the table you joined <strong>to</strong>, reduce that table to one row per key (with <code>filter()</code> or <code>summarise()</code>), and join again.</p></div></details>
+<details><summary>R says the argument is not numeric or logical</summary><div class="hint-body"><p>You asked for a mean of a column that R holds as a factor or as text. Check <code>class()</code>. If the values are labels, a mean is not meaningful; if they are measurements, convert them with <code>as.numeric()</code>.</p></div></details>
+<details><summary>I changed <code>events</code> and cannot get the original back</summary><div class="hint-body"><p>Run the import line again. In future, store repaired results in a new object so that the original stays available for comparison.</p></div></details>
+</section>
+</main>
+<footer><div class="inner">B1700 · Week 5 · 2026–27</div></footer>
+</body></html>
