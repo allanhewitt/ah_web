@@ -1,0 +1,42 @@
+<svg viewBox="0 0 1500 400" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+<text x="10" y="50" font-size="25" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >wellness_long</text>
+<text x="10" y="78" font-size="21" font-weight="400" fill="#6B7078" text-anchor="start" >3 rows for P003</text>
+<g opacity="1"><rect x="10" y="110" width="380" height="58" rx="10" fill="#fff" stroke="#16191C" stroke-width="2.5" />
+<text x="28" y="146.0" font-size="24" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P003</text>
+<text x="128" y="146.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >wk_1</text>
+<text x="228" y="146.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >wellness 7</text>
+</g>
+<g opacity="1"><rect x="10" y="184" width="380" height="58" rx="10" fill="#fff" stroke="#16191C" stroke-width="2.5" />
+<text x="28" y="220.0" font-size="24" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P003</text>
+<text x="128" y="220.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >wk_2</text>
+<text x="228" y="220.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >wellness 6</text>
+</g>
+<g opacity="1"><rect x="10" y="258" width="380" height="58" rx="10" fill="#fff" stroke="#16191C" stroke-width="2.5" />
+<text x="28" y="294.0" font-size="24" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P003</text>
+<text x="128" y="294.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >wk_3</text>
+<text x="228" y="294.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >wellness 8</text>
+</g>
+<rect x="430" y="110" width="20" height="206" rx="8" fill="none" stroke="none" stroke-width="1.5" />
+<line x1="410" y1="213" x2="630" y2="213" stroke="#6B7078" stroke-width="3"/>
+<polygon points="640,213 626,204 626,222" fill="#6B7078"/>
+<text x="525.0" y="199" font-size="20" font-weight="600" fill="#6B7078" text-anchor="middle" >summarise</text>
+<text x="525" y="252" font-size="20" font-weight="400" fill="#6B7078" text-anchor="middle" >one row</text>
+<text x="660" y="50" font-size="25" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >player_wellness</text>
+<text x="660" y="78" font-size="21" font-weight="400" fill="#6B7078" text-anchor="start" >1 row for P003</text>
+<g opacity="1"><rect x="660" y="184" width="330" height="58" rx="10" fill="#fff" stroke="#16191C" stroke-width="2.5" />
+<text x="678" y="220.0" font-size="24" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P003</text>
+<text x="778" y="220.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >mean 7.0</text>
+</g>
+<line x1="1000" y1="213" x2="1120" y2="213" stroke="#6B7078" stroke-width="3"/>
+<polygon points="1130,213 1116,204 1116,222" fill="#6B7078"/>
+<text x="1065.0" y="199" font-size="20" font-weight="600" fill="#6B7078" text-anchor="middle" >left_join</text>
+<text x="1050" y="252" font-size="20" font-weight="400" fill="#6B7078" text-anchor="middle" >key: player_code</text>
+<text x="1140" y="50" font-size="25" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >joined result</text>
+<text x="1140" y="78" font-size="21" font-weight="400" fill="#6B7078" text-anchor="start" >1 row for S001</text>
+<g opacity="1"><rect x="1140" y="184" width="350" height="58" rx="10" fill="#fff" stroke="#16191C" stroke-width="2.5" />
+<text x="1158" y="220.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >S001</text>
+<text x="1248" y="220.0" font-size="24" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P003</text>
+<text x="1338" y="220.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >mean 7.0</text>
+</g>
+<text x="750" y="370" font-size="25" font-weight="600" fill="#16191C" text-anchor="middle" >Bring the table to the grain of the key first: one row per player.</text>
+</svg>

@@ -1,0 +1,52 @@
+<svg viewBox="0 0 1500 450" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+<text x="10" y="60" font-size="25" font-weight="700" fill="#6B7078" text-anchor="start" >x  (sessions)</text>
+<text x="420" y="60" font-size="25" font-weight="700" fill="#6B7078" text-anchor="start" >y  (register)</text>
+<line x1="210" y1="127.0" x2="420" y2="147.0" stroke="#6B7078" stroke-width="2.5"/>
+<line x1="210" y1="201.0" x2="420" y2="221.0" stroke="#6B7078" stroke-width="2.5"/>
+<line x1="210" y1="275.0" x2="420" y2="221.0" stroke="#6B7078" stroke-width="2.5"/>
+<g opacity="0.35"><rect x="10" y="100" width="200" height="54" rx="10" fill="#fff" stroke="#DADCDE" stroke-width="1.5" />
+<text x="28" y="134.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >S1</text>
+<text x="98" y="134.0" font-size="24" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P1</text>
+</g>
+<g opacity="0.35"><rect x="10" y="174" width="200" height="54" rx="10" fill="#fff" stroke="#DADCDE" stroke-width="1.5" />
+<text x="28" y="208.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >S2</text>
+<text x="98" y="208.0" font-size="24" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P2</text>
+</g>
+<g opacity="0.35"><rect x="10" y="248" width="200" height="54" rx="10" fill="#fff" stroke="#DADCDE" stroke-width="1.5" />
+<text x="28" y="282.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >S3</text>
+<text x="98" y="282.0" font-size="24" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P2</text>
+</g>
+<g opacity="1"><rect x="10" y="322" width="200" height="54" rx="10" fill="#fff" stroke="#B3261E" stroke-width="2.5" />
+<text x="28" y="356.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >S4</text>
+<text x="98" y="356.0" font-size="24" font-weight="700" fill="#B3261E" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P9</text>
+</g>
+<g opacity="1"><rect x="420" y="120" width="290" height="54" rx="10" fill="#fff" stroke="#16191C" stroke-width="2.5" />
+<text x="438" y="154.0" font-size="24" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P1</text>
+<text x="508" y="154.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >Defender</text>
+</g>
+<g opacity="1"><rect x="420" y="194" width="290" height="54" rx="10" fill="#fff" stroke="#16191C" stroke-width="2.5" />
+<text x="438" y="228.0" font-size="24" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P2</text>
+<text x="508" y="228.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >Midfielder</text>
+</g>
+<g opacity="1"><rect x="420" y="268" width="290" height="54" rx="10" fill="#fff" stroke="#B3261E" stroke-width="2.5" />
+<text x="438" y="302.0" font-size="24" font-weight="700" fill="#B3261E" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P3</text>
+<text x="508" y="302.0" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >Forward</text>
+</g>
+<text x="18" y="480" font-size="1" font-weight="400" fill="#16191C" text-anchor="start" ></text>
+<text x="10" y="410" font-size="21" font-weight="400" fill="#6B7078" text-anchor="start" >The key is the second item in x and the first item in y.</text>
+<rect x="800" y="20" width="690" height="410" rx="12" fill="#F6F6F5" stroke="#DADCDE" stroke-width="1.5" />
+<text x="828" y="58" font-size="29" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >anti_join(x, y)</text>
+<text x="840" y="90" font-size="20" font-weight="600" fill="#6B7078" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >session</text>
+<text x="960" y="90" font-size="20" font-weight="600" fill="#6B7078" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >player</text>
+<rect x="822" y="104" width="646" height="42" rx="8" fill="#fff" stroke="#DADCDE" stroke-width="1.2" />
+<text x="840" y="133" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >S4</text>
+<text x="960" y="133" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P9</text>
+<text x="828" y="182" font-size="22" font-weight="600" fill="#16191C" text-anchor="start" >x rows with no match in y</text>
+<text x="828" y="248" font-size="29" font-weight="700" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >anti_join(y, x)</text>
+<text x="840" y="280" font-size="20" font-weight="600" fill="#6B7078" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >player</text>
+<text x="960" y="280" font-size="20" font-weight="600" fill="#6B7078" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >position</text>
+<rect x="822" y="294" width="646" height="42" rx="8" fill="#fff" stroke="#DADCDE" stroke-width="1.2" />
+<text x="840" y="323" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >P3</text>
+<text x="960" y="323" font-size="24" font-weight="400" fill="#16191C" text-anchor="start" font-family="Consolas, 'DejaVu Sans Mono', monospace" >Forward</text>
+<text x="828" y="372" font-size="22" font-weight="600" fill="#16191C" text-anchor="start" >y rows with no match in x</text>
+</svg>
