@@ -1,8 +1,313 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 6 Task — Describing and Communicating Evidence</title><link rel="stylesheet" href="resource.css"></head><body><div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div><header class="hero"><div class="wrap"><div class="eyebrow">Week 6 · Task Sheet</div><h1>Describing and Communicating Evidence</h1><p class="subtitle">Group Task Sheet · Core → Transfer → Extension</p></div></header><main class="wrap"><section class="why"><h2>Why this matters</h2><p><strong>Central question:</strong> What does the evidence show, and how should we represent it?</p><p>Statistics and visualisations are selective representations of reality. A technically correct summary can still provide a misleading or incomplete account of the evidence.</p></section><section class="intro"><h2>How to work this week</h2><p>Work through this page in order as a small group. Use the Week 6 RStudio project and keep notes in <code>week06_session.R</code>. Choose summaries and plots because they serve the question, not because they are familiar.</p><p>If your group gets stuck, use the Week 6 Hints selectively, then return to the task.</p></section><nav class="phase-nav"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
-<section class="phase" id="p1"><div class="phase-head"><h2>PHASE 1 — RETRIEVAL</h2><p>Carry the earlier analytical checks into description and visualisation.</p></div><div class="task"><h3>Task 1.1 — Recall the checks that still matter</h3><p><strong>As a group:</strong> Before producing a statistic or graph, answer: What does one row represent? Is the variable meaningful for the intended operation? Have missing or implausible values been considered? If data were joined, how would you verify that the grain was preserved?</p><div class="record"><strong>Record:</strong> Write four brief reminders in the Phase 1 workspace.</div></div></section>
-<section class="phase" id="p2"><div class="phase-head"><h2>PHASE 2 — CONSEQUENCE PROBLEM</h2><p>Consider what is lost when evidence is compressed.</p></div><div class="task"><h3>Task 2.1 — Compare two technically correct summaries</h3><p>Two analysts use the same observations. One reports only a mean; the other shows the distribution and spread as well.</p><p><strong>As a group:</strong> Do they communicate the same evidence? What can a single summary hide?</p><div class="record"><strong>Record:</strong> Write a short response focused on what is revealed and obscured.</div></div></section>
-<section class="phase" id="p3"><div class="phase-head"><h2>PHASE 3 — CORE PRACTICAL</h2><p>Move from numerical description to visual representation and cautious communication.</p></div><div class="task"><h3>Task 3.1 — Describe centre and spread</h3><p>The project loads <code>player_match_tracking.csv</code> directly as <code>analysis_data</code>; no joining is required.</p><p><strong>As a group:</strong> For <code>distance_km</code>, calculate mean, median, standard deviation, IQR and selected quantiles. Explain what centre and spread each contribute.</p><div class="record"><strong>Record:</strong> Keep the summaries and a concise interpretation of centre versus spread.</div></div><div class="task"><h3>Task 3.2 — Inspect the distribution visually</h3><p><strong>As a group:</strong> Create a histogram of <code>distance_km</code>. Change the bin width once. Decide which features appear robust and which visual features change.</p><div class="record"><strong>Record:</strong> Keep both visual checks and a brief comparison.</div></div><div class="task"><h3>Task 3.3 — Compare positions without reducing them to means</h3><p><strong>As a group:</strong> Calculate a small table of centre and spread by position, then create a boxplot of distance by position. Decide what the plot reveals that group means alone do not.</p><div class="record"><strong>Record:</strong> Keep the summary, plot and one-sentence comparison.</div></div><div class="task"><h3>Task 3.4 — Describe a relationship before explaining it</h3><p><strong>As a group:</strong> Create a scatterplot of <code>distance_km</code> against <code>sprints</code>. Describe the observed relationship before offering any explanation.</p><div class="record"><strong>Record:</strong> Write a cautious description of direction, strength and shape.</div></div><div class="task"><h3>Task 3.5 — Separate association from causation</h3><p><strong>As a group:</strong> Explain why the scatterplot does not establish that one variable causes the other.</p><div class="record"><strong>Record:</strong> Write a one-sentence causal qualification.</div></div><div class="task"><h3>Task 3.6 — Make the visual communication purposeful</h3><p><strong>As a group:</strong> Add a clear title and axis labels to your plots and use <code>theme_minimal()</code>. Make sure the labels help a reader understand the analytical question.</p><div class="record"><strong>Record:</strong> Keep one polished plot that could be shown to another reader.</div></div><div class="task"><h3>Task 3.7 — Write for a coach</h3><p><strong>As a group:</strong> Choose one result and write a two-sentence interpretation for a coach. Include one limitation or qualification.</p><div class="record"><strong>Record:</strong> Write the two-sentence interpretation.</div></div></section>
-<section class="phase" id="p4"><div class="phase-head"><h2>PHASE 4 — CHECKPOINT</h2><p>Choose a representation from the question and variable structure.</p></div><div class="task"><h3>Task 4.1 — Checkpoint the visual framework</h3><p><strong>one numeric variable → histogram<br>numeric + category → boxplot<br>two numeric variables → scatterplot</strong></p><p><strong>As a group:</strong> Explain why this is a starting framework rather than a rule to plot by habit.</p><div class="record"><strong>Record:</strong> Write one sentence linking representation choice to the analytical question.</div></div></section>
-<section class="phase" id="p5"><div class="phase-head"><h2>PHASE 5 — TRANSFER</h2><p>Apply the visual reasoning to a fresh performance question.</p></div><div class="task"><h3>Task 5.1 — Identify the variables and representation</h3><p>Open <code>week06_transfer_swimming.csv</code>. A coach asks: “Do swimmers with higher recent training loads tend to record faster race times?”</p><p><strong>As a group:</strong> Identify the core variables and choose an appropriate visual representation.</p><div class="record"><strong>Record:</strong> Record the variables and why the representation fits them.</div></div><div class="task"><h3>Task 5.2 — Produce the evidence you need</h3><p><strong>As a group:</strong> Produce the scatterplot and any descriptive summaries that help you understand the variables or event groups. Use summaries already introduced this week; a correlation coefficient is not required.</p><div class="record"><strong>Record:</strong> Keep the useful plot/summaries only.</div></div><div class="task"><h3>Task 5.3 — Describe the observed relationship cautiously</h3><p><strong>As a group:</strong> Describe what the plot shows without overstating the pattern.</p><div class="record"><strong>Record:</strong> Write a short evidence-first description.</div></div><div class="task"><h3>Task 5.4 — Reject an unwarranted causal claim</h3><p><strong>As a group:</strong> Explain why this evidence does not establish that training load caused faster performance.</p><div class="record"><strong>Record:</strong> Write a causal qualification.</div></div><div class="task"><h3>Task 5.5 — Interrogate the pooled comparison</h3><p><strong>As a group:</strong> Identify why mixing event groups with very different race-time scales complicates the pooled relationship. Explain what you would want to inspect next.</p><div class="record"><strong>Record:</strong> Write the limitation and next analytical step.</div></div></section>
-<section class="phase" id="p6"><div class="phase-head"><h2>PHASE 6 — EXTENSION</h2><p>Explore how presentation can change interpretation without changing observations.</p></div><div class="task"><h3>Task 6.1 — Create two defensible representations</h3><p><strong>As a group:</strong> Create two technically valid representations of the same Strathclyde FC comparison that emphasise different features of the evidence. Explain which you would use for a coach, what each reveals or obscures, and how presentation choices can alter interpretation.</p><div class="record"><strong>Record:</strong> Keep both representations and your recommendation.</div></div></section>
-<section class="phase" id="p7"><div class="phase-head"><h2>PHASE 7 — DEBRIEF</h2><p>Finish by making the representational nature of graphs explicit.</p></div><div class="task"><h3>Task 7.1 — Complete the statement</h3><p><strong>As a group:</strong> Complete the statement: <strong>A graph is not the data; it is …</strong></p><div class="record"><strong>Record:</strong> Write one final sentence in the R script.</div></div></section><section class="assessment"><strong>Assessment One connection:</strong> centre/spread, histogram, boxplot, scatterplot, basic labels/themes and cautious interpretation are core. Density plots, jitter, faceting and advanced factor handling are extension.</section></main><footer>B1700 · Week 6 · 2026–27</footer></body></html>
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1700 Week 6 Task: Describing and Communicating Evidence</title>
+<style>
+:root{
+  --blue:#124864;
+  --blue-dark:#0d354a;
+  --soft:#e8f1f5;
+  --grey:#f6f8fa;
+  --green:#e8f4ee;
+  --orange:#fdf2e2;
+  --ink:#17212b;
+  --muted:#5b6770;
+  --line:#d8e0e5;
+  --white:#ffffff;
+  --max:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#fff;
+  line-height:1.58;
+}
+.modulebar{
+  background:var(--blue-dark);
+  color:#fff;
+  padding:.7rem 1rem;
+  font-size:.92rem;
+}
+.modulebar .inner{
+  max-width:var(--max);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+header{
+  background:linear-gradient(180deg,var(--soft),#fff);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--max);
+  margin:auto;
+  padding:2.3rem 1rem 1.8rem;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+h1{
+  margin:.2rem 0 .25rem;
+  color:var(--blue);
+  font-size:clamp(2rem,5vw,3.1rem);
+  line-height:1.08;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:1.08rem;
+  margin:0;
+}
+main{
+  max-width:var(--max);
+  margin:auto;
+  padding:1.5rem 1rem 4rem;
+}
+.callout{
+  border:1px solid #9db8c7;
+  border-left:5px solid var(--blue);
+  border-radius:10px;
+  background:var(--soft);
+  padding:1rem 1.1rem;
+  margin:0 0 1.4rem;
+}
+.callout h2{
+  margin:0 0 .35rem;
+  color:var(--blue);
+  font-size:1rem;
+  letter-spacing:.03em;
+}
+.callout p:last-child{margin-bottom:0}
+.workflow{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1.7rem;
+}
+.workflow h2{
+  color:var(--blue);
+  font-size:1.1rem;
+  margin-top:0;
+}
+.workflow ul{margin-bottom:.2rem}
+.phase{
+  margin-top:2.1rem;
+  scroll-margin-top:1rem;
+}
+.phase-banner{
+  background:var(--blue);
+  color:#fff;
+  border-radius:9px;
+  padding:.7rem 1rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  font-size:.92rem;
+}
+.phase-intro{
+  color:var(--muted);
+  margin:.55rem .15rem 1rem;
+}
+.task{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1rem;
+  background:#fff;
+}
+.task h3{
+  margin:0 0 .65rem;
+  color:var(--blue);
+  font-size:1.18rem;
+}
+.task-label{
+  font-weight:800;
+  color:var(--blue);
+}
+.group{
+  margin:.45rem 0;
+}
+.record{
+  margin:.85rem 0 0;
+  padding:.7rem .85rem;
+  border-left:4px solid var(--blue);
+  background:var(--grey);
+  border-radius:0 7px 7px 0;
+}
+.record strong{
+  color:var(--blue);
+}
+code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:var(--grey);
+  border:1px solid #e1e6ea;
+  padding:.08em .32em;
+  border-radius:4px;
+  font-size:.92em;
+}
+pre{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.9rem 1rem;
+  overflow:auto;
+  line-height:1.45;
+}
+pre code{border:0;padding:0;background:transparent}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:.8rem 0;
+  font-size:.96rem;
+}
+th,td{
+  padding:.55rem .6rem;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{
+  background:var(--grey);
+  color:var(--blue);
+}
+blockquote{
+  margin:.8rem 0;
+  padding:.6rem 1rem;
+  border-left:4px solid #a8bac4;
+  background:var(--grey);
+  font-size:1.05rem;
+}
+.nav{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:0 0 1.6rem;
+}
+.nav a{
+  color:var(--blue);
+  text-decoration:none;
+  border:1px solid #b8c9d2;
+  border-radius:999px;
+  padding:.35rem .65rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+.nav a:hover,.nav a:focus{
+  background:var(--soft);
+  outline:none;
+}
+details{
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:0 0 .8rem;
+  background:#fff;
+  overflow:hidden;
+}
+summary{
+  cursor:pointer;
+  padding:.85rem 1rem;
+  color:var(--blue);
+  font-weight:800;
+  background:var(--grey);
+}
+summary:hover{background:var(--soft)}
+.hint-body{
+  padding:.85rem 1rem 1rem;
+}
+.hint-body p:first-child{margin-top:0}
+.hint-body p:last-child{margin-bottom:0}
+.support-note{
+  background:var(--orange);
+  border:1px solid #e7cfa8;
+  border-radius:10px;
+  padding:.9rem 1rem;
+  margin-bottom:1.4rem;
+}
+footer{
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.85rem;
+  padding:1.3rem 1rem 2rem;
+}
+footer .inner{
+  max-width:var(--max);
+  margin:auto;
+}
+@media (max-width:650px){
+  .header-inner{padding-top:1.7rem}
+  main{padding-top:1rem}
+  .task{padding:.9rem}
+  th,td{padding:.45rem}
+}
+@media print{
+  .modulebar,.nav{display:none}
+  body{font-size:11pt}
+  .task,details{break-inside:avoid}
+  details > *{display:block}
+  summary{list-style:none}
+}
+</style>
+</head>
+<body>
+<div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
+<header><div class="header-inner"><div class="kicker">Week 6 · Task Sheet</div><h1>Describing and Communicating Evidence</h1><p class="subtitle">Pair Task Sheet · Core → Audit → Workflow → Transfer → Extension</p></div></header>
+<main>
+<div class="callout"><h2>WHY THIS MATTERS</h2><p><strong>Central question:</strong> What does the evidence show, and how should we represent it?</p><p><strong>A summary or a plot is a choice.</strong> It can be correct and still hide a group, exaggerate a gap or suggest a cause, so every summary needs a question before it and a careful reading after it: <strong>QUESTION → VARIABLES → SUMMARY OR PLOT → DESCRIBE → CHECK WHAT IT HIDES → SAY</strong>.</p></div>
+<div class="workflow"><h2>How to work this week</h2><p>In the demonstration you summarised <code>minutes_played</code>, drew a histogram, a boxplot and a scatterplot, saw how a bin width or a truncated axis can mislead, and followed a rowing coach’s three files from the first look to a careful sentence. Here you apply the same moves to <code>distance_km</code> and <code>sprints</code>, judge a colleague’s summary, work through a cycling coach’s three files yourselves, and then try a swimming file.</p><p>Phase 1 revisits Weeks 1 to 5 and rebuilds the table you will describe, because a description is only as good as the table under it.</p><p>Work through this page <strong>in order as a pair</strong>, in your own script (<code>week06_session.R</code> has a heading for each task). Keep brief comments as you go, so that your script records both what you ran and what you concluded. Most tasks start from a block in <code>week06_demo.R</code>.</p><p><strong>Predict before you run.</strong> Write down what you expect to see before every summary and every plot, and compare it with the result. Describe a pattern before you explain it.</p><p>If your pair gets stuck, open the <strong>Week 6 Hint Sheet</strong> and use the hint for the relevant task. Use as little support as you need, then return to the task. Phases 1 to 5 are the main work of the session. Phase 6 asks you to transfer the process to different data, and Phase 7 is for pairs who want to go further.</p></div>
+<nav class="nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a><a href="#p8">Phase 8</a></nav>
+<section class="phase" id="p1"><div class="phase-banner">PHASE 1: CORE: REVISIT WEEKS 1 TO 5</div><p class="phase-intro">Rebuild and check the table before you describe it.</p>
+<article class="task"><h3>Task 1.1: Restart and import</h3><p>Use <strong>Session &gt; Restart R</strong> so that nothing from the demonstration is left in memory. Check that <code>week_six.Rproj</code> is the open project. Start a new script, save it, and load the tidyverse. Keep <code>week06_demo.R</code> open in another tab: most tasks start from a block of it.</p><p class="group"><strong>As a pair:</strong> Import three files from the <code>data</code> folder: <code>player_match_tracking.csv</code> into <code>tracking</code>, <code>match_results.csv</code> into <code>matches</code> and <code>players.csv</code> into <code>players</code>. (The swimming file is imported later.) Say what one row represents in each table.</p></article>
+<article class="task"><h3>Task 1.2: Check <code>tracking</code> from memory</h3><p class="group"><strong>As a pair:</strong> Without looking at an earlier script, write the code that gives you: a first look at <code>tracking</code>; its number of rows and columns; the number of missing values in <code>match_rating</code>; the smallest and largest value of <code>minutes_played</code> and <code>distance_km</code>; the number of exact duplicate rows; and a count of the rows for each <code>position</code>.</p><p class="record"><strong>Record:</strong> What needs attention before you describe anything in this table?</p></article>
+<article class="task"><h3>Task 1.3: Rebuild and verify the joined table</h3><p class="group"><strong>As a pair:</strong> Build <code>tracking_joined</code>, which adds only <code>player_name</code> from <code>players</code> and only <code>result</code> from <code>matches</code> to <code>tracking</code>, keeping every appearance. Predict the numbers of rows and columns first. Then verify the result: the numbers of rows and columns, the missing <code>player_name</code> and <code>result</code> values, whether any player appears twice in the same match, and an <code>anti_join()</code> from <code>tracking</code> to each lookup table.</p><p class="record"><strong>Record:</strong> Expected and observed counts, and a final statement of what one row represents. A joined table is not ready to describe until it has been checked.</p></article>
+</section>
+<section class="phase" id="p2"><div class="phase-banner">PHASE 2: CORE: DESCRIBE WITH NUMBERS</div><p class="phase-intro">Predict, calculate, then say what each number leaves out.</p>
+<article class="task"><h3>Task 2.1: Centre and spread of <code>distance_km</code></h3><p class="group"><strong>As a pair:</strong> Predict whether the mean of <code>distance_km</code> will be above, below or about equal to the median. Then calculate the mean, median, standard deviation, IQR and quantiles for all 476 appearances.</p><p class="record"><strong>Record:</strong> Your prediction, the five numbers, and one sentence on what the mean and median together suggest.</p></article>
+<article class="task"><h3>Task 2.2: A summary for each position</h3><p class="group"><strong>As a pair:</strong> Build a table with one row for each position, showing the number of appearances and the mean, median, standard deviation and IQR of <code>distance_km</code>.</p><p class="record"><strong>Record:</strong> The table, and a sentence naming the positions that are most alike and the position that stands apart.</p></article>
+<article class="task"><h3>Task 2.3: Does one number describe the squad?</h3><p class="group"><strong>As a pair:</strong> Calculate the mean <code>distance_km</code> for outfield players only, and the largest <code>distance_km</code> recorded by a goalkeeper. Then count how many of the 476 appearances lie within 1 km of the overall mean (the overall mean plus or minus 1 km), and how many of those are goalkeeper appearances.</p><p class="record"><strong>Record:</strong> The numbers, and a sentence on how well the overall mean describes a goalkeeper appearance and an outfield appearance.</p></article>
+<article class="task"><h3>Task 2.4: Ratings and the values behind them</h3><p class="group"><strong>As a pair:</strong> First calculate the mean of <code>match_rating</code> for the whole table without any option and note what you get. Then, for each position, calculate the number of appearances, the number of appearances that have a rating, and the mean rating.</p><p class="record"><strong>Record:</strong> What the first calculation returned and why, the table, and one sentence on why the number of ratings belongs next to each mean.</p></article>
+</section>
+<section class="phase" id="p3"><div class="phase-banner">PHASE 3: CORE: DRAW IT</div><p class="phase-intro">Choose the plot from the question and the variables, and describe what you see before you explain it.</p>
+<article class="task"><h3>Task 3.1: One numeric variable: histogram</h3><p class="group"><strong>As a pair:</strong> Draw a histogram of <code>distance_km</code> with <code>binwidth = 1</code>. Then draw it again with <code>binwidth = 0.5</code>. Before you explain anything, describe the shape: where the centre is, how wide the spread is and whether there is one group of values or more.</p><p class="record"><strong>Record:</strong> Your description of the shape in one or two sentences, and whether the second bin width changed your description.</p></article>
+<article class="task"><h3>Task 3.2: Numeric and category: boxplot</h3><p class="group"><strong>As a pair:</strong> Draw a boxplot of <code>distance_km</code> for each <code>position</code>. Compare the medians, the heights of the boxes and any separate points.</p><p class="record"><strong>Record:</strong> A sentence on how the positions differ in centre and in spread, and a sentence on what the separate points are. Link the plot to the histogram you drew in Task 3.1.</p></article>
+<article class="task"><h3>Task 3.3: Two numeric variables: scatterplot</h3><p class="group"><strong>As a pair:</strong> Draw a scatterplot with <code>distance_km</code> on the horizontal axis and <code>sprints</code> on the vertical axis. Add a title, a subtitle that says what one point is, axis labels with units, and <code>theme_minimal()</code>. Describe the direction, strength and scatter of the pattern, and anything about the points that is not a single cloud.</p><p class="record"><strong>Record:</strong> Your description in terms of direction, strength and scatter, and one thing you notice that you cannot yet explain.</p></article>
+<article class="task"><h3>Task 3.4: Say it carefully</h3><p class="group"><strong>As a pair:</strong> Write two sentences for the coaching staff: one on how distance covered is distributed and how positions compare, and one on the relationship between distance and sprints. Each sentence must include at least one number, say how many appearances it rests on, and avoid words that claim a cause.</p><p class="record"><strong>Record:</strong> Your two sentences.</p></article>
+</section>
+<section class="phase" id="p4"><div class="phase-banner">PHASE 4: AUDIT: JUDGE A COLLEAGUE’S SUMMARY</div><p class="phase-intro">Check what the code shows, not what the note says it shows.</p>
+<article class="task"><h3>Task 4.1: What does each step actually show?</h3><p class="group"><strong>As a pair:</strong> Open <code>colleague_summary.R</code> (read it, but do not edit it). Run it one step at a time. For each of the three claims in the handover note, write down what the code produces: the table, the correlation and the number of bars.</p><p class="record"><strong>Record:</strong> A table with three rows and the headings Claim, What the code shows, and Supported?.</p></article>
+<article class="task"><h3>Task 4.2: Verdict</h3><p class="group"><strong>As a pair:</strong> For each claim, decide whether the evidence supports it, partly supports it or does not support it, and give the reason. Then say what you would change so that the summary is defensible.</p><p class="record"><strong>Record:</strong> Three verdicts with reasons, and the changes you would make.</p></article>
+</section>
+<section class="phase" id="p5"><div class="phase-banner">PHASE 5: WORKFLOW: ONE CASE, START TO FINISH</div><p class="phase-intro">Three new files and one question. Understand, trust, clean, connect, transform, describe.</p>
+<article class="task"><h3>Task 5.1: Understand and trust the files</h3><p class="group"><strong>As a pair:</strong> A cycling coach has sent three files and one question: <em>which kind of ride covers the ground fastest, and does the discipline make a difference?</em> Import <code>week06_task_riders.csv</code> into <code>riders</code>, <code>week06_task_rides.csv</code> into <code>rides</code> and <code>week06_task_tests.csv</code> into <code>tests</code>. Say what one row represents in each file. Then check <code>rides</code>: its numbers of rows and columns, the missing values in each column, and the range of <code>minutes</code> and <code>distance_km</code>. Work out the speed of the ride with the largest distance.</p><p class="record"><strong>Record:</strong> The grain of each file, the counts, and a list of what needs a decision before you describe anything.</p></article>
+<article class="task"><h3>Task 5.2: Clean the labels and the repeats</h3><p class="group"><strong>As a pair:</strong> Count the labels in <code>discipline</code> and bring them down to the two that exist. Check for exact duplicate rows, and for the same rider on the same date more than once, and decide what to do about each. Decide what to do about the ride that cannot be right. Store the cleaned table as <code>rides_clean</code> and report the number of rows after each step. Then reshape <code>tests</code> so that there is one row per rider per test, and state what one row is now.</p><p class="record"><strong>Record:</strong> The label counts before and after, the row count after each step, your decision about the impossible ride and the reason, and the new grain of <code>tests</code>.</p></article>
+<article class="task"><h3>Task 5.3: Connect the tables, then verify</h3><p class="group"><strong>As a pair:</strong> Before you join, find the rides whose rider is not in <code>riders</code> and the riders who have no rides. Then build <code>rides_joined</code>, which adds <code>rider_name</code> to every ride in <code>rides_clean</code> without losing any. Predict the number of rows first. Check the number of rows, and the number of rides left without a name. Finally, find out how many rows <code>inner_join()</code> would have returned instead.</p><p class="record"><strong>Record:</strong> Expected and observed counts, the unmatched records in both directions, and one sentence on what the other join would have done to the data.</p></article>
+<article class="task"><h3>Task 5.4: Transform: a total or a rate?</h3><p class="group"><strong>As a pair:</strong> Add a column <code>speed_kmh</code> to <code>rides_joined</code> equal to <code>distance_km / minutes * 60</code>. For each <code>ride_type</code>, calculate the number of rides, the mean <code>distance_km</code> and the mean <code>speed_kmh</code>. Which type covers more distance in a ride, and which covers it faster?</p><p class="record"><strong>Record:</strong> The table, and a sentence on why the two questions have different answers.</p></article>
+<article class="task"><h3>Task 5.5: Describe and draw</h3><p class="group"><strong>As a pair:</strong> Using <code>rides_joined</code>: (a) predict whether the mean of <code>minutes</code> is above or below its median, then calculate the number of rides, mean, median, standard deviation and IQR. (b) Draw a histogram of <code>minutes</code> and name its shape. (c) Draw a boxplot of <code>speed_kmh</code> for each <code>discipline</code> and compare the centre, the spread and the overlap. (d) Draw a scatterplot of <code>avg_power_w</code> against <code>speed_kmh</code> with a title, a subtitle, axis labels with units and <code>theme_minimal()</code>, and describe direction, strength and scatter. Note any warning R gives you.</p><p class="record"><strong>Record:</strong> Your prediction and the numbers, the shape you named, one sentence for each of the boxplot and the scatterplot, and the number of rides each rests on.</p></article>
+<article class="task"><h3>Task 5.6: Say it carefully</h3><p class="group"><strong>As a pair:</strong> Write two sentences for the coach. The first compares Road and Track riding on <code>speed_kmh</code>. The second reports the relationship between power and speed. Each must include a number, say how many rides it rests on, and avoid words that claim a cause.</p><p class="record"><strong>Record:</strong> Your two sentences.</p></article>
+</section>
+<section class="phase" id="p6"><div class="phase-banner">PHASE 6: TRANSFER</div><p class="phase-intro">Different data, very different scales and the same judgement process.</p>
+<article class="task"><h3>Task 6.1: Check before you describe</h3><p class="group"><strong>As a pair:</strong> Import <code>week06_transfer_swimming.csv</code> into <code>swimming</code>. State what one row represents. Check the numbers of rows and columns, the number of swimmers in each <code>event_group</code>, any missing values, and the range of <code>recent_training_load</code> and <code>race_time_seconds</code>.</p><p class="record"><strong>Record:</strong> The grain, the counts and what you notice about the range of race times.</p></article>
+<article class="task"><h3>Task 6.2: The pooled picture</h3><p class="group"><strong>As a pair:</strong> Predict whether more recent training load will go with faster or slower race times. Then draw a scatterplot of <code>recent_training_load</code> (horizontal) against <code>race_time_seconds</code> (vertical) for all 18 swimmers, with a title, axis labels and <code>theme_minimal()</code>.</p><p class="record"><strong>Record:</strong> Your prediction, what the plot shows, and whether it matched.</p></article>
+<article class="task"><h3>Task 6.3: Compare like with like</h3><p class="group"><strong>As a pair:</strong> Draw the same scatterplot with a separate panel for each <code>event_group</code>, and give each panel its own vertical scale. Calculate the correlation between <code>recent_training_load</code> and <code>race_time_seconds</code> within each event group. Compare what you see with Task 6.2.</p><p class="record"><strong>Record:</strong> What each panel shows, the three correlations, and why the pooled picture and the panels disagree.</p></article>
+<article class="task"><h3>Task 6.4: Report it</h3><p class="group"><strong>As a pair:</strong> Write one or two sentences for a coach saying what the 18 swimmers show about training load and race time, and what they cannot show.</p><p class="record"><strong>Record:</strong> Your sentences.</p></article>
+</section>
+<section class="phase" id="p7"><div class="phase-banner">PHASE 7: EXTENSION</div><p class="phase-intro">Look further at structure you have already noticed, and at what else R can draw.</p>
+<article class="task"><h3>Task 7.1: Sprints by venue</h3><p class="group"><strong>As a pair:</strong> In Task 3.3 the points did not form a single cloud. Draw a histogram of <code>sprints</code> (<code>binwidth = 2</code>) with a separate panel for each <code>venue</code>. Then calculate, for each venue, the number of appearances, the median and IQR of <code>sprints</code>, and the number of appearances with 10 or fewer sprints and with 24 or more.</p><p class="record"><strong>Record:</strong> What you see in each venue, and what you would ask the data owner before using a mean number of sprints.</p></article>
+<article class="task"><h3>Task 7.2: A reusable summary</h3><p class="group"><strong>As a pair:</strong> Write a function <code>describe_num(data, column)</code> that returns a one-row table with the number of rows, the number of missing values, and the mean, median, standard deviation and IQR of <code>column</code>, ignoring missing values in the calculations. Test it on <code>distance_km</code> and on <code>match_rating</code>.</p><p class="record"><strong>Record:</strong> The function and its two results, and one sentence on why it reports the missing count.</p></article>
+<article class="task"><h3>Task 7.3: See what else R can draw</h3><p class="group"><strong>As a pair:</strong> Open <code>week06_demo.R</code> and go to the section headed <em>Where this goes</em> near the bottom, which starts at <code>library(ggridges)</code>. If R asks, install the two extra packages once by typing <code>install.packages(c("ggridges", "ggrepel"))</code> in the Console. Run it one plot at a time. Choose the plot you find most striking, find the lines that make it, and change one thing: a colour, a label or a number.</p><p class="record"><strong>Record:</strong> The plot you chose, what you changed and what happened, and one question about sport that this kind of plot could help you answer.</p></article>
+</section>
+<section class="phase" id="p8"><div class="phase-banner">PHASE 8: DEBRIEF</div><p class="phase-intro">Connect describing and communicating with professional judgement.</p>
+<article class="task"><h3>Task 8.1: What does your plot hide?</h3><p class="group"><strong>As a pair:</strong> Choose one plot you drew today. What does it make easy to see, and what does it hide? Name one further summary, plot or table that you would add to show what it hides.</p></article>
+<article class="task"><h3>Task 8.2: Which stage mattered most?</h3><p class="group"><strong>As a pair:</strong> Look back at the cycling case in Phase 5. For each of the six stages (understand, trust, clean, connect, transform, describe), say what you checked and whether it changed what you could honestly say.</p><p class="record"><strong>Record:</strong> Your six short answers, and the stage you would least want to skip.</p></article>
+</section>
+</main>
+<footer><div class="inner">B1700 · Week 6 · 2026–27</div></footer>
+</body></html>

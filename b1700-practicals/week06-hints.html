@@ -1,39 +1,500 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B1700 Week 6 Hints — Describing and Communicating Evidence</title><link rel="stylesheet" href="resource.css"></head><body><div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div><header class="hero"><div class="wrap"><div class="eyebrow">Week 6 · Hint Sheet</div><h1>Describing and Communicating Evidence</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header><main class="wrap"><section class="intro"><h2>How to use this page</h2><p>Open only the hint for the task your group is working on. Use the <strong>Still stuck?</strong> layer only if the first hint is not enough.</p></section><nav class="phase-nav"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a></nav>
-<section class="phase" id="p1"><div class="phase-head"><h2>PHASE 1 — RETRIEVAL</h2></div><details><summary>Hint for Task 1.1 — Recall the checks that still matter</summary><div class="hint-body"><p>A graph does not remove the need to know grain, variable meaning, data quality or whether earlier joins preserved the intended observations.</p></div></details></section>
-<section class="phase" id="p2"><div class="phase-head"><h2>PHASE 2 — CONSEQUENCE PROBLEM</h2></div><details><summary>Hint for Task 2.1 — Compare two technically correct summaries</summary><div class="hint-body"><p>Ask what the mean cannot show: spread, skew, overlap, clusters or unusual observations. “Technically correct” does not mean “complete for the question”.</p></div></details></section>
-<section class="phase" id="p3"><div class="phase-head"><h2>PHASE 3 — CORE PRACTICAL</h2><p>Use syntax as support for representation and interpretation.</p></div><details><summary>Hint for Task 3.1 — Describe centre and spread</summary><div class="hint-body"><pre><code>mean(analysis_data$distance_km, na.rm = TRUE)
-median(analysis_data$distance_km, na.rm = TRUE)
-sd(analysis_data$distance_km, na.rm = TRUE)
-IQR(analysis_data$distance_km, na.rm = TRUE)
-quantile(analysis_data$distance_km, probs = c(.25, .5, .75), na.rm = TRUE)</code></pre><p>A measure of centre alone does not describe variability.</p></div></details><details><summary>Hint for Task 3.2 — Inspect the distribution visually</summary><div class="hint-body"><pre><code>ggplot(analysis_data, aes(x = distance_km)) +
-  geom_histogram(binwidth = 1) +
-  labs(
-    title = "Distance covered per appearance",
-    x = "Distance (km)",
-    y = "Appearances"
-  ) +
-  theme_minimal()</code></pre><p>Change <code>binwidth</code> once and focus on broad features that persist.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Make the first histogram with one sensible bin width, then change only that number. Compare shape, spread and any apparent clusters rather than judging which version simply “looks nicer”.</p></div></details></div></details><details><summary>Hint for Task 3.3 — Compare positions without reducing them to means</summary><div class="hint-body"><pre><code>position_summary &lt;- analysis_data |&gt;
-  group_by(position) |&gt;
-  summarise(
-    mean_distance = mean(distance_km, na.rm = TRUE),
-    median_distance = median(distance_km, na.rm = TRUE),
-    sd_distance = sd(distance_km, na.rm = TRUE),
-    iqr_distance = IQR(distance_km, na.rm = TRUE),
-    appearances = n()
-  )
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1700 Week 6 Hints: Describing and Communicating Evidence</title>
+<style>
+:root{
+  --blue:#124864;
+  --blue-dark:#0d354a;
+  --soft:#e8f1f5;
+  --grey:#f6f8fa;
+  --green:#e8f4ee;
+  --orange:#fdf2e2;
+  --ink:#17212b;
+  --muted:#5b6770;
+  --line:#d8e0e5;
+  --white:#ffffff;
+  --max:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#fff;
+  line-height:1.58;
+}
+.modulebar{
+  background:var(--blue-dark);
+  color:#fff;
+  padding:.7rem 1rem;
+  font-size:.92rem;
+}
+.modulebar .inner{
+  max-width:var(--max);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+header{
+  background:linear-gradient(180deg,var(--soft),#fff);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:var(--max);
+  margin:auto;
+  padding:2.3rem 1rem 1.8rem;
+}
+.kicker{
+  color:var(--blue);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:.78rem;
+}
+h1{
+  margin:.2rem 0 .25rem;
+  color:var(--blue);
+  font-size:clamp(2rem,5vw,3.1rem);
+  line-height:1.08;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:1.08rem;
+  margin:0;
+}
+main{
+  max-width:var(--max);
+  margin:auto;
+  padding:1.5rem 1rem 4rem;
+}
+.callout{
+  border:1px solid #9db8c7;
+  border-left:5px solid var(--blue);
+  border-radius:10px;
+  background:var(--soft);
+  padding:1rem 1.1rem;
+  margin:0 0 1.4rem;
+}
+.callout h2{
+  margin:0 0 .35rem;
+  color:var(--blue);
+  font-size:1rem;
+  letter-spacing:.03em;
+}
+.callout p:last-child{margin-bottom:0}
+.workflow{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1.7rem;
+}
+.workflow h2{
+  color:var(--blue);
+  font-size:1.1rem;
+  margin-top:0;
+}
+.workflow ul{margin-bottom:.2rem}
+.phase{
+  margin-top:2.1rem;
+  scroll-margin-top:1rem;
+}
+.phase-banner{
+  background:var(--blue);
+  color:#fff;
+  border-radius:9px;
+  padding:.7rem 1rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  font-size:.92rem;
+}
+.phase-intro{
+  color:var(--muted);
+  margin:.55rem .15rem 1rem;
+}
+.task{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1rem 1.1rem;
+  margin:0 0 1rem;
+  background:#fff;
+}
+.task h3{
+  margin:0 0 .65rem;
+  color:var(--blue);
+  font-size:1.18rem;
+}
+.task-label{
+  font-weight:800;
+  color:var(--blue);
+}
+.group{
+  margin:.45rem 0;
+}
+.record{
+  margin:.85rem 0 0;
+  padding:.7rem .85rem;
+  border-left:4px solid var(--blue);
+  background:var(--grey);
+  border-radius:0 7px 7px 0;
+}
+.record strong{
+  color:var(--blue);
+}
+code{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:var(--grey);
+  border:1px solid #e1e6ea;
+  padding:.08em .32em;
+  border-radius:4px;
+  font-size:.92em;
+}
+pre{
+  background:var(--grey);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:.9rem 1rem;
+  overflow:auto;
+  line-height:1.45;
+}
+pre code{border:0;padding:0;background:transparent}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:.8rem 0;
+  font-size:.96rem;
+}
+th,td{
+  padding:.55rem .6rem;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{
+  background:var(--grey);
+  color:var(--blue);
+}
+blockquote{
+  margin:.8rem 0;
+  padding:.6rem 1rem;
+  border-left:4px solid #a8bac4;
+  background:var(--grey);
+  font-size:1.05rem;
+}
+.nav{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:0 0 1.6rem;
+}
+.nav a{
+  color:var(--blue);
+  text-decoration:none;
+  border:1px solid #b8c9d2;
+  border-radius:999px;
+  padding:.35rem .65rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+.nav a:hover,.nav a:focus{
+  background:var(--soft);
+  outline:none;
+}
+details{
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:0 0 .8rem;
+  background:#fff;
+  overflow:hidden;
+}
+summary{
+  cursor:pointer;
+  padding:.85rem 1rem;
+  color:var(--blue);
+  font-weight:800;
+  background:var(--grey);
+}
+summary:hover{background:var(--soft)}
+.hint-body{
+  padding:.85rem 1rem 1rem;
+}
+.hint-body p:first-child{margin-top:0}
+.hint-body p:last-child{margin-bottom:0}
+.support-note{
+  background:var(--orange);
+  border:1px solid #e7cfa8;
+  border-radius:10px;
+  padding:.9rem 1rem;
+  margin-bottom:1.4rem;
+}
+footer{
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.85rem;
+  padding:1.3rem 1rem 2rem;
+}
+footer .inner{
+  max-width:var(--max);
+  margin:auto;
+}
+@media (max-width:650px){
+  .header-inner{padding-top:1.7rem}
+  main{padding-top:1rem}
+  .task{padding:.9rem}
+  th,td{padding:.45rem}
+}
+@media print{
+  .modulebar,.nav{display:none}
+  body{font-size:11pt}
+  .task,details{break-inside:avoid}
+  details > *{display:block}
+  summary{list-style:none}
+}
+</style>
+</head>
+<body>
+<div class="modulebar"><div class="inner"><span><strong>B1700</strong> · Introduction to Sport Data Analytics</span><span>2026–27</span></div></div>
+<header><div class="header-inner"><div class="kicker">Week 6 · Hint Sheet</div><h1>Describing and Communicating Evidence</h1><p class="subtitle">Hint Sheet · Open only the support you need</p></div></header>
+<main>
+<div class="callout"><h2>HOW TO USE THIS PAGE</h2><p>Use this page <strong>only when your pair needs help to make progress</strong>. Find the hint for the task you are working on, open only that hint, use as little support as you need, then return to the task sheet.</p><p>The hints show <strong>patterns</strong>. Words such as <code>table</code>, <code>column</code> and <code>group_column</code> are placeholders: replace them with the real names and values. A <strong>sanity check</strong> gives a number you can compare with your own, so that you know you are on the right track. The hints do not replace your analytical judgement.</p></div>
+<nav class="nav" aria-label="Phase navigation"><a href="#p1">Phase 1</a><a href="#p2">Phase 2</a><a href="#p3">Phase 3</a><a href="#p4">Phase 4</a><a href="#p5">Phase 5</a><a href="#p6">Phase 6</a><a href="#p7">Phase 7</a><a href="#p8">Phase 8</a><a href="#mistakes">Common mistakes</a></nav>
+<section class="phase" id="p1"><div class="phase-banner">PHASE 1: CORE: REVISIT WEEKS 1 TO 5</div><p class="phase-intro">Checks and verbs you have already used. Try to write them before opening a hint.</p>
+<details><summary>Hint for Task 1.1: Restart and import</summary><div class="hint-body"><p>Restart R from the <strong>Session</strong> menu. Create the script from <strong>File &gt; New File &gt; R Script</strong> and save it.</p><pre><code>library(tidyverse)
 
-ggplot(analysis_data, aes(x = position, y = distance_km)) +
-  geom_boxplot() +
-  theme_minimal()</code></pre><p>The boxplot can reveal spread, overlap and unusual observations that a single mean cannot.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>First create the grouped summary table. Then build the boxplot separately. Compare what the table tells you about centre with what the plot reveals about distribution and overlap.</p></div></details></div></details><details><summary>Hint for Task 3.4 — Describe a relationship before explaining it</summary><div class="hint-body"><pre><code>ggplot(analysis_data, aes(x = distance_km, y = sprints)) +
+table_name &lt;- read_csv("data/file_name.csv")</code></pre><p>Use the pattern three times. The object name on the left does not have to match the file name. For the grain, finish the sentence “One row is one …” for each table.</p></div></details>
+<details><summary>Hint for Task 1.2: Check <code>tracking</code> from memory</summary><div class="hint-body"><pre><code>glimpse(table)
+dim(table)
+sum(is.na(table$column))
+range(table$column)
+sum(duplicated(table))
+table(table$column)</code></pre><p><code>dim()</code> gives the rows and then the columns. <code>range()</code> gives the smallest and largest value. <code>duplicated()</code> marks a row that repeats an earlier row exactly. Repeat a line for each column you need.</p><p><strong>Sanity check:</strong> <code>tracking</code> has 476 rows and 8 columns, and <code>match_rating</code> has 34 missing values. <code>minutes_played</code> runs from 14 to 90 and <code>distance_km</code> from 2.29 to 13.18. There are no exact duplicates. The positions have 166 defenders, 165 midfielders, 97 forwards and 48 goalkeepers.</p></div></details>
+<details><summary>Hint for Task 1.3: Rebuild and verify the joined table</summary><div class="hint-body"><pre><code>table_joined &lt;- table |&gt;
+  left_join(lookup_1 |&gt; select(key, wanted_column), by = "key") |&gt;
+  left_join(lookup_2 |&gt; select(key, wanted_column), by = "key")
+
+dim(table_joined)
+sum(is.na(table_joined$wanted_column))
+sum(duplicated(table_joined[, c("key_1", "key_2")]))
+table |&gt; anti_join(lookup_1, by = "key")</code></pre><p>Select only the lookup columns you want before joining, so that no <code>.x</code> or <code>.y</code> columns appear. The pair of keys in a tracking table is the match and the player together.</p><p><strong>Sanity check:</strong> 476 rows and 10 columns. There are 0 missing player names, 0 missing results and 0 repeated player and match pairs, and every <code>anti_join()</code> is empty.</p></div></details>
+</section>
+<section class="phase" id="p2"><div class="phase-banner">PHASE 2: CORE: DESCRIBE WITH NUMBERS</div><p class="phase-intro">Predict first, calculate second, and keep the number of values behind each statistic.</p>
+<details><summary>Hint for Task 2.1: Centre and spread of <code>distance_km</code></summary><div class="hint-body"><pre><code>mean(table$column)
+median(table$column)
+sd(table$column)
+IQR(table$column)
+quantile(table$column)</code></pre><p>Write your prediction as a comment first. <code>quantile()</code> gives five values: the minimum, the first quartile, the median, the third quartile and the maximum.</p><p><strong>Sanity check:</strong> the mean is about 8.30 and the median 8.585. The standard deviation is about 2.36 and the IQR about 3.14. The quantiles are 2.29, 6.905, 8.585, 10.0425 and 13.18.</p><p><strong>Observation:</strong> the mean is a little below the median, so something is pulling it down. Hold that thought for Phase 3.</p></div></details>
+<details><summary>Hint for Task 2.2: A summary for each position</summary><div class="hint-body"><pre><code>table |&gt;
+  group_by(group_column) |&gt;
+  summarise(
+    appearances = n(),
+    mean_value = mean(column),
+    median_value = median(column),
+    sd_value = sd(column),
+    iqr_value = IQR(column)
+  )</code></pre><p>Each name on the left of <code>=</code> is a column name you choose.</p><p><strong>Sanity check:</strong> Defender 166 appearances, mean 8.28, median 8.48, SD 1.78, IQR 2.56. Forward 97, 8.36, 8.41, 1.72, 2.79. Goalkeeper 48, 3.83, 3.76, 0.71, 0.90. Midfielder 165, 9.58, 9.64, 1.89, 2.73.</p></div></details>
+<details><summary>Hint for Task 2.3: Does one number describe the squad?</summary><div class="hint-body"><pre><code>outfield &lt;- table |&gt; filter(group_column != "value")
+mean(outfield$column)
+
+max(table$column[table$group_column == "value"])
+
+overall_mean &lt;- mean(table$column)
+near_mean &lt;- abs(table$column - overall_mean) &lt;= 1
+sum(near_mean)
+sum(near_mean[table$group_column == "value"])</code></pre><p><code>abs()</code> is the distance from the mean, ignoring the sign. <code>near_mean</code> is a column of <code>TRUE</code> and <code>FALSE</code>, and <code>sum()</code> counts the <code>TRUE</code> values.</p><p><strong>Sanity check:</strong> 428 outfield appearances with a mean of about 8.80. The largest goalkeeper distance is 5.38. 157 of the 476 appearances are within 1 km of the overall mean, and none of them is a goalkeeper appearance.</p></div></details>
+<details><summary>Hint for Task 2.4: Ratings and the values behind them</summary><div class="hint-body"><pre><code>mean(table$column)
+
+table |&gt;
+  group_by(group_column) |&gt;
+  summarise(
+    appearances = n(),
+    rated = sum(!is.na(column)),
+    mean_rating = mean(column, na.rm = TRUE)
+  )</code></pre><p>Without <code>na.rm = TRUE</code> the mean of a column that contains a missing value is itself missing. <code>!is.na(x)</code> is <code>TRUE</code> where a value is present.</p><p><strong>Sanity check:</strong> the first mean is <code>NA</code>. Then Defender 166 appearances, 156 rated, mean 2.84; Forward 97, 90, 2.89; Goalkeeper 48, 45, 3.04; Midfielder 165, 151, 3.15. The ratings add up to 442.</p><p><strong>Observation:</strong> ratings are whole numbers from 1 to 5, and the means differ by a few tenths. Say how many ratings stand behind each one.</p></div></details>
+</section>
+<section class="phase" id="p3"><div class="phase-banner">PHASE 3: CORE: DRAW IT</div><p class="phase-intro">Choose the plot from the variables, then describe it in plain words.</p>
+<details><summary>Hint for Task 3.1: One numeric variable: histogram</summary><div class="hint-body"><pre><code>ggplot(table, aes(x = column)) +
+  geom_histogram(binwidth = 1)</code></pre><p>Change the number after <code>binwidth =</code> to change how wide each bar is. Describe three things: where most values are, how wide the spread is, and whether there is one group of bars or more.</p><p><strong>Sanity check:</strong> with <code>binwidth = 1</code> the tallest bar is at 10 km, with 88 appearances. There is a smaller group of bars around 3 to 4 km, a dip at 5 km (17 appearances), and a larger group from 6 to 12 km.</p><p><strong>Observation:</strong> a mean and a standard deviation would not have told you that there are two groups.</p></div></details>
+<details><summary>Hint for Task 3.2: Numeric and category: boxplot</summary><div class="hint-body"><pre><code>ggplot(table, aes(x = group_column, y = number_column)) +
+  geom_boxplot()</code></pre><p>Compare the thick lines (medians), the heights of the boxes (IQR) and the separate points. Look back at the histogram and ask which group the lower values belong to.</p><p><strong>Sanity check:</strong> the medians are 8.48 for Defender, 8.41 for Forward, 3.76 for Goalkeeper and 9.64 for Midfielder. There are three separate points: one defender at 2.68 km and two midfielders at 4.19 and 2.95 km.</p></div></details>
+<details><summary>Hint for Task 3.3: Two numeric variables: scatterplot</summary><div class="hint-body"><pre><code>ggplot(table, aes(x = x_column, y = y_column)) +
   geom_point() +
   labs(
-    title = "Distance and sprint count",
-    x = "Distance (km)",
-    y = "Sprints"
+    title = "...",
+    subtitle = "One point is ...",
+    x = "... (units)",
+    y = "..."
   ) +
-  theme_minimal()</code></pre><p>Describe direction, strength and shape before suggesting mechanisms.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Use neutral language first: does the cloud of points generally rise, fall or show little pattern? Is it tight or widely scattered? Is the pattern roughly straight or curved? Only after that should you discuss possible explanations.</p></div></details></div></details><details><summary>Hint for Task 3.5 — Separate association from causation</summary><div class="hint-body"><p>The plot shows co-variation in observational data. Other factors may influence both variables, and the graph contains no experimental intervention establishing a causal pathway.</p></div></details><details><summary>Hint for Task 3.6 — Make the visual communication purposeful</summary><div class="hint-body"><p>Titles and labels should tell the reader what is being compared and the units involved. Styling should support legibility rather than decorate the graph.</p></div></details><details><summary>Hint for Task 3.7 — Write for a coach</summary><div class="hint-body"><p>A useful structure is: sentence 1 = what the evidence shows; sentence 2 = one limitation, uncertainty or qualification that matters for action.</p></div></details></section>
-<section class="phase" id="p4"><div class="phase-head"><h2>PHASE 4 — CHECKPOINT</h2></div><details><summary>Hint for Task 4.1 — Checkpoint the visual framework</summary><div class="hint-body"><p>The framework narrows sensible choices, but the final plot should still be chosen because it serves the question and audience.</p></div></details></section>
-<section class="phase" id="p5"><div class="phase-head"><h2>PHASE 5 — TRANSFER</h2></div><details><summary>Hint for Task 5.1 — Identify the variables and representation</summary><div class="hint-body"><p>Recent training load and race time are both numeric, so a scatterplot is a sensible starting point.</p></div></details><details><summary>Hint for Task 5.2 — Produce the evidence you need</summary><div class="hint-body"><p>Use the descriptive summaries already introduced this week if they help you understand the variables or compare event groups. You do not need <code>cor()</code>.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Start with the scatterplot only. Then ask whether event membership or variable ranges make the pooled picture hard to interpret. Add a summary only if it answers a specific uncertainty raised by the plot.</p></div></details></div></details><details><summary>Hint for Task 5.3 — Describe the observed relationship cautiously</summary><div class="hint-body"><p>Describe the visual pattern before explaining it. Avoid words that imply causation.</p></div></details><details><summary>Hint for Task 5.4 — Reject an unwarranted causal claim</summary><div class="hint-body"><p>Training load and performance are observationally associated here; many other factors and reverse/complex relationships remain possible.</p></div></details><details><summary>Hint for Task 5.5 — Interrogate the pooled comparison</summary><div class="hint-body"><p>Different events have very different race-time scales. A pooled trend may partly reflect event membership rather than a comparable within-event performance relationship. Inspect event groups separately next.</p><details class="deeper"><summary>Still stuck?</summary><div class="hint-body"><p>Imagine two events with very different typical race times. If one event also tends to have different training loads, the pooled cloud can show a pattern driven by event membership. Your next step is therefore to compare the relationship within meaningful event groups.</p></div></details></div></details></section>
-<section class="phase" id="p6"><div class="phase-head"><h2>PHASE 6 — EXTENSION</h2></div><details><summary>Hint for Task 6.1 — Create two defensible representations</summary><div class="hint-body"><p>Choose two plots or summaries that are both legitimate but foreground different properties, such as centre versus distribution. Explain the communicative consequence of that choice.</p></div></details></section>
-<section class="phase" id="p7"><div class="phase-head"><h2>PHASE 7 — DEBRIEF</h2></div><details><summary>Hint for Task 7.1 — Complete the statement</summary><div class="hint-body"><p>A strong completion recognises that a graph selects, transforms and encodes aspects of observations for a particular question and audience.</p></div></details></section>
-<details class="troubleshoot"><summary>If your R code isn’t working</summary><div class="hint-body"><ol><li>Check that <code>analysis_data</code> or the transfer dataset exists.</li><li>Use <code>names()</code> and <code>glimpse()</code> to confirm variable names and types.</li><li>Build plots in small steps: <code>ggplot()</code>, then the geom, then labels/theme.</li><li>If a summary fails, run one statistic at a time.</li><li>If a graph runs but looks surprising, inspect the underlying values before changing the plot.</li><li>Keep the analytical question—not the software output—in control of the representation.</li></ol></div></details></main><footer>B1700 · Week 6 · 2026–27</footer></body></html>
+  theme_minimal()</code></pre><p>Put the variable that you think explains the other on the horizontal axis. Describe the direction (up, down or none), the strength (tight or loose) and the scatter, then look for anything that is not a single cloud.</p><p><strong>Sanity check:</strong> the pattern rises from left to right and is wide and loose. <code>cor(table$x_column, table$y_column)</code> gives about 0.41 if you want a number. The points fall into three horizontal bands, at about 5, 18 and 30 sprints.</p><p><strong>Observation:</strong> the plot tells you where to look, not why. Task 7.1 returns to the bands.</p></div></details>
+<details><summary>Hint for Task 3.4: Say it carefully</summary><div class="hint-body"><p>A careful sentence names the variable, gives a number, says how many appearances stand behind it, and uses a tentative verb such as “tends to” or “is associated with”.</p><pre><code>Across [n] appearances, [variable] [shape or pattern], with [group] [higher or lower] ([number]).
+
+[Variable 1] tends to be [higher or lower] when [variable 2] is [higher or lower] (r = [number]),
+but [what the plot shows about how loose or banded it is].</code></pre><p>Avoid <em>causes</em>, <em>leads to</em>, <em>proves</em>, <em>always</em> and <em>never</em>.</p></div></details>
+</section>
+<section class="phase" id="p4"><div class="phase-banner">PHASE 4: AUDIT: JUDGE A COLLEAGUE’S SUMMARY</div><p class="phase-intro">Check what the script does, not what the note says it does.</p>
+<details><summary>Hint for Task 4.1: What does each step actually show?</summary><div class="hint-body"><pre><code>tracking |&gt;
+  group_by(position) |&gt;
+  summarise(mean_distance = mean(distance_km))
+
+nrow(tracking_rated)
+cor(tracking_rated$minutes_played, tracking_rated$match_rating)
+
+ggplot_build(plot_object)$data[[1]]$count</code></pre><p>Run the script one step at a time rather than all at once. For the third claim, store the plot in an object, print it, and count the bars. <code>ggplot_build(plot_object)$data[[1]]$count</code> returns the height of each bar.</p><p><strong>Sanity check:</strong> claim 1 gives Midfielder 9.58, Forward 8.36, Defender 8.28 and Goalkeeper 3.83. Claim 2 uses 442 rated appearances and gives a correlation of about 0.05, and the plot is five flat rows of points. Claim 3 gives three bars, with counts 7, 268 and 201.</p></div></details>
+<details><summary>Hint for Task 4.2: Verdict</summary><div class="hint-body"><p>Work through these questions for the colleague’s script:</p><ul><li><strong>Claim 1:</strong> is “most distance” the same as “works hardest”? What else would you want to see?</li><li><strong>Claim 2:</strong> how close to zero is the correlation? Why do the points form rows? Does a scatterplot show a cause?</li><li><strong>Claim 3:</strong> three bars of 7, 268 and 201: is that “evenly spread”? What does a narrower bin width show?</li><li><strong>Repair:</strong> which numbers, counts and labels would make the summary something you could defend?</li></ul></div></details>
+</section>
+<section class="phase" id="p5"><div class="phase-banner">PHASE 5: WORKFLOW: ONE CASE, START TO FINISH</div><p class="phase-intro">Understand, trust, clean, connect, transform, describe. Use the numbers to check each stage.</p>
+<details><summary>Hint for Task 5.1: Understand and trust the files</summary><div class="hint-body"><pre><code>riders &lt;- read_csv("data/file_name.csv")
+
+glimpse(table)
+dim(table)
+colSums(is.na(table))
+range(table$column)
+
+# speed of one ride, in km per hour
+distance / minutes * 60</code></pre><p>Finish the sentence “One row is one …” for each file. <code>colSums(is.na(table))</code> counts the missing values in every column at once. For the speed, divide the distance in kilometres by the minutes, then multiply by 60 to turn a minute into an hour.</p><p><strong>Sanity check:</strong> <code>rides</code> has 126 rows and 7 columns, and <code>avg_power_w</code> has 5 missing values. <code>minutes</code> runs from 37 to 234 and <code>distance_km</code> from 22.3 to 205. The ride with 205 km took 85 minutes, which is about 145 km an hour. <code>riders</code> has 26 rows and <code>tests</code> has 20.</p><p><strong>Watch for:</strong> present does not mean valid. A missing value is a gap, and an impossible value is a recorded number that cannot be right.</p></div></details>
+<details><summary>Hint for Task 5.2: Clean the labels and the repeats</summary><div class="hint-body"><pre><code>table |&gt; count(group_column)
+
+table &lt;- table |&gt;
+  mutate(group_column = str_to_title(group_column))
+
+sum(duplicated(table))
+sum(duplicated(table[, c("key_1", "key_2")]))
+
+table_clean &lt;- table |&gt;
+  distinct() |&gt;
+  filter(number_column &lt; limit)
+
+wide_table |&gt;
+  pivot_longer(
+    cols = starts_with("prefix"),
+    names_to = "test",
+    values_to = "value"
+  )</code></pre><p><code>str_to_title()</code> makes “ROAD”, “road” and “Road” all “Road”. A duplicate is the same rider on the same date recorded twice, so check the pair of columns as well as the whole row. Store each step in an object, and use <code>nrow()</code> after each one. In <code>pivot_longer()</code>, choose only the columns that hold the measurements, so that the rider column stays as an identifier.</p><p><strong>Sanity check:</strong> six labels become two. 126 rows become 123 after <code>distinct()</code> and 122 after the impossible ride is removed. There are 3 exact duplicate rows and the same 3 repeated rider and date pairs. After the labels and repeats are tidied, Road has 63 rides and Track has 60. Removing the impossible ride, a Road ride from C03, leaves Road with 62. <code>tests</code> has 20 rows and becomes 60.</p><p><strong>Observation:</strong> removing a row is a decision, so record the reason. The new grain of <code>tests</code> is one rider’s one test.</p></div></details>
+<details><summary>Hint for Task 5.3: Connect the tables, then verify</summary><div class="hint-body"><pre><code>table |&gt; anti_join(lookup, by = "key")
+lookup |&gt; anti_join(table, by = "key")
+
+table_joined &lt;- table |&gt;
+  left_join(lookup |&gt; select(key, wanted_column), by = "key")
+
+nrow(table)
+nrow(table_joined)
+sum(is.na(table_joined$wanted_column))
+
+table |&gt; inner_join(lookup, by = "key") |&gt; nrow()</code></pre><p>The first <code>anti_join()</code> lists the rows of the first table that have no partner, and the second does the same in the other direction. <code>left_join()</code> keeps every row of the first table, and shows <code>NA</code> where there is no partner. <code>inner_join()</code> keeps only the rows that match.</p><p><strong>Sanity check:</strong> three rides belong to riders who are not in <code>riders</code>: C91 (2 rides) and C92 (1 ride). Riders C25 and C26 have no rides. <code>rides_joined</code> has 122 rows, the same as <code>rides_clean</code>, and 3 of them have no name. <code>inner_join()</code> would have returned 119 rows.</p><p><strong>Observation:</strong> evidence that a join worked is the row count and the unmatched records, not the absence of an error.</p></div></details>
+<details><summary>Hint for Task 5.4: Transform: a total or a rate?</summary><div class="hint-body"><pre><code>table_joined &lt;- table_joined |&gt;
+  mutate(rate = total_column / time_column * 60)
+
+table_joined |&gt;
+  group_by(group_column) |&gt;
+  summarise(
+    rows = n(),
+    mean_total = mean(total_column),
+    mean_rate = mean(rate)
+  )</code></pre><p>A rate divides a total by the exposure. Here the total is distance and the exposure is time, so the rate is a speed.</p><p><strong>Sanity check:</strong> Endurance has 65 rides, a mean distance of about 59.9 km and a mean speed of about 28.6 km an hour. Tempo has 57 rides, about 38.5 km and about 34.6 km an hour.</p><p><strong>Observation:</strong> Endurance rides cover more distance because they are longer. Tempo rides cover it faster. A total and a rate answer different questions, and the coach asked which covers the ground fastest.</p></div></details>
+<details><summary>Hint for Task 5.5: Describe and draw</summary><div class="hint-body"><pre><code>table |&gt;
+  summarise(
+    n = n(),
+    mean = mean(column),
+    median = median(column),
+    sd = sd(column),
+    iqr = IQR(column)
+  )
+
+ggplot(table, aes(x = column)) +
+  geom_histogram(binwidth = 10)
+
+ggplot(table, aes(x = group_column, y = number_column)) +
+  geom_boxplot()
+
+ggplot(table, aes(x = x_column, y = y_column)) +
+  geom_point() +
+  labs(title = "...", subtitle = "One point is ...", x = "...", y = "...") +
+  theme_minimal()
+
+cor(table$x_column, table$y_column, use = "complete.obs")</code></pre><p>Write your prediction as a comment first. A longer tail on the right is called right-skewed, and a longer tail on the left is left-skewed. For the boxplot, compare the thick lines (medians), the heights of the boxes (spread) and how far the boxes overlap. <code>use = "complete.obs"</code> makes <code>cor()</code> ignore rows with a missing value.</p><p><strong>Sanity check:</strong> <code>minutes</code> for 122 rides has a mean of about 98.8, a median of 88, an SD of about 40.3 and an IQR of about 50.8, with a long tail to the right. For speed, Road has 62 rides, a median of about 29.2 and an IQR of about 7.7. Track has 60 rides, a median of about 33.3 and an IQR of about 5.8. The middle halves of the two boxes overlap (Road about 25.7 to 33.4, Track about 30.9 to 36.8). For power and speed, r is about 0.53 on 117 rides, and R warns that it removed 5 rows because of missing power.</p><p><strong>Observation:</strong> a moderate association is loose, not a tight line. Say how many points the plot rests on.</p></div></details>
+<details><summary>Hint for Task 5.6: Say it carefully</summary><div class="hint-body"><pre><code>Across [n] rides, [group A] riding was [faster or slower] than [group B] ([median or mean] [number] against [number] km per hour), though [what the spread and overlap show].
+
+Higher [variable] tends to go with [higher or lower] [variable] (r = [number], [n] rides), but [what this does not show].</code></pre><p>A careful sentence has a number, a count, a tentative verb and no cause. Avoid <em>causes</em>, <em>leads to</em>, <em>proves</em>, <em>always</em> and <em>never</em>. Mention the rides that were left out.</p></div></details>
+</section>
+<section class="phase" id="p6"><div class="phase-banner">PHASE 6: TRANSFER</div><p class="phase-intro">The same process on different data.</p>
+<details><summary>Hint for Task 6.1: Check before you describe</summary><div class="hint-body"><pre><code>swimming &lt;- read_csv("data/file_name.csv")
+
+glimpse(swimming)
+dim(swimming)
+table(swimming$group_column)
+sum(is.na(swimming))
+range(swimming$column)</code></pre><p><code>sum(is.na(swimming))</code> counts missing values in the whole table at once.</p><p><strong>Sanity check:</strong> 18 rows and 4 columns, with 6 swimmers in each of Sprint, Middle and Distance. There are no missing values. Training load runs from 410 to 770 and race time from 51 to 950 seconds.</p><p><strong>Watch for:</strong> a range from 51 to 950 seconds is a clue about what the groups are.</p></div></details>
+<details><summary>Hint for Task 6.2: The pooled picture</summary><div class="hint-body"><pre><code>ggplot(swimming, aes(x = recent_training_load, y = race_time_seconds)) +
+  geom_point() +
+  labs(
+    title = "...",
+    x = "...",
+    y = "..."
+  ) +
+  theme_minimal()</code></pre><p>Write your prediction as a comment first. Then describe the direction of the points as a whole.</p><p><strong>Sanity check:</strong> the points rise from bottom left to top right, in two clusters, and <code>cor()</code> gives about 0.71. Many people predict the opposite direction.</p></div></details>
+<details><summary>Hint for Task 6.3: Compare like with like</summary><div class="hint-body"><pre><code>ggplot(swimming, aes(x = recent_training_load, y = race_time_seconds)) +
+  geom_point() +
+  facet_wrap(~group_column, scales = "free_y")
+
+swimming |&gt;
+  group_by(group_column) |&gt;
+  summarise(swimmers = n(), r = cor(x_column, y_column))</code></pre><p><code>facet_wrap(~group_column)</code> draws one panel for each group. <code>scales = "free_y"</code> gives each panel its own vertical scale, so that a 51-second sprint and a 950-second race are not squeezed onto one axis. <code>cor()</code> gives a number to go with each panel.</p><p><strong>Sanity check:</strong> in every panel the points fall from top left to bottom right. The correlations are about -0.98 for Sprint, -0.98 for Middle and -0.99 for Distance.</p><p><strong>Observation:</strong> the pooled pattern compared swimmers racing 51 seconds with swimmers racing 950 seconds. Compare like with like.</p></div></details>
+<details><summary>Hint for Task 6.4: Report it</summary><div class="hint-body"><pre><code>Across all [n] swimmers, [variable 1] and [variable 2] [pattern] (r = [number]), but this [what the pooling does].
+Within each [group], [variable 1] [pattern] ([range of r]), [what this cannot show].</code></pre><p>Think about what 18 swimmers, six in each group, and no other information can and cannot show. Say “is associated with”, not “causes”.</p></div></details>
+</section>
+<section class="phase" id="p7"><div class="phase-banner">PHASE 7: EXTENSION</div><p class="phase-intro">Beyond the core, for pairs who want to go further.</p>
+<details><summary>Hint for Task 7.1: Sprints by venue</summary><div class="hint-body"><pre><code>ggplot(table, aes(x = column)) +
+  geom_histogram(binwidth = 2) +
+  facet_wrap(~group_column)
+
+table |&gt;
+  group_by(group_column) |&gt;
+  summarise(
+    appearances = n(),
+    median_value = median(column),
+    iqr_value = IQR(column),
+    low = sum(column &lt;= 10),
+    high = sum(column &gt;= 24)
+  )</code></pre><p><code>sum(column &lt;= 10)</code> counts the values that are 10 or less.</p><p><strong>Sanity check:</strong> Away: 238 appearances, median 16, IQR 25, 106 with 10 or fewer sprints and 114 with 24 or more. Home: 238 appearances, median 18, IQR 6, 23 with 10 or fewer and 24 with 24 or more.</p><p><strong>Observation:</strong> the data cannot say why Away appearances split into two groups. Possible questions for the data owner are about the tracking system, the sprint threshold or how the data were recorded at away venues.</p></div></details>
+<details><summary>Hint for Task 7.2: A reusable summary</summary><div class="hint-body"><pre><code>describe_num &lt;- function(data, column) {
+  data |&gt;
+    summarise(
+      n = n(),
+      missing = sum(is.na({{ column }})),
+      mean = mean({{ column }}, na.rm = TRUE)
+      # add median, sd and IQR in the same way
+    )
+}
+
+describe_num(table, column_name)</code></pre><p>The double curly brackets <code>{{ column }}</code> let the function accept an unquoted column name.</p><p><strong>Sanity check:</strong> for <code>distance_km</code> the result is 476 rows, 0 missing, mean 8.30, median 8.585, SD 2.36 and IQR 3.14. For <code>match_rating</code> it is 476 rows, 34 missing, mean 2.98, median 3, SD 1.23 and IQR 2.</p></div></details>
+<details><summary>Hint for Task 7.3: See what else R can draw</summary><div class="hint-body"><pre><code>install.packages(c("ggridges", "ggrepel"))   # once, in the Console
+
+# In week06_demo.R: run library(tidyverse) near the top,
+# then run the Where this goes section, from library(ggridges) to the end</code></pre><p>Run the section one plot at a time, and look at each before you move on. To change one thing, find the line that makes the part you like: a colour is a hex code such as <code>"#124864"</code>, a label is the text inside <code>labs()</code> or <code>annotate()</code>, and a number is a bin count, a size or a limit. Change one, run it again and see what moved.</p><p><strong>Sanity check:</strong> the Where this goes section draws six plots from invented data: a shot map, ridgelines, small multiples, a heatmap, a dumbbell chart and an annotated line. The data are made up, so there is nothing to verify, only to explore.</p><p><strong>Observation:</strong> each of these is the same grammar you already know: data, aesthetics, a geom, labels and a theme.</p></div></details>
+</section>
+<section class="phase" id="p8"><div class="phase-banner">PHASE 8: DEBRIEF</div><p class="phase-intro">Short prompts for the discussion.</p>
+<details><summary>Hint for Task 8.1: What does your plot hide?</summary><div class="hint-body"><p>Use these prompts: What does one point, bar or box stand for? What would a different bin width or an extra variable show? What is behind each number: how many observations, and how many missing?</p></div></details>
+<details><summary>Hint for Task 8.2: Which stage mattered most?</summary><div class="hint-body"><p>For each stage, finish two sentences: “I checked …” and “this changed what I could say because …”. For example: what did the labels, the repeats or the unmatched records do to your counts and your means? Choose the stage where skipping the check would have given you the most confident wrong answer.</p></div></details>
+</section>
+<section class="phase" id="mistakes"><div class="phase-banner">COMMON MISTAKES</div><p class="phase-intro">Check this list if a result looks wrong.</p>
+<details><summary>My mean is <code>NA</code></summary><div class="hint-body"><p>The column contains missing values. Count them with <code>sum(is.na(x))</code>, decide whether leaving them out is justified, and then use <code>na.rm = TRUE</code>. Report how many values you left out.</p></div></details>
+<details><summary>R says an object or function could not be found</summary><div class="hint-body"><p>Check the spelling and the capital letters of the column or function name, and that you have run <code>library(tidyverse)</code> since restarting R. <code>IQR()</code> is capitalised.</p></div></details>
+<details><summary>My histogram looks different from my partner’s</summary><div class="hint-body"><p>Check <code>binwidth</code>. A different bin width changes the picture of the same observations. State the bin width you used.</p></div></details>
+<details><summary>The boxplot has no boxes, or the groups are in the wrong place</summary><div class="hint-body"><p>The category goes on <code>x</code> and the number on <code>y</code>. If the category is stored as a number, convert it with <code>as.factor()</code>.</p></div></details>
+<details><summary>R warns that it removed rows containing missing values</summary><div class="hint-body"><p>The plot dropped observations whose <code>x</code> or <code>y</code> value is <code>NA</code>. Count how many, and say so when you describe the plot.</p></div></details>
+<details><summary>My scatterplot shows the points in rows</summary><div class="hint-body"><p>The variable on one axis takes only a few distinct values, such as ratings from 1 to 5 or sprint counts in bands. Rows are a pattern in the data, not a fault in the plot.</p></div></details>
+<details><summary>I used <code>geom_point()</code> but nothing appears</summary><div class="hint-body"><p>Check that the <code>+</code> is at the end of the line, not the start of the next one, and that <code>aes()</code> contains both variables.</p></div></details>
+<details><summary>My function says it cannot find the column</summary><div class="hint-body"><p>Inside the function the column name needs double curly brackets: <code>{{ column }}</code>. Pass the name without quotes.</p></div></details>
+<details><summary>The correlation is strong but I am not sure what it means</summary><div class="hint-body"><p>A correlation describes how two variables move together. It does not show a cause, and it can hide groups. Look at the plot, and ask whether you are comparing like with like.</p></div></details>
+<details><summary>My <code>left_join()</code> has more rows than the table I started with</summary><div class="hint-body"><p>The lookup table has the same key more than once, so each match is repeated. Run <code>count(key)</code> on the lookup table, find any key with <code>n</code> above 1, and fix the lookup before you join.</p></div></details>
+<details><summary>I removed duplicates but the row count did not change</summary><div class="hint-body"><p><code>distinct()</code> removes only rows that are identical in every column. Check <code>duplicated()</code> on the columns that define one row, such as the rider and the date, and look at what differs between the two rows.</p></div></details>
+<details><summary><code>pivot_longer()</code> says it cannot combine a character and a number</summary><div class="hint-body"><p>You asked it to reshape the identifier column as well as the measurements. Choose only the measurement columns, for example <code>cols = starts_with("ftp")</code>.</p></div></details>
+<details><summary>I changed <code>tracking</code> and cannot get the original back</summary><div class="hint-body"><p>Run the import line again. In future, store new tables in new objects so that the original stays available for comparison.</p></div></details>
+</section>
+</main>
+<footer><div class="inner">B1700 · Week 6 · 2026–27</div></footer>
+</body></html>
